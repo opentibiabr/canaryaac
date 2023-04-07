@@ -8,6 +8,8 @@ INSERT INTO `accounts` (`id`, `name`, `password`, `email`, `page_access`, `premd
 
 DELETE FROM `accounts` WHERE `accounts`.`id` = 1;
 
+UPDATE `accounts` SET `id` = '1' WHERE `accounts`.`id` = 2;
+
 -- --------------------------------------------------------
 
 ALTER TABLE `players` ADD `main` int(11) NOT NULL DEFAULT 0;
@@ -27,8 +29,6 @@ ALTER TABLE `players` CHANGE `conditions` `conditions` BLOB NOT NULL DEFAULT '';
 
 -- --------------------------------------------------------
 
-ALTER TABLE `guilds` ADD `level` int(11) NOT NULL DEFAULT 1;
-ALTER TABLE `guilds` ADD `points` int(11) NOT NULL DEFAULT 0;
 ALTER TABLE `guilds` ADD `description` text NOT NULL;
 ALTER TABLE `guilds` ADD `logo_name` varchar(100) NOT NULL;
 ALTER TABLE `guilds` ADD `world_id` int(11) NOT NULL DEFAULT 0;
@@ -96,9 +96,6 @@ CREATE TABLE IF NOT EXISTS `boosted_boss` (
   `raceid` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO `boosted_boss` (`id`, `looktype`, `lookfeet`, `looklegs`, `lookhead`, `lookbody`, `lookaddons`, `lookmount`, `date`, `boostname`, `raceid`) VALUES
-(null, 136, 0, 0, 0, 0, 0, 0, '', 'Goshnar\'s Greed', '1804');
 
 -- --------------------------------------------------------
 
@@ -476,5 +473,16 @@ CREATE TABLE IF NOT EXISTS `player_badges` (
   `view` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+INSERT INTO `players`
+(`id`, `name`, `group_id`, `account_id`, `level`, `vocation`, `health`, `healthmax`, `experience`, `lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `maglevel`, `mana`, `manamax`, `manaspent`, `town_id`, `conditions`, `cap`, `sex`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`) VALUES
+(1, 'Rook Sample', 1, 1, 2, 0, 155, 155, 100, 113, 115, 95, 39, 129, 2, 60, 60, 5936, 1, '', 410, 1, 12, 155, 12, 155, 12, 155, 12, 93),
+(2, 'Sorcerer Sample', 1, 1, 8, 1, 185, 185, 4200, 113, 115, 95, 39, 129, 0, 90, 90, 0, 8, '', 470, 1, 10, 0, 10, 0, 10, 0, 10, 0),
+(3, 'Druid Sample', 1, 1, 8, 2, 185, 185, 4200, 113, 115, 95, 39, 129, 0, 90, 90, 0, 8, '', 470, 1, 10, 0, 10, 0, 10, 0, 10, 0),
+(4, 'Paladin Sample', 1, 1, 8, 3, 185, 185, 4200, 113, 115, 95, 39, 129, 0, 90, 90, 0, 8, '', 470, 1, 10, 0, 10, 0, 10, 0, 10, 0),
+(5, 'Knight Sample', 1, 1, 8, 4, 185, 185, 4200, 113, 115, 95, 39, 129, 0, 90, 90, 0, 8, '', 470, 1, 10, 0, 10, 0, 10, 0, 10, 0),
+(6, 'GOD', 6, 1, 2, 0, 155, 155, 100, 113, 115, 95, 39, 75, 0, 60, 60, 0, 8, '', 410, 1, 10, 0, 10, 0, 10, 0, 10, 0);
 
 -- --------------------------------------------------------

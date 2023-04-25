@@ -49,9 +49,9 @@ class CharacterEdit extends Base{
                 $filter_health_mana = 0;
             }
             $filter_skills = filter_var($postVars['hide_skills'], FILTER_SANITIZE_NUMBER_INT);
-			if(empty($filter_skills)){
-				$filter_skills = 0;
-			}
+            if(empty($filter_skills)){
+                $filter_skills = 0;
+            }
             $filter_bonus = filter_var($postVars['hide_bonus'], FILTER_SANITIZE_NUMBER_INT);
 			if(empty($filter_bonus)){
 				$filter_bonus = 0;

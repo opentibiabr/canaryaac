@@ -37,9 +37,9 @@ class CharacterEdit extends Base{
                 $filter_account = 0;
             }
             $filter_outfit = filter_var($postVars['hide_outfit'], FILTER_SANITIZE_NUMBER_INT);
-			if(empty($filter_outfit)){
-				$filter_outfit = 0;
-			}
+            if(empty($filter_outfit)){
+                $filter_outfit = 0;
+            }
             $filter_inventory = filter_var($postVars['hide_inventory'], FILTER_SANITIZE_NUMBER_INT);
 			if(empty($filter_inventory)){
 				$filter_inventory = 0;

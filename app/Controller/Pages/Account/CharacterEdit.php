@@ -173,7 +173,7 @@ class CharacterEdit extends Base{
             'player' => self::getCharacterEdit($request, $name),
             'achievements' => self::getAchievementsPlayer($request, $name),
             'total_secretachievements' => (int)EntityAchievements::getAchievements('secret = "1"', null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
-			'status' => $status,
+            'status' => $status,
         ]);
         return parent::getBase('Account Management', $content, 'account');
     }

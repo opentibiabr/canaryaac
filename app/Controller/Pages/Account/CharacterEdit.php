@@ -57,9 +57,9 @@ class CharacterEdit extends Base{
                 $filter_bonus = 0;
             }
             $filter_comment = filter_var($postVars['comment'], FILTER_SANITIZE_SPECIAL_CHARS);
-			if(empty($filter_comment)){
-				$filter_comment = "";
-			}
+            if(empty($filter_comment)){
+                $filter_comment = "";
+            }
 
             $filter_hidden = filter_var($postVars['accountvisible'], FILTER_SANITIZE_NUMBER_INT);
             if($filter_hidden > 1){

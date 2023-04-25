@@ -81,8 +81,8 @@ class CharacterEdit extends Base{
 
                 $check_exists_display = EntityPlayer::getDisplay('player_id = "'.$select_player->id.'"')->fetchObject();
                 if (empty($check_exists_display)) {
-						EntityPlayer::insertDisplay($arrayCharacterDisplay);
-					return self::viewCharacterEdit($request, $name, 'Updated successfully.');
+                    EntityPlayer::insertDisplay($arrayCharacterDisplay);
+                    return self::viewCharacterEdit($request, $name, 'Updated successfully.');
                 } else {
                     EntityPlayer::updateDisplay('player_id = "'.$select_player->id.'"', [
                         'account' => $filter_account,

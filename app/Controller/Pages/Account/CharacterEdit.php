@@ -53,9 +53,9 @@ class CharacterEdit extends Base{
                 $filter_skills = 0;
             }
             $filter_bonus = filter_var($postVars['hide_bonus'], FILTER_SANITIZE_NUMBER_INT);
-			if(empty($filter_bonus)){
-				$filter_bonus = 0;
-			}
+            if(empty($filter_bonus)){
+                $filter_bonus = 0;
+            }
             $filter_comment = filter_var($postVars['comment'], FILTER_SANITIZE_SPECIAL_CHARS);
 			if(empty($filter_comment)){
 				$filter_comment = "";

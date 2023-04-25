@@ -93,8 +93,8 @@ class CharacterEdit extends Base{
                         'bonus' => $filter_bonus,
                         'comment' => $filter_comment,
                     ]);
-					
-					return self::viewCharacterEdit($request, $name, 'Updated successfully.');
+
+                    return self::viewCharacterEdit($request, $name, 'Updated successfully.');
                 }
                 $request->getRouter()->redirect('/account/character/'.$name.'/edit');
             }

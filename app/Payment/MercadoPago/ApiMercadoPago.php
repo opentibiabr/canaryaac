@@ -46,7 +46,7 @@ class ApiMercadoPago {
         "excluded_payment_types" => array (
             array("id" => "ticket"),
         ),
-        "installments" => intval($_ENV['DONATE_MAX_PARCELAS'])
+        "installments" => intval($_ENV['DONATE_MAX_INSTALLMENT'])
         );
 
         $preference->save();

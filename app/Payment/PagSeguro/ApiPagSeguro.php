@@ -106,7 +106,7 @@ class ApiPagSeguro{
         $payment->acceptPaymentMethod()->groups(
             Group::CREDIT_CARD,
             Group::BALANCE,
-            Group::BOLETO,
+            Group::PAYMENT_SLIP,
         );
 
         $onlyCheckoutCode = true;

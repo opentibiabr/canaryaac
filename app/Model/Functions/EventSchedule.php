@@ -23,9 +23,9 @@ class EventSchedule{
     public static function getBoolean($value)
     {
         if ($value == 1) {
-            return 'true';
+            return true;
         } else {
-            return 'false';
+            return false;
         }
     }
 
@@ -39,6 +39,7 @@ class EventSchedule{
         $loadxml_events = new DOMDocument;
         $loadxml_events->load($xml_events);
         $events = $loadxml_events->getElementsByTagName('event');
+        $arrayEvents = [];
         foreach ($events as $event) {
             if ($event) {
                 $arrayEvents[] = [
@@ -54,6 +55,6 @@ class EventSchedule{
                 ];
             }
         }
-        return $arrayEvents ?? [];
+        return ['eventlist' => $arrayEvents, 'lastupdatetimestamp' => time()];
     }
 }

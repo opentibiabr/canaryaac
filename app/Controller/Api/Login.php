@@ -63,10 +63,7 @@ class Login extends Api{
                 exit;
 
             case 'eventschedule':
-                return [
-                    'eventlist' => EventSchedule::getServerEvents(),
-                    'lastupdatetimestamp' => time(),
-                ];
+                return EventSchedule::getServerEvents();
                 exit;
 
             case 'news':

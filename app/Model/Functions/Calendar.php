@@ -13,7 +13,7 @@ use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
 
-class Calendar{
+class Calendar {
 
     private $active_year;
     private $active_month;
@@ -27,10 +27,40 @@ class Calendar{
         $this->active_day = $date != null ? date('d', strtotime($date)) : date('d');
     }
 
-    public function addEvent($txt, $date, $days = 1, $color = '')
-    {
-        $color = $color ? ' ' . $color : $color;
-        $this->events[] = [$txt, $date, $days, $color];
+    public function addEvent($txt, $date, $days = 1, $colorDark = '', $colorLight = '', $description = '') {
+        $color = $colorDark ? ' ' . $colorDark : $colorDark;
+        $colorLight = $colorLight ? ' ' . $colorLight : $colorLight;
+        $this->events[] = [$txt, $date, $days, $color, $colorLight, $description];  // Add the event description
+    }
+    
+
+    public function loadEventsFromServer() {
+        // Retrieve the events from the server
+        $eventSchedule = new EventSchedule();
+        $serverEvents = $eventSchedule->getServerEvents();
+    
+        // Check if events are retrieved successfully
+        if(!empty($serverEvents) && !empty($serverEvents['eventlist'])) {
+            // Loop through each event
+            foreach($serverEvents['eventlist'] as $serverEvent) {
+                // Convert the event start and end dates to 'Y-m-d' format
+                $startDate = date('Y-m-d', $serverEvent['startdate']);
+                $endDate = date('Y-m-d', $serverEvent['enddate']);
+    
+                // Calculate the number of days for the event
+                $days = (strtotime($endDate) - strtotime($startDate)) / (60 * 60 * 24) + 1;
+    
+                // Add the event to the calendar events
+                $this->addEvent(
+                    $serverEvent['name'],
+                    $startDate,
+                    $days,
+                    $serverEvent['colordark'],
+                    $serverEvent['colorlight'],
+                    $serverEvent['description']  // Add the event description
+                );
+            }
+        }
     }
 
     public function __toString()
@@ -62,19 +92,36 @@ class Calendar{
             if ($i == $this->active_day) {
                 $selected = 'f3e5d0';
             }
-                $html .= '<div style="height:82px; width:120px; border: 1px solid #FAF0D7; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#'. $selected .';">
-                        <div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">';
-                $html .= '<span style="vertical-align: text-bottom;">' . $i . '</span></div>';
+            $html .= '<div style="height:82px; width:120px; border: 1px solid #FAF0D7; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#'. $selected .';">';
+            $html .= '<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">';
+            $html .= '<span style="vertical-align: text-bottom;">' . $i . '</span></div>';
+    
+            // Initialize an empty string for all descriptions
+            $allDescriptions = '';
+            $eventExists = false;
+    
+            foreach ($this->events as $event) {
+                for ($d = 0; $d <= ($event[2]-1); $d++) {
+                    if (date('y-m-d', strtotime($this->active_year . '-' . $this->active_month . '-' . $i . ' -' . $d . ' day')) == date('y-m-d', strtotime($event[1]))) {
+                        // Append the event description to the all descriptions string
+                        $allDescriptions .= '<strong>' . $event[0] . ':</strong><br />&bull; ' . $event[5] . '<br /><br />';
+                        $eventExists = true;
+                    }
+                }
+            }
+    
+            if ($eventExists) {
+                $html .= '<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), \'\', \'' . $allDescriptions . '\', \'\');" onmouseout="$(\'#HelperDivContainer\').hide();">';
                 foreach ($this->events as $event) {
                     for ($d = 0; $d <= ($event[2]-1); $d++) {
                         if (date('y-m-d', strtotime($this->active_year . '-' . $this->active_month . '-' . $i . ' -' . $d . ' day')) == date('y-m-d', strtotime($event[1]))) {
-                            $html .= '<div class="event' . $event[3] . '">';
-                            $html .= $event[0];
-                            $html .= '</div>';
+                            $html .= '<div style="background:' . $event[3] . '; color:white; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">' . $event[0] . '</div>';
                         }
                     }
                 }
-                $html .= '</div>';
+                $html .= '</span>';
+            }
+            $html .= '</div>';
         }
         
         

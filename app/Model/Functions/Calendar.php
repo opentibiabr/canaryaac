@@ -20,10 +20,6 @@ use Symfony\Component\Mime\Email;
 
 class Calendar
 {
-
-    // private $active_year;
-    // private $active_month;
-    // private $active_day;
     private $date = null;
     private $events = [];
 

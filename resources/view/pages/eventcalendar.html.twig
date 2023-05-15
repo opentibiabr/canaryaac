@@ -18,12 +18,18 @@
 									<div class="eventscheduleheadertop">
 										<div class="eventscheduleheaderblockleft">
 											<div class="eventscheduleheaderdateblock">
-												<span class="eventscheduleheaderleft"></span>August 2022<span class="eventscheduleheaderright">
-													<a href="{{URL}}/eventcalendar?calendarmonth=9&amp;calendaryear=2022" style="color:white;">»</a>
+												{% if prev %}
+												<span class="eventscheduleheaderleft">
+													<a href="{{URL}}/eventcalendar?calendarmonth={{ prev_month }}&amp;calendaryear={{ prev_year }}" style="color:white;">&laquo;</a>
+												</span>
+												{% endif %}
+												{{ current_date }}
+												<span class="eventscheduleheaderright">
+													<a href="{{URL}}/eventcalendar?calendarmonth={{ next_month }}&amp;calendaryear={{ next_year }}" style="color:white;">&raquo;</a>
 												</span>
 											</div>
 										</div>
-										<div class="eventscheduleheaderblockright">2022-08-31 18:49 CEST</div>
+										<div class="eventscheduleheaderblockright">{{ now }}</div>
 									</div>
 								</div>
 								<span class="CaptionVerticalRight" style="background-image:url({{IMAGE_PATH}}/global/content/box-frame-vertical.gif);"></span>
@@ -65,379 +71,22 @@
 															<b>Sunday</b>
 														</th>
 													</tr>
-													<tr>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#D4C0A1;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">25
-																</span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Last Creep Standing:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; Participate in a fun challenge of wits and agility. The trials of Kurik to test the mortals and fool around with them will lead you to a test of your reactions and luck.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#735D10; color:#D4C0A1; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">*Last Creep Standing</div>
-															</span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#D4C0A1;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">26
-																</span>
-															</div>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#D4C0A1;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">27
-																</span>
-															</div>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#D4C0A1;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">28
-																</span>
-															</div>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#D4C0A1;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">29
-																</span>
-															</div>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#D4C0A1;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">30
-																</span>
-															</div>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#D4C0A1;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">31
-																</span>
-															</div>
-														</td>
-													</tr>
-													<tr>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">1
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">2
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">3
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">4
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">5
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Rapid Respawn:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; Spawn Rate Event! Monsters respawn at a faster rate.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#24657b; color:white; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">*Rapid Respawn</div>
-															</span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">6
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Rapid Respawn:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; Spawn Rate Event! Monsters respawn at a faster rate.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#24657b; color:white; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">Rapid Respawn</div>
-															</span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">7
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Rapid Respawn:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; Spawn Rate Event! Monsters respawn at a faster rate.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#24657b; color:white; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">Rapid Respawn</div>
-															</span>
-														</td>
-													</tr>
-													<tr>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">8
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Rapid Respawn:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; Spawn Rate Event! Monsters respawn at a faster rate.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#24657b; color:white; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">*Rapid Respawn</div>
-															</span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">9
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">10
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">11
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">12
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Full Moon:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; The moon is full! Beware, lycanthropic creatures like werewolves, werefoxes or werebears roam the lands now. And they are more aggressive and numerous than usual.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#8B6D05; color:white; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">*Full Moon</div>
-															</span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">13
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Full Moon:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; The moon is full! Beware, lycanthropic creatures like werewolves, werefoxes or werebears roam the lands now. And they are more aggressive and numerous than usual.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#8B6D05; color:white; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">Full Moon</div>
-															</span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">14
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Full Moon:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; The moon is full! Beware, lycanthropic creatures like werewolves, werefoxes or werebears roam the lands now. And they are more aggressive and numerous than usual.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#8B6D05; color:white; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">Full Moon</div>
-															</span>
-														</td>
-													</tr>
-													<tr>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">15
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Full Moon:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; The moon is full! Beware, lycanthropic creatures like werewolves, werefoxes or werebears roam the lands now. And they are more aggressive and numerous than usual.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#8B6D05; color:white; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">*Full Moon</div>
-															</span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">16
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">17
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">18
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">19
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">20
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Last Creep Standing:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; Participate in a fun challenge of wits and agility. The trials of Kurik to test the mortals and fool around with them will lead you to a test of your reactions and luck.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#8B6D05; color:white; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">*Last Creep Standing</div>
-															</span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">21
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Last Creep Standing:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; Participate in a fun challenge of wits and agility. The trials of Kurik to test the mortals and fool around with them will lead you to a test of your reactions and luck.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#8B6D05; color:white; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">Last Creep Standing</div>
-															</span>
-														</td>
-													</tr>
-													<tr>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">22
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Last Creep Standing:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; Participate in a fun challenge of wits and agility. The trials of Kurik to test the mortals and fool around with them will lead you to a test of your reactions and luck.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#8B6D05; color:white; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">Last Creep Standing</div>
-															</span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">23
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Last Creep Standing:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; Participate in a fun challenge of wits and agility. The trials of Kurik to test the mortals and fool around with them will lead you to a test of your reactions and luck.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#8B6D05; color:white; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">Last Creep Standing</div>
-															</span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">24
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Last Creep Standing:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; Participate in a fun challenge of wits and agility. The trials of Kurik to test the mortals and fool around with them will lead you to a test of your reactions and luck.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#8B6D05; color:white; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">Last Creep Standing</div>
-															</span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">25
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Last Creep Standing:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; Participate in a fun challenge of wits and agility. The trials of Kurik to test the mortals and fool around with them will lead you to a test of your reactions and luck.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#8B6D05; color:white; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">*Last Creep Standing</div>
-															</span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">26
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">27
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">28
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-													</tr>
-													<tr>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">29
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#E7D1AF;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">30
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#f3e5d0;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">31
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '', '');" onmouseout="$('#HelperDivContainer').hide();"></span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#D4C0A1;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">1
-																</span>
-																<span class="HelperDivIndicator" style="vertical-align: middle;" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Hot Cuisine Month:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; If you are a real gourmet, ask Jean Pierre in the Darama desert for some delicious and exceptional recipes. August is undoubtedly the month of hot cuisine! Bon appetit!</div>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{IMAGE_PATH}}/global/content/icon-seasonal.png"></span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Rise of Devovorga:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; A powerful ancient weapon meant to be sleeping forever has awoken deep under Vengoth. With thirst for revenge and burning rage she will destroy the world - unless you fight her back.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#64162b; color:#D4C0A1; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">*Rise of Devovorga</div>
-															</span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#D4C0A1;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">2
-																</span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>XP/Skill Event:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; XP/Skill Event! Killing monsters yields more experience and skill points.</div><div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Rise of Devovorga:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; A powerful ancient weapon meant to be sleeping forever has awoken deep under Vengoth. With thirst for revenge and burning rage she will destroy the world - unless you fight her back.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#1d5263; color:#D4C0A1; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">*XP/Skill Event</div>
-																<div style="background:#64162b; color:#D4C0A1; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">Rise of Devovorga</div>
-															</span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#D4C0A1;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">3
-																</span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>XP/Skill Event:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; XP/Skill Event! Killing monsters yields more experience and skill points.</div><div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Rise of Devovorga:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; A powerful ancient weapon meant to be sleeping forever has awoken deep under Vengoth. With thirst for revenge and burning rage she will destroy the world - unless you fight her back.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#1d5263; color:#D4C0A1; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">XP/Skill Event</div>
-																<div style="background:#64162b; color:#D4C0A1; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">Rise of Devovorga</div>
-															</span>
-														</td>
-														<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:#D4C0A1;">
-															<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
-																<span style="vertical-align: text-bottom;">4
-																</span>
-															</div>
-															<span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>XP/Skill Event:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; XP/Skill Event! Killing monsters yields more experience and skill points.</div><div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Rise of Devovorga:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; A powerful ancient weapon meant to be sleeping forever has awoken deep under Vengoth. With thirst for revenge and burning rage she will destroy the world - unless you fight her back.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
-																<div style="background:#1d5263; color:#D4C0A1; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">XP/Skill Event</div>
-																<div style="background:#64162b; color:#D4C0A1; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">Rise of Devovorga</div>
-															</span>
-														</td>
-													</tr>
+													{% for week, events in calendar %}
+														<tr>
+															{% for event in events %}
+																<td style="height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top; background-color:{{ event.color }};">
+																	<div style="font-weight: bold; margin-left: 3px; margin-bottom: 2px;">
+																		<span style="vertical-align: text-bottom;">{{ event.day }}
+																		</span>
+																	</div>
+																	{{event.html|raw}}
+																	{# <span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;>Last Creep Standing:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; Participate in a fun challenge of wits and agility. The trials of Kurik to test the mortals and fool around with them will lead you to a test of your reactions and luck.</div>', '');" onmouseout="$('#HelperDivContainer').hide();">
+																																	<div style="background:#735D10; color:#D4C0A1; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px">*Last Creep Standing</div>
+																																</span> #}
+																</td>
+															{% endfor %}
+														</tr>
+													{% endfor %}
 												</tbody>
 											</table>
 										</div>
@@ -447,89 +96,89 @@
 						</table>
 					</div>
 				</div><br>
-                <style>
-                .calendar {
-    display: flex;
-    flex-flow: column;
-}
-.calendar .header .month-year {
-    font-size: 20px;
-    font-weight: bold;
-    color: #636e73;
-    padding: 20px 0;
-}
-.calendar .days {
-    display: flex;
-    flex-flow: wrap;
-}
-.calendar .days .day_name {
-    width: calc(100% / 7);
-    border-right: 1px solid #2c7aca;
-    padding: 20px;
-    text-transform: uppercase;
-    font-size: 12px;
-    font-weight: bold;
-    color: #818589;
-    color: #fff;
-    background-color: #448cd6;
-}
-.calendar .days .day_name:nth-child(7) {
-    border: none;
-}
-.calendar .days .day_num {
-    display: flex;
-    flex-flow: column;
-    width: calc(100% / 7);
-    border-right: 1px solid #e6e9ea;
-    border-bottom: 1px solid #e6e9ea;
-    padding: 15px;
-    font-weight: bold;
-    color: #7c878d;
-    cursor: pointer;
-    min-height: 100px;
-}
-.calendar .days .day_num span {
-    display: inline-flex;
-    width: 30px;
-    font-size: 14px;
-}
-.calendar .days .day_num .event {
-    margin-top: 10px;
-    font-weight: 500;
-    font-size: 14px;
-    padding: 3px 6px;
-    border-radius: 4px;
-    background-color: #f7c30d;
-    color: #fff;
-    word-wrap: break-word;
-}
-.calendar .days .day_num .event.green {
-    background-color: #51ce57;
-}
-.calendar .days .day_num .event.blue {
-    background-color: #518fce;
-}
-.calendar .days .day_num .event.red {
-    background-color: #ce5151;
-}
-.calendar .days .day_num:nth-child(7n+1) {
-    border-left: 1px solid #e6e9ea;
-}
-.calendar .days .day_num:hover {
-    background-color: #fdfdfd;
-}
-.calendar .days .day_num.ignore {
-    background-color: #fdfdfd;
-    color: #ced2d4;
-    cursor: inherit;
-}
-.calendar .days .day_num.selected {
-    background-color: #f1f2f3;
-    cursor: inherit;
-}
-                </style>
-                {{day|raw}}
-                <div>* Event starts/ends at server save of this day.</div>
+				<style>
+					.calendar {
+						display: flex;
+						flex-flow: column;
+					}
+					.calendar .header .month-year {
+						font-size: 20px;
+						font-weight: bold;
+						color: #636e73;
+						padding: 20px 0;
+					}
+					.calendar .days {
+						display: flex;
+						flex-flow: wrap;
+					}
+					.calendar .days .day_name {
+						width: calc(100% / 7);
+						border-right: 1px solid #2c7aca;
+						padding: 20px;
+						text-transform: uppercase;
+						font-size: 12px;
+						font-weight: bold;
+						color: #818589;
+						color: #fff;
+						background-color: #448cd6;
+					}
+					.calendar .days .day_name:nth-child(7) {
+						border: none;
+					}
+					.calendar .days .day_num {
+						display: flex;
+						flex-flow: column;
+						width: calc(100% / 7);
+						border-right: 1px solid #e6e9ea;
+						border-bottom: 1px solid #e6e9ea;
+						padding: 15px;
+						font-weight: bold;
+						color: #7c878d;
+						cursor: pointer;
+						min-height: 100px;
+					}
+					.calendar .days .day_num span {
+						display: inline-flex;
+						width: 30px;
+						font-size: 14px;
+					}
+					.calendar .days .day_num .event {
+						margin-top: 10px;
+						font-weight: 500;
+						font-size: 14px;
+						padding: 3px 6px;
+						border-radius: 4px;
+						background-color: #f7c30d;
+						color: #fff;
+						word-wrap: break-word;
+					}
+					.calendar .days .day_num .event.green {
+						background-color: #51ce57;
+					}
+					.calendar .days .day_num .event.blue {
+						background-color: #518fce;
+					}
+					.calendar .days .day_num .event.red {
+						background-color: #ce5151;
+					}
+					.calendar .days .day_num:nth-child(7n + 1) {
+						border-left: 1px solid #e6e9ea;
+					}
+					.calendar .days .day_num:hover {
+						background-color: #fdfdfd;
+					}
+					.calendar .days .day_num.ignore {
+						background-color: #fdfdfd;
+						color: #ced2d4;
+						cursor: inherit;
+					}
+					.calendar .days .day_num.selected {
+						background-color: #f1f2f3;
+						cursor: inherit;
+					}
+				</style>
+				{{day|raw}}
+				<div>* Event starts/ends at server save of this day.</div>
 				<script type="text/javascript">
 					$("#eventscheduletablecontainer .TableContainer .Table3").css("background-color", "#F1E0C5");
 				</script>

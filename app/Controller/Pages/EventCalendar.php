@@ -35,7 +35,7 @@ class EventCalendar extends Base{
         }
 
         $calendar = new Calendar(date($calendaryear . '-' . $calendarmonth . '-' . $current_day));
-        $calendar->addEvent('Rapid Respawn', '2022-08-14', 7, 'red');
+        $calendar->loadEventsFromServer();
         
         $content = View::render('pages/eventcalendar', [
             'currentday' => $current_day,

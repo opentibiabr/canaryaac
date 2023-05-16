@@ -427,23 +427,44 @@ window.colors = {
       $('#dropdown-flag .flag-icon').removeClass().addClass(selectedFlag);
     }
   } else {
-    i18next.use(window.i18nextXHRBackend).init(
-      {
-        debug: false,
-        fallbackLng: ['en','pt'],
-        backend: {
+    i18next.use(window.i18nextXHRBackend).init({
+      debug: false,
+      fallbackLng: ['en','pt'],
+      backend: {
           loadPath: assetPath + 'data/locales/{{lng}}.json'
-        },
-        returnObjects: true
       },
-      function (err, t) {
-        // resources have been loaded
-        jqueryI18next.init(i18next, $);
+      returnObjects: true
+    }, function (err, t) {
+      // resources have been loaded
+      jqueryI18next.init(i18next, $);
+      
+      // Verifica se há uma linguagem salva no localStorage
+      var savedLanguage = localStorage.getItem('selectedLanguage');
+      if (savedLanguage) {
+          // Se houver, define essa linguagem como a linguagem atual
+          i18next.changeLanguage(savedLanguage, function (err, t) {
+              $('.main-menu, .horizontal-menu-wrapper').localize();
+              $('.app-content, .content').localize();
+          });
+          
+          // Obtém o ícone e o texto do idioma correspondente ao idioma salvo
+          var selectedLang = $('.dropdown-language')
+              .find('a[data-language=' + savedLanguage + ']')
+              .text();
+          var selectedFlag = $('.dropdown-language')
+              .find('a[data-language=' + savedLanguage + '] .flag-icon')
+              .attr('class');
+  
+          // Define o ícone e o texto no botão
+          $('#dropdown-flag .selected-language').text(selectedLang);
+          $('#dropdown-flag .flag-icon').removeClass().addClass(selectedFlag);
       }
-    );
+    });
 
     // change language according to data-language of dropdown item
-    $('.dropdown-language .dropdown-item').on('click', function () {
+    $('.dropdown-language .dropdown-item').on('click', function (event) {
+      event.preventDefault(); // Adicionado esta linha
+  
       var $this = $(this);
       $this.siblings('.selected').removeClass('selected');
       $this.addClass('selected');
@@ -452,9 +473,13 @@ window.colors = {
       $('#dropdown-flag .selected-language').text(selectedLang);
       $('#dropdown-flag .flag-icon').removeClass().addClass(selectedFlag);
       var currentLanguage = $this.data('language');
+      
+      // Salva a linguagem selecionada no localStorage
+      localStorage.setItem('selectedLanguage', currentLanguage);
+  
       i18next.changeLanguage(currentLanguage, function (err, t) {
-        $('.main-menu, .horizontal-menu-wrapper').localize();
-        $('.app-content, .content').localize();
+          $('.main-menu, .horizontal-menu-wrapper').localize();
+          $('.app-content, .content').localize();
       });
     });
   }

@@ -113,7 +113,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
 
         public static function getOutfitImage($looktype = 0, $lookaddons = 0, $lookbody = 0, $lookfeet = 0, $lookhead = 0, $looklegs = 0, $mount = 0)
         {
-            $outfit = URL . $_ENV['OUTFITS_FOLDER'] . '/outfit.php?id='.$looktype.'&addons='.$lookaddons.'&head='.$lookhead.'&body='.$lookbody.'&legs='.$looklegs.'&feet='.$lookfeet.'&mount='.$mount.'';
+            $outfit = URL . OUTFITS_FOLDER . '/animoutfit.php?id='.$looktype.'&addons='.$lookaddons.'&head='.$lookhead.'&body='.$lookbody.'&legs='.$looklegs.'&feet='.$lookfeet.'&mount='.$mount.'';
             return $outfit;
         }
 
@@ -136,7 +136,30 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
 
         public static function getEquipaments($player_id)
         {
-            $i = 0; $i <= 10;
+            // Initialize all equipment slots with default images
+            $default_images = [
+                1 => 'no_helmet.gif',
+                2 => 'no_ring.gif',
+                3 => 'no_backpack.gif',
+                4 => 'no_armor.gif',
+                5 => 'no_handleft.gif',
+                6 => 'no_handright.gif',
+                7 => 'no_legs.gif',
+                8 => 'no_boots.gif',
+                9 => 'no_necklace.gif',
+                10 => 'no_ammo.gif',
+            ];
+
+            for ($i = 1; $i <= 10; $i++) {
+                $equipaments[$i] = [
+                    'url' => $default_images[$i],
+                    'pid' => 0,
+                    'sid' => 0,
+                    'itemtype' => 0,
+                    'count' => 0,
+                ];
+            }
+
             $results = (new Database('player_items'))->select('player_id = "'.$player_id.'"');
             while($obEquipaments = $results->fetchObject()){
                 if($obEquipaments->pid <= 10){
@@ -146,16 +169,6 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
                         'sid' => (int)$obEquipaments->sid,
                         'itemtype' => (int)$obEquipaments->itemtype,
                         'count' => (int)$obEquipaments->count
-                    ];
-                }
-                $i++;
-                if(!isset($equipaments[$i])){
-                    $equipaments[$i] = [
-                        'url' => 'no_item.gif',
-                        'pid' => 0,
-                        'sid' => 0,
-                        'itemtype' => 0,
-                        'count' => 0,
                     ];
                 }
             }

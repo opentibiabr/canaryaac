@@ -11,6 +11,7 @@ Dotenv::createImmutable(__DIR__.'/../')->load();
 
 // Defines the URL constant
 define('URL', $_ENV['URL']);
+define('OUTFITS_FOLDER', $_ENV['OUTFITS_FOLDER']);
 
 // Configure Database settings
 Database::config(

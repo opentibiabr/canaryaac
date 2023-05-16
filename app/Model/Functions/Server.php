@@ -287,7 +287,7 @@ class Server{
 
     public static function getMonsterImage($looktype = 0, $lookaddons = 0, $lookbody = 0, $lookfeet = 0, $lookhead = 0, $looklegs = 0, $mount = 0)
     {
-        $outfit = URL . $_ENV['OUTFITS_FOLDER']. '/outfit.php?id='.$looktype.'&addons='.$lookaddons.'&head='.$lookhead.'&body='.$lookbody.'&legs='.$looklegs.'&feet='.$lookfeet.'&mount='.$mount.'';
+        $outfit = URL . OUTFITS_FOLDER. '/animoutfit.php?id='.$looktype.'&addons='.$lookaddons.'&head='.$lookhead.'&body='.$lookbody.'&legs='.$looklegs.'&feet='.$lookfeet.'&mount='.$mount.'';
         return $outfit;
     }
 

@@ -19,7 +19,7 @@ class Outfit
 
     public static function generateCache($request)
     {
-        $outfitImagesPath = "./resources/images/charactertrade/outfits/";
+        $outfitImagesPath = OUTFITS_FOLDER;
         $dirIterator = new RecursiveDirectoryIterator($outfitImagesPath, FilesystemIterator::UNIX_PATHS);
         $iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::SELF_FIRST);
 

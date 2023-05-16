@@ -12,7 +12,7 @@ namespace App\Model\Functions\Outfit;
 class Animated
 {
 
-    public $outfits_dir = URL . "/resources/images/charactertrade/outfits/";
+    public $outfits_dir = URL . OUTFITS_FOLDER;
 
     protected static $instance = null;
 	protected static $outfitColors = array(
@@ -69,7 +69,7 @@ class Animated
 
 	public static $data = [];
 	private static $transparentBackgroundColor = array(255, 255, 255);
-	public static $outfitPath = "./resources/images/charactertrade/outfits/";
+	public static $outfitPath = OUTFITS_FOLDER;
 	public static $resizeAllOutfitsTo64px = false;
 
 	public static function instance() {

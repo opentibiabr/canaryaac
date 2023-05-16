@@ -20,6 +20,7 @@ CanaryAAC is a free and open-source Automatic Account Creator (AAC) written in M
     - PagSeguro
     - PayPal
     - MercadoPago
+    - Carbon
 - Using .env to configure
 
 ## Instalação

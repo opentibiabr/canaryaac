@@ -139,9 +139,9 @@ class Database{
    */
   public function select($where = null, $order = null, $limit = null, $fields = '*'){
     //DADOS DA QUERY
-    $where = strlen($where) ? 'WHERE '.$where : '';
-    $order = strlen($order) ? 'ORDER BY '.$order : '';
-    $limit = strlen($limit) ? 'LIMIT '.$limit : '';
+    $where = $where && strlen($where) ? 'WHERE '.$where : '';
+    $order = $order && strlen($order) ? 'ORDER BY '.$order : '';
+    $limit = $limit && strlen($limit) ? 'LIMIT '.$limit : '';
 
     //MONTA A QUERY
     $query = 'SELECT '.$fields.' FROM '.$this->table.' '.$where.' '.$order.' '.$limit;
@@ -152,10 +152,10 @@ class Database{
 
   public function selectLike($where = null, $like = null, $order = null, $limit = null, $fields = '*'){
     //DADOS DA QUERY
-    $where = strlen($where) ? 'WHERE '.$where : '';
-    $like = strlen($like) ? '%' . $like . '%' : '';
-    $order = strlen($order) ? 'ORDER BY '.$order : '';
-    $limit = strlen($limit) ? 'LIMIT '.$limit : '';
+    $where = $where && strlen($where) ? 'WHERE '.$where : '';
+    $like = $like && strlen($like) ? '%' . $like . '%' : '';
+    $order = $order && strlen($order) ? 'ORDER BY '.$order : '';
+    $limit = $limit && strlen($limit) ? 'LIMIT '.$limit : '';
 
     //MONTA A QUERY
     $query = 'SELECT '.$fields.' FROM '.$this->table.' '.$where.' LIKE "'.$like.'%"';

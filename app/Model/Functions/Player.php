@@ -152,7 +152,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
 
             for ($i = 1; $i <= 10; $i++) {
                 $equipaments[$i] = [
-                    'url' => $default_images[$i],
+                    'url' => 'objects/'.$default_images[$i], // add 'objects/' to the URL
                     'pid' => 0,
                     'sid' => 0,
                     'itemtype' => 0,
@@ -164,7 +164,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
             while($obEquipaments = $results->fetchObject()){
                 if($obEquipaments->pid <= 10){
                     $equipaments[$obEquipaments->pid] = [
-                        'url' => ''.$obEquipaments->itemtype.'.gif',
+                        'url' => 'items/'.$obEquipaments->itemtype.'.gif', // add 'items/' to the URL
                         'pid' => (int)$obEquipaments->pid,
                         'sid' => (int)$obEquipaments->sid,
                         'itemtype' => (int)$obEquipaments->itemtype,

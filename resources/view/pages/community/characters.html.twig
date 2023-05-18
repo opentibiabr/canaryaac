@@ -18,6 +18,14 @@
 .bg-success{
 	background-color: #4bbf52;
 }
+.outfit-container {
+	width: 12.50%;  // Width for six columns
+	box-sizing: border-box.   // Include padding and border in element's total width and height
+}
+.mount-container {
+	width: 12.50%;  // Width for six columns
+	box-sizing: border-box.   // Include padding and border in element's total width and height
+}
 </style>
 <div id="characters" class="Box">
 	<div class="Corner-tl" style="background-image:url({{ IMAGE_PATH }}/global/content/corner-tl.gif);"></div>
@@ -563,28 +571,32 @@
 							<tr>
 								<td>
 									<div class="InnerTableContainer" id="TableCharacterOutfits" style="display: none;">
-										<div style="display: flex;">
+									<div style="display: flex; flex-wrap: wrap;">
 										{% for outfit in player.outfitsmounts.outfits %}
-										<table style="width:100%;">
-											<tbody>
-												<tr>
-													<td>
-														<div class="TableContentContainer">
-                                                            <table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
-                                                                <tbody>
-																	<tr bgcolor="#D4C0A1">
-                                                                        <td><img src="{{ outfit.image_url }}"></td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-														</div>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-										{% endfor %}
+										<div class="outfit-container">
+											<table style="width:100%;">
+												<tbody>
+													<tr>
+														<td>
+															<div class="TableContentContainer">
+																<table class="TableContent" width="100%" style="border:1px solid #f0d7d7;">
+																	<tbody>
+																		<tr bgcolor="#D4C0A1">
+																			<td>
+																				<img src="{{ outfit.image_url }}" title="{{ outfit.name }}">
+																			</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
 										</div>
+										{% endfor %}
 									</div>
+								</div>
 								</td>
 							</tr>
 						</tbody>
@@ -613,26 +625,30 @@
 							<tr>
 								<td>
 									<div class="InnerTableContainer" id="TableCharacterMounts" style="display: none;">
-										<div style="display: flex;">
-										{% for mount in player.outfitsmounts.mounts %}
-										<table style="width:100%;">
-											<tbody>
-												<tr>
-													<td>
-														<div class="TableContentContainer">
-                                                            <table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
-                                                                <tbody>
-																	<tr bgcolor="#D4C0A1">
-                                                                        <td><img src="{{ mount.looktype }}"></td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-														</div>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-										{% endfor %}
+										<div style="display: flex; flex-wrap: wrap;">
+											{% for mount in player.outfitsmounts.mounts %}
+											<div class="mount-container">
+												<table style="width:100%;">
+													<tbody>
+														<tr>
+															<td>
+																<div class="TableContentContainer">
+																	<table class="TableContent" width="100%" style="border:1px solid #f0d7d7;">
+																		<tbody>
+																			<tr bgcolor="#D4C0A1">
+																				<td>
+																					<img src="{{ mount.looktype }}" title="{{ mount.name }}">
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											{% endfor %}
 										</div>
 									</div>
 								</td>

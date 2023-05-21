@@ -99,11 +99,10 @@ class Samples extends Base
         $filter_posy = filter_var($postVars['newsampler_positiony'], FILTER_SANITIZE_NUMBER_INT);
         $filter_posz = filter_var($postVars['newsampler_positionz'], FILTER_SANITIZE_NUMBER_INT);
 
-        ServerConfig::insertPlayerSample([
+        $fieldsToCheck = [
             'vocation' => $filter_vocation,
             'level' => $filter_level,
             'experience' => $filter_experience,
-            'outfit' => Player::getOutfitImage($filter_looktype, $filter_lookaddons, $filter_lookbody, $filter_lookfeet, $filter_lookhead, $filter_looklegs),
             'looktype' => $filter_looktype,
             'lookaddons' => $filter_lookaddons,
             'lookbody' => $filter_lookbody,
@@ -121,7 +120,18 @@ class Samples extends Base
             'posx' => $filter_posx,
             'posy' => $filter_posy,
             'posz' => $filter_posz,
-        ]);
+        ];
+
+        // Verifique se algum campo está vazio
+        foreach ($fieldsToCheck as $field => $value) {
+            if (is_null($value) || $value === '') {
+                $status = Alert::getError("O campo {$field} não pode estar vazio.");
+                return self::viewSamples($request, $status);
+            }
+        }
+
+        ServerConfig::insertPlayerSample($fieldsToCheck);
+
         $status = Alert::getSuccess('Criado com sucesso.');
         return self::viewSamples($request, $status);
     }

@@ -65,7 +65,7 @@ class InviteCharacter extends Base{
 			EntityGuilds::insertInvite([
 				'player_id' => $dbPlayer->id,
 				'guild_id' => $guild_id,
-				'date' => strtotime(date('d-m-Y h:i:s')),
+				'date' => strtotime(date('d-m-Y H:i:s')),
 			]);
 			$status_invite = 'Successfully invited character.';
 			return self::viewInviteCharacter($request,$name,$status_invite);

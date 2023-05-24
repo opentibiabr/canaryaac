@@ -56,15 +56,15 @@ class Applications extends Base{
 			EntityGuilds::updateApplication('player_id = "'.$input_idplayer.'" AND guild_id = "'.$guild_id.'"', [
 				'status' => 2,
 			]);
-			
+
 			$dbRanks = EntityGuilds::getRanks('guild_id = "'.$guild_id.'" AND level = 1')->fetchObject();
-			
+
 			EntityGuilds::insertJoinMember([
 				'player_id' => $input_idplayer,
 				'guild_id' => $guild_id,
 				'rank_id' => $dbRanks->id,
 				'nick' => '',
-				'date' => strtotime(date('M d Y, h:i:s')),
+				'date' => strtotime(date('M d Y, H:i:s')),
 			]);
 			$status = 'Updated successfully.';
 			return self::viewApplications($request,$name,$status);
@@ -99,7 +99,7 @@ class Applications extends Base{
 
 			$dbPlayer = EntityPlayer::getPlayer('id = "'.$application->player_id.'"')->fetchObject();
 
-			
+
 			switch($application->status){
 				case 0:
 					$status_app = 'open';
@@ -113,7 +113,7 @@ class Applications extends Base{
 
 			$applications[] = [
 				'player' => $dbPlayer->id,
-				'date' => date('M d Y, h:i:s', $application->date),
+				'date' => date('M d Y, H:i:s', $application->date),
 				'character' => $dbPlayer->name,
 				'level' => $dbPlayer->level,
 				'vocation' => FunctionPlayer::convertVocation($dbPlayer->vocation),

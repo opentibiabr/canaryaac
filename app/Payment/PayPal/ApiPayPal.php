@@ -40,7 +40,7 @@ class ApiPayPal{
 
     public static function createPayment($products = [], $email = null)
     {
-        $final_price = $products['item']['amount'] * $products['item']['quantity'];
+        $gross_payment = $products['item']['amount'] * $products['item']['quantity'];
 
         $payer = new Payer();
         $payer->setPaymentMethod('paypal');
@@ -52,7 +52,7 @@ class ApiPayPal{
         $itemList->setItems([$item1]);
 
         $amount = new Amount();
-        $amount->setCurrency('BRL')->setTotal($final_price);
+        $amount->setCurrency('BRL')->setTotal($gross_payment);
 
         $transaction = new Transaction();
         $transaction->setAmount($amount)->setItemList($itemList)->setDescription($products['item']['title'])->setInvoiceNumber($products['reference']);

@@ -24,35 +24,43 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-xl-3 col-sm-6 col-12 mb-xl-0">
+                            <div class="col-xl-2 col-sm-6 col-12 mb-xl-0">
                                 <div class="d-flex flex-row">
                                     <div class="my-auto">
-                                        <p class="card-text font-small-3 mb-0">Total Coins</p>
+                                        <p class="card-text font-small-3 mb-0">Total Coins Approved</p>
                                         <h1 class="fw-bolder mb-0">{{ stats.total_coins }}</h1>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-sm-6 col-12 mb-xl-0">
+                            <div class="col-xl-2 col-sm-6 col-12 mb-xl-0">
                                 <div class="d-flex flex-row">
                                     <div class="my-auto">
-                                        <p class="card-text font-small-3 mb-0">Total</p>
-                                        <h1 class="text-success fw-bolder mb-0">$ {{ stats.final_price }}</h1>
+                                        <p class="card-text font-small-3 mb-0">Gross Total Approved</p>
+                                        <h1 class="text-success fw-bolder mb-0">$ {{ stats.gross_total_price }}</h1>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-sm-6 col-12 mb-xl-0">
+                            <div class="col-xl-2 col-sm-6 col-12 mb-xl-0">
+                                <div class="d-flex flex-row">
+                                    <div class="my-auto">
+                                        <p class="card-text font-small-3 mb-0">Net Total Approved</p>
+                                        <h1 class="text-success fw-bolder mb-0">$ {{ stats.net_total_price }}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-sm-6 col-12 mb-xl-0">
                                 <div class="d-flex flex-row">
                                     <div class="my-auto">
                                         <p class="card-text font-small-3 mb-0">Coins Canceled</p>
-                                        <h1 class="fw-bolder mb-0">{{ stats.cancel_coins }}</h1>
+                                        <h1 class="fw-bolder mb-0">{{ stats.canceled_coins }}</h1>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-sm-6 col-12 mb-xl-0">
+                            <div class="col-xl-2 col-sm-6 col-12 mb-xl-0">
                                 <div class="d-flex flex-row">
                                     <div class="my-auto">
-                                        <p class="card-text font-small-3 mb-0">Total</p>
-                                        <h1 class="text-danger fw-bolder mb-0">$ {{ stats.cancel_price }}</h1>
+                                        <p class="card-text font-small-3 mb-0">Gross Total Canceled</p>
+                                        <h1 class="text-danger fw-bolder mb-0">$ {{ stats.canceled_total_price }}</h1>
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +91,7 @@
                                                     <td><a href="{{URL}}/admin/donates/{{ payment.reference }}/view">{{ payment.reference }}</a></td>
                                                     <td>{{ payment.method_img|raw }}</td>
                                                     <td>{{ payment.total_coins }}</td>
-                                                    <td>R$ {{ payment.final_price }}</td>
+                                                    <td>R$ {{ payment.gross_payment }}</td>
                                                     <td>{{ payment.status_badge|raw }}</td>
                                                     <td>{{ payment.date }}</td>
                                                     <td>
@@ -219,7 +227,7 @@
                                         {% for product in products %}
                                         <tr>
                                             <td><input type="text" name="product_{{ product.id }}" class="form-control form-control-sm" value="{{ product.coins }}"></td>
-                                            <td>${{ product.final_price }}</td>
+                                            <td>${{ product.gross_payment }}</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -228,14 +236,6 @@
                         </div>
                         <button type="submit" name="edit_products" class="btn btn-primary w-100 mb-75 waves-effect waves-float waves-light">Save Changes</button>
                     </form>
-                </div>
-                <div class="card mt-1">
-                    <div class="card-body">
-                        <span class="badge rounded-pill badge-light-info" text-capitalized="">Open</span>
-                        <span class="badge rounded-pill badge-light-warning" text-capitalized="">Under Analysis</span>
-                        <span class="badge rounded-pill badge-light-success" text-capitalized="">Paid</span>
-                        <span class="badge rounded-pill badge-light-danger" text-capitalized="">Canceled</span>
-                    </div>
                 </div>
             </div>
 		</div>

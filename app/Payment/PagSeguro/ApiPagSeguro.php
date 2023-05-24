@@ -12,6 +12,8 @@ namespace App\Payment\PagSeguro;
 use PagSeguro\Configuration\Configure;
 use PagSeguro\Library;
 use PagSeguro\Domains\Requests\Payment;
+use PagSeguro\Enum\PaymentMethod\Group;
+use PagSeguro\Enum\PaymentMethod\Config\Keys;
 use PagSeguro\Services\Application\Notification;
 use PagSeguro\Services\Transactions\Search\Code;
 use PagSeguro\Services\Transactions\Search\Reference;
@@ -19,22 +21,25 @@ use PagSeguro\Services\Transactions\Search\Abandoned;
 use PagSeguro\Helpers\Xhr;
 
 class ApiPagSeguro{
-
-    public static function createPayment($products = [], $email = null)
-    {
-        $email = $_ENV['PAGSEGURO_EMAIL'];
-        $token = $_ENV['PAGSEGURO_TOKEN'];
-
+    public static function initialize() {
         Library::initialize();
         Library::cmsVersion()->setName("CanaryAAC")->setRelease("1.0.0");
         Library::moduleVersion()->setName("CanaryAAC")->setRelease("1.0.0");
-        
+    
+        $email = $_ENV['PAGSEGURO_EMAIL'];
+        $token = $_ENV['PAGSEGURO_TOKEN'];
+    
         Configure::setEnvironment('sandbox');
         Configure::setAccountCredentials($email, $token);
-
+    
         Configure::setCharset('UTF-8');
         Configure::setLog(false, '');
+    }
 
+
+    public static function createPayment($products = [], $email = null)
+    {
+        self::initialize();
         $payment = new Payment();
 
         $payment->addItems()->withParameters(
@@ -48,34 +53,39 @@ class ApiPagSeguro{
         $payment->setReference($products['reference']);
 
         // Set your customer information.
-        $payment->setSender()->setName('CanaryAAC');
+        $payment->setSender()->setName('Canary AAC');
         $payment->setSender()->setEmail($email);
 
         $payment->setRedirectUrl(URL.'/payment');
         $payment->setNotificationUrl(URL.'/payment/pagseguro/return');
 
+        // Limit max installments 
+        // WARN: Not working on legacy pagseguro-php-sdk
+        // $payment->addPaymentMethod()->withParameters(
+        //     Group::CREDIT_CARD,
+        //     Keys::MAX_INSTALLMENTS_LIMIT,
+        //     1 // (int) qty of installment
+        // );
+
+        $payment->acceptPaymentMethod()->groups(
+            Group::CREDIT_CARD,
+            Group::BALANCE,
+            Group::PAYMENT_SLIP
+        );
+
         $result = $payment->register(
             Configure::getAccountCredentials()
         );
 
-        return $result;
+        $onlyCheckoutCode = true;
+        $result = $payment->register(Configure::getAccountCredentials(), $onlyCheckoutCode);
+
+        return $result->getCode();
     }
 
     public static function createPaymentLightBox($products = [], $email = null)
     {
-        $email = $_ENV['PAGSEGURO_EMAIL'];
-        $token = $_ENV['PAGSEGURO_TOKEN'];
-
-        Library::initialize();
-        Library::cmsVersion()->setName("CanaryAAC")->setRelease("1.0.0");
-        Library::moduleVersion()->setName("CanaryAAC")->setRelease("1.0.0");
-
-        Configure::setEnvironment('sandbox');
-        Configure::setAccountCredentials($email, $token);
-
-        Configure::setCharset('UTF-8');
-        Configure::setLog(false, '');
-
+        self::initialize();
         $payment = new Payment();
 
         $payment->addItems()->withParameters(
@@ -87,11 +97,17 @@ class ApiPagSeguro{
         $payment->setCurrency('BRL');
         $payment->setReference($products['reference']);
 
-        $payment->setSender()->setName('CanaryAAC');
+        $payment->setSender()->setName('Canary AAC');
         $payment->setSender()->setEmail($email);
 
         $payment->setRedirectUrl(URL.'/payment');
         $payment->setNotificationUrl(URL.'/payment/pagseguro/return');
+
+        $payment->acceptPaymentMethod()->groups(
+            Group::CREDIT_CARD,
+            Group::BALANCE,
+            Group::PAYMENT_SLIP,
+        );
 
         $onlyCheckoutCode = true;
         $result = $payment->register(Configure::getAccountCredentials(), $onlyCheckoutCode);

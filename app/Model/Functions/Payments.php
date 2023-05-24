@@ -10,6 +10,7 @@
 namespace App\Model\Functions;
 
 use App\Model\Entity\Payments as EntityPayments;
+use App\Model\Entity\PaymentStatus;
 use App\Model\Entity\ServerConfig as EntityServerConfig;
 
 class Payments
@@ -20,11 +21,11 @@ class Payments
         $select_ServerConfig = EntityServerConfig::getInfoWebsite()->fetchObject();
         $select_products = EntityServerConfig::getProducts(null, 'id ASC');
         while ($product = $select_products->fetchObject()) {
-            $final_price = $select_ServerConfig->coin_price * $product->coins;
+            $gross_payment = $select_ServerConfig->coin_price * $product->coins;
             $arrayProducts[] = [
                 'id' => $product->id,
                 'coins' => $product->coins,
-                'final_price' => $final_price
+                'gross_payment' => $gross_payment
             ];
         }
         return $arrayProducts;
@@ -34,6 +35,7 @@ class Payments
     {
         $select_payments = EntityPayments::getPayment(null, 'id DESC');
         while ($payment = $select_payments->fetchObject()) {
+            $status=PaymentStatus::from($payment->status);
             $arrayPayments[] = [
                 'id' => $payment->id,
                 'account_id' => $payment->account_id,
@@ -41,10 +43,10 @@ class Payments
                 'method_img' => self::convertMethodImage($payment->method),
                 'reference' => $payment->reference,
                 'total_coins' => $payment->total_coins,
-                'final_price' => $payment->final_price,
-                'status' => $payment->status,
-                'status_badge' => self::convertStatus($payment->status),
-                'date' => date('d/m/Y h:i:s', $payment->date),
+                'gross_payment' => $payment->gross_payment,
+                'status' => $status,
+                'status_badge' => self::convertStatus($status),
+                'date' => date('d/m/Y H:i:s', $payment->date),
             ];
         }
         return $arrayPayments ?? '';
@@ -64,13 +66,13 @@ class Payments
 
         $select_payments = EntityPayments::getPayment('date BETWEEN "' . $date_start . '" AND "' . $date_end . '"');
         while ($payment = $select_payments->fetchObject()) {
-            if ($payment->status == 4) {
+            if ($payment->status == PaymentStatus::Approved) {
                 $payment_paid_coins += $payment->total_coins;
-                $payment_paid_price += $payment->final_price;
+                $payment_paid_price += $payment->gross_payment;
             }
-            if ($payment->status == 1) {
+            if ($payment->status == PaymentStatus::Canceled || $payment->status == PaymentStatus::Rejected) {
                 $payment_canceled_coins += $payment->total_coins;
-                $payment_canceled_price += $payment->final_price;
+                $payment_canceled_price += $payment->gross_payment;
             }
         }
         return [
@@ -88,26 +90,30 @@ class Payments
     public static function statisticsPaytments()
     {
         $total_coins_approved = 0;
-        $final_price_approved = 0;
-        $select_payments_approved = EntityPayments::getPayment('status = 4');
+        $final_gross_payment_approved = 0;
+        $final_net_payment_approved = 0;
+
+        $select_payments_approved = EntityPayments::getPayment('status = '.PaymentStatus::Approved->value);
         while ($payment_approved = $select_payments_approved->fetchObject()) {
             $total_coins_approved += $payment_approved->total_coins;
-            $final_price_approved += $payment_approved->final_price;
+            $final_gross_payment_approved += $payment_approved->gross_payment;
+            $final_net_payment_approved += $payment_approved->net_payment;
         }
 
         $total_coins_cancelled = 0;
         $final_price_cancelled = 0;
-        $select_payments_cancelled = EntityPayments::getPayment('status = 1');
+        $select_payments_cancelled = EntityPayments::getPayment('status in ('. PaymentStatus::Canceled->value . "," . PaymentStatus::Rejected->value . ")");
         while ($payment_cancelled = $select_payments_cancelled->fetchObject()) {
             $total_coins_cancelled += $payment_cancelled->total_coins;
-            $final_price_cancelled += $payment_cancelled->final_price;
+            $final_price_cancelled += $payment_cancelled->gross_payment;
         }
 
         $arrayStats = [
             'total_coins' => $total_coins_approved,
-            'final_price' => $final_price_approved,
-            'cancel_coins' => $total_coins_cancelled,
-            'cancel_price' => $final_price_cancelled,
+            'canceled_coins' => $total_coins_cancelled,
+            'gross_total_price' => $final_gross_payment_approved,
+            'net_total_price' => $final_net_payment_approved,
+            'canceled_total_price' => $final_price_cancelled,
         ];
         return $arrayStats;
     }
@@ -115,21 +121,30 @@ class Payments
     public static function convertStatus($status)
     {
         switch ($status) {
-            case 1:
-                return '<span class="badge rounded-pill badge-light-danger" text-capitalized=""> Canceled </span>';
-                exit;
-            case 2:
-                return '<span class="badge rounded-pill badge-light-info" text-capitalized=""> Open </span>';
-                exit;
-            case 3:
+            case PaymentStatus::Pending:
+                return '<span class="badge rounded-pill badge-light-warning" text-capitalized=""> Pending </span>';
+                break;
+            case PaymentStatus::UnderAnalisys:
                 return '<span class="badge rounded-pill badge-light-warning" text-capitalized=""> Under Analysis </span>';
-                exit;
-            case 4:
-                return '<span class="badge rounded-pill badge-light-success" text-capitalized=""> Paid </span>';
-                exit;
-            default:
+                break;
+            case PaymentStatus::Processing:
+                return '<span class="badge rounded-pill badge-light-info" text-capitalized=""> Processing </span>';
+                break;
+            case PaymentStatus::Approved:
+                return '<span class="badge rounded-pill badge-light-success" text-capitalized=""> Approved </span>';
+                break;
+            case PaymentStatus::Rejected:
+                return '<span class="badge rounded-pill badge-light-danger" text-capitalized=""> Rejected </span>';
+                break;
+            case PaymentStatus::Canceled:
                 return '<span class="badge rounded-pill badge-light-danger" text-capitalized=""> Canceled </span>';
-                exit;
+                break;
+            case PaymentStatus::Refunded:
+                return '<span class="badge rounded-pill badge-light-danger" text-capitalized=""> Refunded </span>';
+                break;
+            default:
+                return '<span class="badge rounded-pill badge-light-danger" text-capitalized=""> Unkown </span>';
+                break;
         }
     }
 

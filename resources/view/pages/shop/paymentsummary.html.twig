@@ -1,4 +1,5 @@
-{% if method == 2 %}
+{#
+{% if method == "pagseguro" %}
 <script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js"></script>
 
 <script type="text/javascript">
@@ -24,8 +25,9 @@ if (!isOpenLightbox){
 }
 </script>
 {% endif %}
+#}
 
-{% if method == 4 %}
+{% if method == "mercadopago" %}
 <script type="text/javascript" src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js"></script>
 {% endif %}
 
@@ -143,7 +145,6 @@ if (!isOpenLightbox){
 						</table>
 					</div>
 					<div class="SubmitButtonRow" style="display: flex; justify-content: center;">
-						{% if method == 1 %}
 						<div class="LeftButton" style="padding: 10px;">
 							<a href="{{ code_payment }}">
 								<div class="BigButton" style="background-image:url({{IMAGE_PATH}}/global/buttons/button_green.gif)">
@@ -151,25 +152,6 @@ if (!isOpenLightbox){
 								</div>
 							</a>
 						</div>
-						{% endif %}
-						{% if method == 2 %}
-						<div class="LeftButton" style="padding: 10px;">
-							<a href="https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code={{ code_payment }}">
-								<div class="BigButton" style="background-image:url({{IMAGE_PATH}}/global/buttons/button_green.gif)">
-									<div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image:url({{IMAGE_PATH}}/global/buttons/button_green_over.gif);"></div><input class="BigButtonText" type="submit" value="Next"></div>
-								</div>
-							</a>
-						</div>
-						{% endif %}
-						{% if method == 4 %}
-						<div class="LeftButton" style="padding: 10px;">
-							<a href="{{ code_payment }}">
-								<div class="BigButton" style="background-image:url({{IMAGE_PATH}}/global/buttons/button_green.gif)">
-									<div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image:url({{IMAGE_PATH}}/global/buttons/button_green_over.gif);"></div><input class="BigButtonText" type="submit" value="Next"></div>
-								</div>
-							</a>
-						</div>
-						{% endif %}
 						<div class="RightButton" style="padding: 10px;">
 							<a href="{{URL}}/payment" style="padding:0px;margin:0px;">
 								<div class="BigButton" style="background-image:url({{IMAGE_PATH}}/global/buttons/button_blue.gif)">

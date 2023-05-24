@@ -44,8 +44,8 @@ ALTER TABLE `guild_wars` ADD `comment` text NOT NULL;
 
 -- --------------------------------------------------------
 
-ALTER TABLE `houses` ADD `house_id` INT NOT NULL AFTER `id`;
-ALTER TABLE `houses` ADD `world_id` INT NOT NULL AFTER `house_id`;
+ALTER TABLE `houses` ADD `house_id` INT NOT NULL DEFAULT 0 AFTER `id` ;
+ALTER TABLE `houses` ADD `world_id` INT NOT NULL DEFAULT 0 AFTER `house_id` ;
 
 -- --------------------------------------------------------
 
@@ -256,7 +256,8 @@ CREATE TABLE IF NOT EXISTS `canary_payments` (
   `method` varchar(100) NOT NULL,
   `reference` varchar(200) NOT NULL,
   `total_coins` int(11) NOT NULL,
-  `final_price` int(11) NOT NULL,
+  `gross_payment` int(11) NOT NULL,
+  `net_payment` int(11) NOT NULL DEFAULT '0',
   `status` int(11) NOT NULL,
   `date` int(11) NOT NULL,
   PRIMARY KEY (`id`)

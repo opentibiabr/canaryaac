@@ -58,16 +58,15 @@ class JoinGuild extends Base{
 			$status = 'This character is applied to another Guild.';
 			return self::viewJoinGuild($request,$name,$status);
 		}
-
 		EntityGuilds::deleteInvite('player_id = "'.$dbPlayer->id.'" AND guild_id = "'.$guild_id.'"');
-			
+
 		$dbRanks = EntityGuilds::getRanks('guild_id = "'.$guild_id.'" AND level = 1')->fetchObject();
-		
+
 		EntityGuilds::insertJoinMember([
 			'player_id' => $dbPlayer->id,
 			'guild_id' => $guild_id,
 			'rank_id' => $dbRanks->id, // MEMBER
-			'date' => strtotime(date('d-m-Y h:i:s')),
+			'date' => strtotime(date('d-m-Y H:i:s')),
 		]);
 		return self::viewJoinGuild($request,$name);
 	}

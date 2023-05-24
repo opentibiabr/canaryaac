@@ -267,7 +267,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
             if((int)$lastlogin == 0){
                 $converted = 'Never logged.';
             }else{
-                $converted = date('M d Y, h:i:s', (int)$lastlogin);
+                $converted = date('M d Y, H:i:s', (int)$lastlogin);
             }
             return $converted;
         }

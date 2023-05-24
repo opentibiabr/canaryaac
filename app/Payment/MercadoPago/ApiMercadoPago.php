@@ -15,18 +15,18 @@ use MercadoPago\Item;
 
 class ApiMercadoPago {
 
-    public static function createPayment($products = [], $email = null)
+    public static function createPayment($reference_id, $products = [], $email = null, $type='sandbox')
     {
-        $final_price = $products['item']['amount'] * $products['item']['quantity'];
-        $mercadopago_status = 'sandbox';
-
-        if($mercadopago_status == 'sandbox'){
+        if($type == 'sandbox'){
             SDK::setAccessToken($_ENV['MERCADOPAGO_TOKEN']);
-            SDK::setPublicKey($_ENV['MERCADOPAGO_TOKEN']);
+            SDK::setPublicKey($_ENV['MERCADOPAGO_KEY']);
         }
-        if($mercadopago_status == 'production'){
+        else if($type == 'production'){
             SDK::setClientId($_ENV['MERCADOPAGO_CLIENTID']);
             SDK::setClientSecret($_ENV['MERCADOPAGO_SECRET']);
+        }
+        else {
+            return;
         }
 
         $preference = new Preference();
@@ -35,51 +35,27 @@ class ApiMercadoPago {
         $item->description = $products['item']['title'];
         $item->quantity = $products['item']['quantity'];
         $item->currency_id = "BRL";
-        $item->unit_price = $products['item']['amount']; 
+        $item->unit_price = (double)$products['item']['amount']; 
 
         $preference->items = array($item);
-        $preference->save();
 
-        $response = array(
-            'status' => $preference->status,
-            'status_detail' => $preference->status_detail,
-            'id' => $preference->id
+        $preference->notification_url = URL. "/payment/mercadopago/return";
+        $preference->external_reference = $reference_id;
+
+        $preference->payment_methods = array(
+        "excluded_payment_types" => array (
+            array("id" => "ticket"),
+        ),
+        "installments" => intval($_ENV['DONATE_MAX_INSTALLMENT'])
         );
-        
-        return $response;
-    }
 
-    public static function createPaymentSandbox($products = [], $email = null)
-    {
-        $final_price = $products['item']['amount'] * $products['item']['quantity'];
-        $mercadopago_status = 'production';
-
-        if($mercadopago_status == 'sandbox'){
-            SDK::setAccessToken($_ENV['MERCADOPAGO_TOKEN']);
-            SDK::setPublicKey($_ENV['MERCADOPAGO_TOKEN']);
-        }
-        if($mercadopago_status == 'production'){
-            SDK::setClientId($_ENV['MERCADOPAGO_CLIENTID']);
-            SDK::setClientSecret($_ENV['MERCADOPAGO_SECRET']);
-        }
-
-        $preference = new Preference();
-        $item = new Item();
-        $item->title = $products['item']['title'];
-        $item->description = $products['item']['title'];
-        $item->quantity = $products['item']['quantity'];
-        $item->currency_id = "BRL";
-        $item->unit_price = $products['item']['amount']; 
-
-        $preference->items = array($item);
         $preference->save();
-      
-        return $preference->sandbox_init_point;
+        
+        if($type == 'sandbox'){
+            return $preference->sandbox_init_point;
+        }
+        else {
+            return $preference->init_point;
+        }
     }
-
-    public function testFindPreferenceById($preference_id){  
-        $preference = Preference::find_by_id($preference_id);
-        return $preference->id;
-    }
-
 }

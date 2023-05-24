@@ -75,7 +75,7 @@ class Upload extends Base
                 'id' => $upload->id,
                 'name' => $upload->name,
                 'path' => $upload->path,
-                'date' => date('M d Y h:i:s', $upload->date)
+                'date' => date('M d Y H:i:s', $upload->date)
             ];
         }
         return $arrayUploads ?? [];

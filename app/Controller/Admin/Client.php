@@ -9,12 +9,8 @@
 
 namespace App\Controller\Admin;
 
-use App\Model\Entity\Polls as EntityPolls;
-use App\Model\Functions\Polls as FunctionsPolls;
 use App\Controller\Admin\SweetAlert;
-use App\Model\Entity\ServerConfig as EntityServerConfig;
 use App\Model\Functions\ClientEditor;
-use RuntimeException;
 use App\Utils\View;
 
 class Client extends Base

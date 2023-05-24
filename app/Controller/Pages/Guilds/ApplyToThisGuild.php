@@ -76,7 +76,7 @@ class ApplyToThisGuild extends Base{
 			}
 
 			$input_text = filter_var($postVars['apply_text'], FILTER_SANITIZE_SPECIAL_CHARS);
-			$current_date = strtotime(date('d-m-Y h:i:s'));
+			$current_date = strtotime(date('d-m-Y H:i:s'));
 			
 			EntityGuilds::insertMyApplication([
 				'player_id' => $dbPlayer->id,

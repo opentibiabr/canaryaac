@@ -102,7 +102,7 @@ class Compendium extends Base
             'category' => $filter_category,
             'headline' => $convert_headline,
             'message' => $postVars['compendium_message'],
-            'publishdate' => strtotime(date('m-d-Y h:i:s')),
+            'publishdate' => strtotime(date('m-d-Y H:i:s')),
             'type' => 1, // REGULAR
         ]);
         $status = Alert::getSuccess('Criado com sucesso.');
@@ -122,7 +122,7 @@ class Compendium extends Base
                 'id' => $compendium->id,
                 'index' => $index,
                 'message' => $compendium->message,
-                'publishdate' => date('M d Y h:i:s', $compendium->publishdate),
+                'publishdate' => date('M d Y H:i:s', $compendium->publishdate),
                 'type' => 'REGULAR',
             ];
         }
@@ -137,7 +137,7 @@ class Compendium extends Base
             'category' => $compendium->category,
             'headline' => $compendium->headline,
             'message' => $compendium->message,
-            'publishdate' => date('M d Y h:i:s', $compendium->publishdate),
+            'publishdate' => date('M d Y H:i:s', $compendium->publishdate),
             'type' => 'REGULAR',
         ];
         return $arrayCompendium;

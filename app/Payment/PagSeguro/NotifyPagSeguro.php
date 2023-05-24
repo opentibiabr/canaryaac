@@ -9,40 +9,63 @@
 
 namespace App\Payment\PagSeguro;
 
+use App\Payment\Payments;
+use App\Model\Entity\PaymentStatus;
 use PagSeguro\Configuration\Configure;
 use PagSeguro\Services\Transactions\Notification;
-use App\Model\Entity\Payments as EntityPayments;
-use App\Model\Entity\Account as EntityAccount;
 
 class NotifyPagSeguro {
 
-    public static function ReturnPagSeguro()
-    {
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            $filter_type = filter_input(INPUT_GET, $_POST['notificationType'], FILTER_SANITIZE_STRING);
-            $filter_notifycode = filter_input(INPUT_GET, $_POST['notificationCode'], FILTER_SANITIZE_STRING);
-            if($filter_type == 'transaction'){
-                $credentials = Configure::getAccountCredentials();
-                $transaction = Notification::check($credentials);
-
-                $reference = $transaction->getReference();
-                $transaction_code = $transaction->getCode();
-                $transaction_status = $transaction->getStatus()->getTypeFromValue();
-                
-                if ($transaction_status == 'PAID') {
-                    $dbPayment = EntityPayments::getPayment('preference = "'.$reference.'"')->fetchObject();
-                    $dbAccount = EntityAccount::getAccount('id = "'.$dbPayment->account_id.'"')->fetchObject();
-                    $finalcoins = $dbAccount->coins + $dbPayment->total_coins;
-
-                    EntityPayments::updatePayment('reference = "'.$reference.'"', [
-                        'status' => 4,
-                    ]);
-                    EntityAccount::updateAccount('id = "'.$dbPayment->account_id.'"', [
-                        'coins' => $finalcoins,
-                    ]);
-                }
-            }
+    public static function ReturnPagSeguro($request)
+    {   
+        ApiPagSeguro::initialize();
+        if($_SERVER['REQUEST_METHOD'] != 'POST'){
+            array('status_code' => 405, 'message' => "method not allowed");
         }
+
+        $postVars = $request->getPostVars();
+        if(!isset($postVars['notificationType'])){
+            return array('status_code' => 422, 'message' => "empty notification type");
+        }
+
+        if($postVars['notificationType'] != 'transaction'){
+            return array('status_code' => 500, 'message' => "non transaction notification type ".file_get_contents('php://input'));
+        }
+        $credentials = Configure::getAccountCredentials();
+        $transaction = Notification::check($credentials);
+        
+        $reference = $transaction->getReference();
+        $transaction_status = $transaction->getStatus();
+        self::updatePayment($transaction_status, $reference);
+
+        return array('status_code' => 200, 'message' => "ok");
     }
 
+    static function updatePayment($transaction_status, $reference)
+    {   
+        switch ($transaction_status) {
+            case '1': // Pending Payment
+                Payments::setPaymentStatus($reference, PaymentStatus::Pending);
+                break;
+            case '2': // Under Analisys
+                Payments::setPaymentStatus($reference, PaymentStatus::UnderAnalisys);
+                break;
+            case '3': // Paid
+            Payments::ApprovePayment($reference, 0);
+                break;
+            case '7': // Canceled or Rejected
+                Payments::setPaymentStatus($reference, PaymentStatus::Canceled);
+                break;
+            case '6': // Refunded
+                Payments::RefundPayment($reference);
+                break;
+            case '8': // Charged Back (Debitado)
+                Payments::RefundPayment($reference);
+                break;
+            default:
+            Payments::setPaymentStatus($reference, PaymentStatus::Unknown);
+
+                break;
+        }
+    }
 }

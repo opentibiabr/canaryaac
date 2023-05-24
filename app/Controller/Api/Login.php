@@ -11,6 +11,7 @@ namespace App\Controller\Api;
 
 use App\Model\Entity\Account as EntityAccount;
 use App\Model\Entity\Bans;
+use App\Controller\Admin\Compendium as EntityCompendium;
 use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Entity\ServerConfig;
 use App\Model\Functions\EventSchedule;
@@ -465,7 +466,8 @@ class Login extends Api{
                             "message" => "<center>\n<table style=\"height: 88px;\" width=\"406\">\n<tbody>\n<tr>\n<td style=\"width: 396px; vertical-align: top;\"><center>&nbsp;<img src=\"https://static.tibia.com/images/news/su2022_compendium.jpg\" width=\"502\" height=\"372\" />\n<p>If you would like to find out more, check the <a href=\"http://www.tibia.com/news/?subtopic=newsarchive&amp;id=6816\">release news</a> on our website.</p>\n</center></td>\n</tr>\n</tbody>\n</table>\n</center>",
                             "publishdate" => 1658131200,
                             "type" => "REGULAR"
-                        ]
+                        ],
+                        EntityCompendium::getAllCompendium(),
                     ],
                     'idOfNewestReadEntry' => 0,
                     'isreturner' => false,

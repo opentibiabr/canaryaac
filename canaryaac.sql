@@ -1,12 +1,19 @@
 
+DELETE FROM `accounts` WHERE `accounts`.`id` = 1;
+
+DELETE FROM `players` WHERE `players`.`id` = 1;
+DELETE FROM `players` WHERE `players`.`id` = 2;
+DELETE FROM `players` WHERE `players`.`id` = 3;
+DELETE FROM `players` WHERE `players`.`id` = 4;
+DELETE FROM `players` WHERE `players`.`id` = 5;
+DELETE FROM `players` WHERE `players`.`id` = 6;
+
 ALTER TABLE `accounts` ADD `page_access` int(11) NOT NULL DEFAULT 0;
 ALTER TABLE `accounts` MODIFY COLUMN `creation` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
 ALTER TABLE `accounts` DROP INDEX `accounts_unique`;
 
-INSERT INTO `accounts` (`id`, `name`, `password`, `email`, `page_access`, `premdays`, `lastday`, `type`, `coins`, `creation`, `recruiter`) VALUES
-(null, '', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', 'admin@canaryaac.com', 3, 0, 0, 5, 2000, '2022-08-03 08:44:10', 0);
-
-DELETE FROM `accounts` WHERE `accounts`.`id` = 1;
+INSERT INTO `accounts` (`id`, `name`, `password`, `email`, `page_access`, `premdays`, `lastday`, `type`, `coins`, `creation`, `recruiter`)
+VALUES (null, '', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', 'admin@canaryaac.com', 3, 0, 0, 5, 2000, '2022-08-03 08:44:10', 0);
 
 UPDATE `accounts` SET `id` = '1' WHERE `accounts`.`id` = 2;
 
@@ -14,17 +21,6 @@ UPDATE `accounts` SET `id` = '1' WHERE `accounts`.`id` = 2;
 
 ALTER TABLE `players` ADD `main` int(11) NOT NULL DEFAULT 0;
 ALTER TABLE `players` ADD `world` int(11) NOT NULL DEFAULT 0;
-
-DELETE FROM `players` WHERE `players`.`id` = 1;
-DELETE FROM `players` WHERE `players`.`id` = 2;
-DELETE FROM `players` WHERE `players`.`id` = 3;
-DELETE FROM `players` WHERE `players`.`id` = 4;
-DELETE FROM `players` WHERE `players`.`id` = 5;
-
-UPDATE `players` SET `account_id` = '2' WHERE `players`.`id` = 6;
-UPDATE `players` SET `main` = '1' WHERE `players`.`id` = 6;
-UPDATE `players` SET `world` = '1' WHERE `players`.`id` = 6;
-
 ALTER TABLE `players` CHANGE `conditions` `conditions` BLOB NOT NULL DEFAULT '';
 
 -- --------------------------------------------------------
@@ -32,7 +28,6 @@ ALTER TABLE `players` CHANGE `conditions` `conditions` BLOB NOT NULL DEFAULT '';
 ALTER TABLE `guilds` ADD `description` text NOT NULL;
 ALTER TABLE `guilds` ADD `logo_name` varchar(100) NOT NULL;
 ALTER TABLE `guilds` ADD `world_id` int(11) NOT NULL DEFAULT 0;
-
 ALTER TABLE `guild_membership` ADD `date` int(11) NOT NULL;
 
 -- --------------------------------------------------------
@@ -41,11 +36,6 @@ ALTER TABLE `guild_wars` ADD `price1` int(11) NOT NULL DEFAULT 0;
 ALTER TABLE `guild_wars` ADD `price2` int(11) NOT NULL DEFAULT 0;
 ALTER TABLE `guild_wars` ADD `frags` int(11) NOT NULL DEFAULT 0;
 ALTER TABLE `guild_wars` ADD `comment` text NOT NULL;
-
--- --------------------------------------------------------
-
-ALTER TABLE `houses` ADD `house_id` INT NOT NULL AFTER `id`;
-ALTER TABLE `houses` ADD `world_id` INT NOT NULL AFTER `house_id`;
 
 -- --------------------------------------------------------
 
@@ -240,7 +230,7 @@ CREATE TABLE IF NOT EXISTS `canary_news` (
   `category` tinyint(4) NOT NULL,
   `player_id` int(11) NOT NULL,
   `last_modified_by` int(11) NOT NULL DEFAULT 0,
-  `last_modified_date` datetime NOT NULL,
+  `last_modified_date` datetime DEFAULT current_timestamp(),
   `comments` varchar(50) CHARACTER SET utf8 NOT NULL,
   `article_text` varchar(300) CHARACTER SET utf8 NOT NULL,
   `article_image` varchar(100) CHARACTER SET utf8 NOT NULL,
@@ -393,8 +383,8 @@ CREATE TABLE IF NOT EXISTS `canary_website` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `canary_website` (`id`, `timezone`, `title`, `downloads`, `player_voc`, `player_max`, `player_guild`, `donates`, `coin_price`, `mercadopago`, `pagseguro`, `paypal`) VALUES
-(1, 'America/Sao_Paulo', 'CanaryAAC v1', 'http://www.google.com', 1, 10, 100, 1, '0.10', 1, 1, 1);
+INSERT INTO `canary_website` (`id`, `timezone`, `title`, `downloads`, `player_voc`, `player_max`, `player_guild`, `donates`, `coin_price`, `mercadopago`, `pagseguro`, `paypal`, `discord`) VALUES
+(1, 'America/Sao_Paulo', 'CanaryAAC v1', 'http://www.google.com', 1, 10, 100, 1, '0.10', 1, 1, 1, 'discord.com');
 
 -- --------------------------------------------------------
 
@@ -424,7 +414,7 @@ CREATE TABLE IF NOT EXISTS `canary_worlds` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `canary_worlds` (`id`, `name`, `creation`, `location`, `pvp_type`, `premium_type`, `transfer_type`, `battle_eye`, `world_type`, `ip`, `port`) VALUES
-(null, 'Canary', '2022-09-01 06:00:00', 7, 0, 0, 0, 0, 0, '127.0.0.1', 7172);
+(null, 'OTServBR-Global', '2022-09-01 06:00:00', 7, 0, 0, 0, 0, 0, '127.0.0.1', 7172);
 
 -- --------------------------------------------------------
 
@@ -478,11 +468,13 @@ CREATE TABLE IF NOT EXISTS `player_badges` (
 
 INSERT INTO `players`
 (`id`, `name`, `group_id`, `account_id`, `level`, `vocation`, `health`, `healthmax`, `experience`, `lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `maglevel`, `mana`, `manamax`, `manaspent`, `town_id`, `conditions`, `cap`, `sex`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `world`) VALUES
-(1, 'Rook Sample', 1, 1, 2, 0, 155, 155, 100, 113, 115, 95, 39, 129, 2, 60, 60, 5936, 1, '', 410, 1, 12, 155, 12, 155, 12, 155, 12, 93, 1),
-(2, 'Sorcerer Sample', 1, 1, 8, 1, 185, 185, 4200, 113, 115, 95, 39, 129, 0, 90, 90, 0, 8, '', 470, 1, 10, 0, 10, 0, 10, 0, 10, 0, 1),
-(3, 'Druid Sample', 1, 1, 8, 2, 185, 185, 4200, 113, 115, 95, 39, 129, 0, 90, 90, 0, 8, '', 470, 1, 10, 0, 10, 0, 10, 0, 10, 0, 1),
-(4, 'Paladin Sample', 1, 1, 8, 3, 185, 185, 4200, 113, 115, 95, 39, 129, 0, 90, 90, 0, 8, '', 470, 1, 10, 0, 10, 0, 10, 0, 10, 0, 1),
-(5, 'Knight Sample', 1, 1, 8, 4, 185, 185, 4200, 113, 115, 95, 39, 129, 0, 90, 90, 0, 8, '', 470, 1, 10, 0, 10, 0, 10, 0, 10, 0, 1),
+(1, 'Rook Test', 1, 1, 2, 0, 155, 155, 100, 113, 115, 95, 39, 129, 2, 60, 60, 5936, 1, '', 410, 1, 12, 155, 12, 155, 12, 155, 12, 93, 1),
+(2, 'Sorcerer Test', 1, 1, 8, 1, 185, 185, 4200, 113, 115, 95, 39, 129, 0, 90, 90, 0, 8, '', 470, 1, 10, 0, 10, 0, 10, 0, 10, 0, 1),
+(3, 'Druid Test', 1, 1, 8, 2, 185, 185, 4200, 113, 115, 95, 39, 129, 0, 90, 90, 0, 8, '', 470, 1, 10, 0, 10, 0, 10, 0, 10, 0, 1),
+(4, 'Paladin Test', 1, 1, 8, 3, 185, 185, 4200, 113, 115, 95, 39, 129, 0, 90, 90, 0, 8, '', 470, 1, 10, 0, 10, 0, 10, 0, 10, 0, 1),
+(5, 'Knight Test', 1, 1, 8, 4, 185, 185, 4200, 113, 115, 95, 39, 129, 0, 90, 90, 0, 8, '', 470, 1, 10, 0, 10, 0, 10, 0, 10, 0, 1),
 (6, 'GOD', 6, 1, 2, 0, 155, 155, 100, 113, 115, 95, 39, 75, 0, 60, 60, 0, 8, '', 410, 1, 10, 0, 10, 0, 10, 0, 10, 0, 1);
+
+UPDATE `players` SET `main` = '1' WHERE `players`.`id` = 6;
 
 -- --------------------------------------------------------

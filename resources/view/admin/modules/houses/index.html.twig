@@ -1,4 +1,18 @@
-<div class="app-content content ">
+<style>
+	.page-info {
+		display: flex;
+		align-items: center;
+		margin: 0 10px;
+		font-size: 20px;
+	}
+
+	.page-info .total-pages {
+		margin-left: 5px;
+		font-weight: bold;
+	}
+</style>
+
+<div class="app-content content">
 	<div class="content-overlay"></div>
 	<div class="header-navbar-shadow"></div>
 	<div class="content-wrapper">
@@ -26,24 +40,24 @@
 						<div class="border-bottom mb-1">
 							<h4 class="card-title">Import XML Houses</h4>
 						</div>
-							<div class="row">
+						<div class="row">
 							<form action="{{URL}}/admin/houses/import" method="post" class="form form-vertical">
 								<div class="col-12">
-										<input type="text" name="localxml" class="form-control mb-1" placeholder="server/data/world/house.xml">
+									<input type="text" name="localxml" class="form-control mb-1" placeholder="server/data/world/house.xml">
 								</div>
 								<div class="col-12">
 									<label class="form-label" for="house_world">World</label>
 									<select class="form-select" name="house_world" id="house_world">
 										{% for world in worlds %}
-										<option value="{{ world.id }}">{{ world.name }}</option>
+											<option value="{{ world.id }}">{{ world.name }}</option>
 										{% endfor %}
 									</select>
 								</div>
 								<div class="col-12">
 									<button type="submit" class="btn btn-primary mt-1 waves-effect waves-float waves-light">Import</button>
 								</div>
-							</div>
 							</form>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -55,7 +69,9 @@
 							<span data-i18n="Total Guilds">Total Houses</span>
 						</div>
 						<div class="avatar bg-light-primary p-50">
-							<span class="avatar-content"><i data-feather="home" class="feather feather-home font-medium-4"></i></span>
+							<span class="avatar-content">
+								<i data-feather="home" class="feather feather-home font-medium-4"></i>
+							</span>
 						</div>
 					</div>
 				</div>
@@ -68,7 +84,9 @@
 							<span data-i18n="Total Guilds">Total Houses Rented</span>
 						</div>
 						<div class="avatar bg-light-primary p-50">
-							<span class="avatar-content"><i data-feather="home" class="feather feather-home font-medium-4"></i></span>
+							<span class="avatar-content">
+								<i data-feather="home" class="feather feather-home font-medium-4"></i>
+							</span>
 						</div>
 					</div>
 				</div>
@@ -107,27 +125,52 @@
 								</tr>
 							</thead>
 							<tbody>
-								{% for house in houses %}
-									<tr class="odd">
-										<td>{{ house.house_id }}</td>
-										<td>{{ house.name }} {% if house.owner != 0 %}<span class="badge rounded-pill badge-light-danger" data-i18n="Rented">Rented</span>{% endif %} {% if house.guildid == 1 %}<span class="badge rounded-pill badge-light-warning" data-i18n="Guild House">Guild House</span>{% endif %}</td>
-										<td>{{ house.rent }}</td>
-										<td>{{ house.town_id }}</td>
-										<td>{{ house.world.name }}</td>
-										<td>{{ house.size }} sqm</td>
-										<td>{{ house.beds }}</td>
-										<td>
-										<form action="{{URL}}/admin/houses/delete" method="post" class="form form-vertical">
-											<input type="hidden" name="houseid" value="{{ house.id }}">
-											<button type="submit" class="btn btn-icon btn-primary waves-effect waves-float waves-light">
-												Delete
-											</button>
-										</form>
-										</td>
-									</tr>
-								{% endfor %}
+								{% if houses is not empty %}
+									{% set groupIndex = 0 %}
+									{% set groupSize = 10 %}
+									{% set houseGroups = houses|batch(groupSize) %}
+									{% for houseGroup in houseGroups %}
+										{% for house in houseGroup %}
+											<tr
+												class="house-row">
+												<td>{{ house.house_id }}</td>
+												<td>{{ house.name }}
+													{% if house.owner != 0 %}
+														<span class="badge rounded-pill badge-light-danger" data-i18n="Rented">Rented</span>
+													{% endif %}
+													{% if house.guildid == 1 %}
+														<span class="badge rounded-pill badge-light-warning" data-i18n="Guild House">Guild House</span>
+													{% endif %}
+												</td>
+												<td>{{ house.rent }}</td>
+												<td>{{ house.town_id }}</td>
+												<td>{{ house.world.name }}</td>
+												<td>{{ house.size }}
+													sqm</td>
+												<td>{{ house.beds }}</td>
+												<td>
+													<form action="{{URL}}/admin/houses/delete" method="post" class="form form-vertical">
+														<input type="hidden" name="houseid" value="{{ house.id }}">
+														<button type="submit" class="btn btn-icon btn-primary waves-effect waves-float waves-light">
+															Delete
+														</button>
+													</form>
+												</td>
+											</tr>
+										{% endfor %}
+									{% endfor %}
+								{% endif %}
 							</tbody>
 						</table>
+					</div>
+					<div class="pagination" style="display: flex; justify-content: center;">
+						<button class="btn btn-primary btn-prev" disabled style="margin-right: 10px;">Prev</button>
+						<div class="page-info">
+							<span class="page-number"></span>
+							/
+							<span class="total-pages"></span>
+						</div>
+						<button class="btn btn-primary btn-next" style="margin-left: 10px;">Next</button>
 					</div>
 				</div>
 				<!-- list and filter end -->
@@ -136,3 +179,53 @@
 		</div>
 	</div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	$(document).ready(function () {
+		var houseRows = $('.house-row');
+		var groupSize = 10;
+		var totalGroups = Math.ceil(houseRows.length / groupSize);
+		var groupIndex = 0;
+
+		var pageNumberElement = $('.page-number');
+		var totalPageElement = $('.total-pages');
+
+		function showGroup(index) {
+			houseRows.hide();
+			houseRows.slice(index * groupSize, (index + 1) * groupSize).show();
+
+			if (index === 0) {
+				$('.btn-prev').prop('disabled', true);
+			} else {
+				$('.btn-prev').prop('disabled', false);
+			}
+
+			if (index === totalGroups - 1) {
+				$('.btn-next').prop('disabled', true);
+			} else {
+				$('.btn-next').prop('disabled', false);
+			}
+			
+			pageNumberElement.html(index + 1 + "&nbsp;");
+			totalPageElement.text(totalGroups);
+		}
+
+		if (houseRows.length === 0) {
+			showGroup(-1); // Define o número da página atual como 0
+			$('.btn-prev, .btn-next').prop('disabled', true); // Desativa os botões "Prev" e "Next"
+		} else {
+			showGroup(groupIndex);
+		}
+
+		$('.btn-prev').click(function () {
+			groupIndex--;
+			showGroup(groupIndex);
+		});
+
+		$('.btn-next').click(function () {
+			groupIndex++;
+			showGroup(groupIndex);
+		});
+	});
+</script>

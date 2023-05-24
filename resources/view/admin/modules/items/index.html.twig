@@ -1,3 +1,17 @@
+<style>
+	.page-info {
+		display: flex;
+		align-items: center;
+		margin: 0 10px;
+		font-size: 20px;
+	}
+
+	.page-info .total-pages {
+		margin-left: 5px;
+		font-weight: bold;
+	}
+</style>
+
 <div class="app-content content ">
 	<div class="content-overlay"></div>
 	<div class="header-navbar-shadow"></div>
@@ -26,15 +40,15 @@
 						<div class="border-bottom mb-1">
 							<h4 class="card-title">Import Items</h4>
 						</div>
-							<div class="row">
+						<div class="row">
 							<form action="{{URL}}/admin/items/import" method="post" class="form form-vertical">
 								<p class="badge badge-primary">{{ items_path }}</p>
-                                <label>Set server location in .env file</label>
+								<label>Set server location in .env file</label>
 								<div class="col-12">
 									<button type="submit" class="btn btn-primary mt-1 waves-effect waves-float waves-light">Import</button>
 								</div>
 							</div>
-							</form>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -46,7 +60,17 @@
 							<span data-i18n="Total Items">Total Items</span>
 						</div>
 						<div class="avatar bg-light-primary p-50">
-							<span class="avatar-content"><i data-feather="shield" class="feather feather-shield font-medium-4"></i></span>
+							<span class="avatar-content">
+								<i data-feather="shield" class="feather feather-shield font-medium-4"></i>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-body d-flex align-items-center justify-content-between">
+						<div class="input-group">
+							<input type="text" id="search-input" class="form-control" placeholder="Search item">
+							<button type="button" id="search-button" class="btn btn-primary">Search</button>
 						</div>
 					</div>
 				</div>
@@ -82,18 +106,33 @@
 								</tr>
 							</thead>
 							<tbody>
-								{% for item in all_items %}
-									<tr class="odd">
-										<td>{{ item.item_id }}</td>
-										<td><img src="{{ IMAGE_PATH }}/charactertrade/objects/{{ item.item_id }}.gif">
-										{{ item.item_id }}</td>
-										<td>{{ item.name }}</td>
-										<td>{{ item.type }}</td>
-										<td>{{ item.level }}</td>
-									</tr>
-								{% endfor %}
+								{% if itemGroup is not empty %}
+									{% set groupSize = 10 %}
+									{% set itemGroups = itemGroup|batch(groupSize) %}
+									{% for itemGroup in itemGroups %}
+										{% for item in itemGroup %}
+											<tr class="item-row">
+												<td>{{ item.item_id }}</td>
+												<td><img src="{{ IMAGE_PATH }}/charactertrade/items/{{ item.item_id }}.gif">
+													{{ item.item_id }}</td>
+												<td>{{ item.name }}</td>
+												<td>{{ item.type }}</td>
+												<td>{{ item.level }}</td>
+											</tr>
+										{% endfor %}
+									{% endfor %}
+								{% endif %}
 							</tbody>
 						</table>
+					</div>
+					<div class="pagination" style="display: flex; justify-content: center;">
+						<button class="btn btn-primary btn-prev" disabled style="margin-right: 10px;">Prev</button>
+						<div class="page-info">
+							<span class="page-number"></span>
+							/
+							<span class="total-pages"></span>
+						</div>
+						<button class="btn btn-primary btn-next" style="margin-left: 10px;">Next</button>
 					</div>
 				</div>
 				<!-- list and filter end -->
@@ -102,3 +141,76 @@
 		</div>
 	</div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	$(document).ready(function () {
+		var itemRows = $('.item-row');
+		var groupSize = 10;
+		var totalGroups = Math.ceil(itemRows.length / groupSize);
+		var groupIndex = 0;
+
+		var pageNumberElement = $('.page-number');
+		var totalPageElement = $('.total-pages');
+		var searchInput = $('#search-input');
+		var searchButton = $('#search-button');
+
+		function showGroup(index) {
+			itemRows.hide();
+			itemRows.slice(index * groupSize, (index + 1) * groupSize).show();
+
+			if (index === 0) {
+				$('.btn-prev').prop('disabled', true);
+			} else {
+				$('.btn-prev').prop('disabled', false);
+			}
+
+			if (index === totalGroups - 1) {
+				$('.btn-next').prop('disabled', true);
+			} else {
+				$('.btn-next').prop('disabled', false);
+			} pageNumberElement.html(index + 1 + "&nbsp;");
+				totalPageElement.text(totalGroups);
+			}
+
+			if (itemRows.length === 0) {
+				showGroup(-1);
+				$('.btn-prev, .btn-next').prop('disabled', true);
+			} else {
+				showGroup(groupIndex);
+			}
+
+
+			$('.btn-prev').click(function () {
+				groupIndex--;
+				showGroup(groupIndex);
+			});
+
+			$('.btn-next').click(function () {
+				groupIndex++;
+				showGroup(groupIndex);
+			});
+
+			function performSearch() {
+					var searchTerm = searchInput.val().toLowerCase();
+					var filteredItems = itemRows.filter(function () {
+					var itemName = $(this).find('td:nth-child(3)').text().toLowerCase();
+					var itemId = $(this).find('td:nth-child(1)').text().toLowerCase();
+					return itemName.includes(searchTerm) || itemId.includes(searchTerm);
+				});
+				itemRows.hide();
+				filteredItems.show();
+			}
+
+			searchButton.click(function () {
+				performSearch();
+			});
+
+			searchInput.keypress(function (e) {
+				if (e.which === 13) {
+					performSearch();
+					return false;
+				}
+		});
+	});
+</script>

@@ -41,14 +41,20 @@ class Houses extends Base{
                 $guild = 0;
             }
             $houses = [
-                'house_id' => $house['houseid'],
-                'world_id' => $select_world['id'],
                 'name' => $house['name'],
                 'rent' => $house['rent'],
                 'town_id' => $house['townid'],
                 'size' => $house['size'],
                 'guildid' => $guild,
             ];
+            
+            if ($_ENV['MULTI_WORLD'] == 'true') {
+                $houses['house_id'] = $house['houseid'];
+                $houses['world_id'] = $select_world['id'];
+            } else {
+                $houses['id'] = $house['houseid'];
+            }
+            
             EntityHouse::insertHouses($houses);
         }
         $status = Alert::getSuccess('XML importado com sucesso!') ?? null;
@@ -68,13 +74,15 @@ class Houses extends Base{
 
     public static function getAllHouses()
     {
+        global $globalWorldId;
+        FunctionsServer::getWorlds();
         $select = EntityHouse::getHouses();
         while($obAllHouses = $select->fetchObject()){
             $allHouses[] = [
                 'id' => (int)$obAllHouses->id,
-                'house_id' => $obAllHouses->house_id,
-                'world_id' => $obAllHouses->world_id,
-                'world' => FunctionsServer::getWorldById($obAllHouses->world_id),
+                'house_id' => ($_ENV['MULTI_WORLD'] == 'true' ? $obAllHouses->house_id : $obAllHouses->id),
+                'world_id' => ($_ENV['MULTI_WORLD'] == 'true' ? $obAllHouses->world_id : ''),
+                'world' => ($_ENV['MULTI_WORLD'] == 'true' || !empty($obAllHouses->world_id) ? FunctionsServer::getWorldById($obAllHouses->world_id) : FunctionsServer::getWorldById($globalWorldId)),
                 'owner' => $obAllHouses->owner,
                 'paid' => $obAllHouses->paid,
                 'warnings' => $obAllHouses->warnings,

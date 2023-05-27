@@ -337,6 +337,7 @@ class Server{
 
     public static function getWorlds()
     {
+        global $globalWorldId;
         $selectWorlds = (new Database('canary_worlds'))->select();
 
         while($obWorlds = $selectWorlds->fetchObject()){
@@ -365,6 +366,11 @@ class Server{
                 'port' => $obWorlds->port,
             ];
         }
+
+        if(count($world) === 1) {
+            $globalWorldId = $world[0]['id'];
+        }
+
         return $world;
     }
 

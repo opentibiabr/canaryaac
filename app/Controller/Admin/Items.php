@@ -17,7 +17,7 @@ class Items extends Base{
 
     public static function importItems($request)
     {
-        $items_path = $_ENV['SERVER_PATH'] . '/data/items/items.xml';
+        $items_path = $_ENV['SERVER_PATH'] . 'data/items/items.xml';
         if(file_exists($items_path)) {
             $items = new DOMDocument();
             $items->load($items_path);
@@ -139,12 +139,12 @@ class Items extends Base{
 
     public static function viewItems($request, $errorMessage = null)
     {
-        $items_path = $_ENV['SERVER_PATH'] . '/data/items/items.xml';
+        $items_path = $_ENV['SERVER_PATH'] . 'data/items/items.xml';
 
         $content = View::render('admin/modules/items/index', [
             'status' => $errorMessage,
             'items_path' => $items_path,
-            'all_items' => self::getItems(),
+            'itemGroup' => self::getItems(),
             'total_items' => (int)EntityItems::getItems(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
         ]);
 

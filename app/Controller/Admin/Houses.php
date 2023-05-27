@@ -48,7 +48,7 @@ class Houses extends Base{
                 'guildid' => $guild,
             ];
             
-            if ($_ENV['MULTI_WORD'] == 'true') {
+            if ($_ENV['MULTI_WORLD'] == 'true') {
                 $houses['house_id'] = $house['houseid'];
                 $houses['world_id'] = $select_world['id'];
             } else {
@@ -80,9 +80,9 @@ class Houses extends Base{
         while($obAllHouses = $select->fetchObject()){
             $allHouses[] = [
                 'id' => (int)$obAllHouses->id,
-                'house_id' => ($_ENV['MULTI_WORD'] == 'true' ? $obAllHouses->house_id : $obAllHouses->id),
-                'world_id' => ($_ENV['MULTI_WORD'] == 'true' ? $obAllHouses->world_id : ''),
-                'world' => ($_ENV['MULTI_WORD'] == 'true' || !empty($obAllHouses->world_id) ? FunctionsServer::getWorldById($obAllHouses->world_id) : FunctionsServer::getWorldById($globalWorldId)),
+                'house_id' => ($_ENV['MULTI_WORLD'] == 'true' ? $obAllHouses->house_id : $obAllHouses->id),
+                'world_id' => ($_ENV['MULTI_WORLD'] == 'true' ? $obAllHouses->world_id : ''),
+                'world' => ($_ENV['MULTI_WORLD'] == 'true' || !empty($obAllHouses->world_id) ? FunctionsServer::getWorldById($obAllHouses->world_id) : FunctionsServer::getWorldById($globalWorldId)),
                 'owner' => $obAllHouses->owner,
                 'paid' => $obAllHouses->paid,
                 'warnings' => $obAllHouses->warnings,

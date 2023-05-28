@@ -41,7 +41,7 @@ trait CommandAttributes
      *
      * @throws \InvalidArgumentException `$type` is not 1-3.
      *
-     * @return $this
+     * @return self
      */
     public function setType(int $type): self
     {
@@ -62,7 +62,7 @@ trait CommandAttributes
      * @throws \LengthException `$name` is not 1-32 characters long.
      * @throws \DomainException `$name` contains invalid characters.
      *
-     * @return $this
+     * @return self
      */
     public function setName(string $name): self
     {
@@ -73,7 +73,7 @@ trait CommandAttributes
             throw new \LengthException('Command name can be only up to 32 characters long.');
         }
 
-        if ($this->type == Command::CHAT_INPUT && preg_match('/^[-_\p{L}\p{N}\p{Devanagari}\p{Thai}]{1,32}$/u', $name) === 0) {
+        if (isset($this->type) && $this->type == Command::CHAT_INPUT && preg_match('/^[-_\p{L}\p{N}\p{Devanagari}\p{Thai}]{1,32}$/u', $name) === 0) {
             throw new \DomainException('Slash command name contains invalid characters.');
         }
 
@@ -91,7 +91,7 @@ trait CommandAttributes
      * @throws \LengthException `$name` is not 1-32 characters long.
      * @throws \DomainException `$name` contains invalid characters.
      *
-     * @return $this
+     * @return self
      */
     public function setNameLocalization(string $locale, ?string $name): self
     {
@@ -103,10 +103,12 @@ trait CommandAttributes
                 throw new \LengthException('Command name can be only up to 32 characters long.');
             }
 
-            if ($this->type == Command::CHAT_INPUT && preg_match('/^[-_\p{L}\p{N}\p{Devanagari}\p{Thai}]{1,32}$/u', $name) === 0) {
+            if (isset($this->type) && $this->type == Command::CHAT_INPUT && preg_match('/^[-_\p{L}\p{N}\p{Devanagari}\p{Thai}]{1,32}$/u', $name) === 0) {
                 throw new \DomainException('Slash command localized name contains invalid characters.');
             }
         }
+
+        $this->name_localizations ??= [];
 
         $this->name_localizations[$locale] = $name;
 
@@ -120,7 +122,7 @@ trait CommandAttributes
      *
      * @throws \LengthException `$description` is not 1-100 characters long.
      *
-     * @return $this
+     * @return self
      */
     public function setDescription(string $description): self
     {
@@ -144,13 +146,15 @@ trait CommandAttributes
      *
      * @throws \LengthException `$description` is not 1-100 characters long.
      *
-     * @return $this
+     * @return self
      */
     public function setDescriptionLocalization(string $locale, ?string $description): self
     {
-        if (isset($description) && $this->type == Command::CHAT_INPUT && poly_strlen($description) > 100) {
+        if (isset($description, $this->type) && $this->type == Command::CHAT_INPUT && poly_strlen($description) > 100) {
             throw new \LengthException('Command description must be less than or equal to 100 characters.');
         }
+
+        $this->description_localizations ??= [];
 
         $this->description_localizations[$locale] = $description;
 
@@ -164,7 +168,7 @@ trait CommandAttributes
      *
      * @param ?bool $permission Default permission of the command
      *
-     * @return $this
+     * @return self
      */
     public function setDefaultPermission(?bool $permission): self
     {
@@ -178,7 +182,7 @@ trait CommandAttributes
      *
      * @param string|int $permissions Default member permission bits of the command.
      *
-     * @return $this
+     * @return self
      */
     public function setDefaultMemberPermissions($permissions): self
     {
@@ -192,7 +196,7 @@ trait CommandAttributes
      *
      * @param bool $permission DM permission of the command.
      *
-     * @return $this
+     * @return self
      */
     public function setDmPermission(bool $permission): self
     {
@@ -209,17 +213,19 @@ trait CommandAttributes
      * @throws \DomainException   Command type is not CHAT_INPUT (1).
      * @throws \OverflowException Command exceeds maximum 25 options.
      *
-     * @return $this
+     * @return self
      */
     public function addOption(Option $option): self
     {
-        if ($this->type != Command::CHAT_INPUT) {
+        if (isset($this->type) && $this->type != Command::CHAT_INPUT) {
             throw new \DomainException('Only CHAT_INPUT Command type can have option.');
         }
 
         if (isset($this->options) && count($this->options) >= 25) {
             throw new \OverflowException('Command can only have a maximum of 25 options.');
         }
+
+        $this->options ??= [];
 
         $this->options[] = $option;
 
@@ -233,11 +239,11 @@ trait CommandAttributes
      *
      * @throws \DomainException Command type is not CHAT_INPUT (1).
      *
-     * @return $this
+     * @return self
      */
     public function removeOption(Option $option): self
     {
-        if ($this->type != Command::CHAT_INPUT) {
+        if (isset($this->type) && $this->type != Command::CHAT_INPUT) {
             throw new \DomainException('Only CHAT_INPUT Command type can have option.');
         }
 
@@ -251,7 +257,7 @@ trait CommandAttributes
     /**
      * Clear all options from the command.
      *
-     * @return $this
+     * @return self
      */
     public function clearOptions(): self
     {

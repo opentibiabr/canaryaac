@@ -204,7 +204,7 @@ class Embed extends Part
      *
      * @throws \LengthException
      *
-     * @return $this
+     * @return self
      */
     protected function setTitleAttribute(string $title): self
     {
@@ -226,7 +226,7 @@ class Embed extends Part
      *
      * @param string $title
      *
-     * @return $this
+     * @return self
      */
     public function setTitle(string $title): self
     {
@@ -240,7 +240,7 @@ class Embed extends Part
      *
      * @param string $type
      *
-     * @return $this
+     * @return self
      */
     public function setType(string $type): self
     {
@@ -254,7 +254,7 @@ class Embed extends Part
      *
      * @param string $description
      *
-     * @return $this
+     * @return self
      */
     public function setDescription(string $description): self
     {
@@ -268,7 +268,7 @@ class Embed extends Part
      *
      * @param mixed $color
      *
-     * @return $this
+     * @return self
      */
     public function setColor($color): self
     {
@@ -284,7 +284,7 @@ class Embed extends Part
      *
      * @throws \OverflowException
      *
-     * @return $this
+     * @return self
      */
     public function addField(...$fields): self
     {
@@ -312,7 +312,7 @@ class Embed extends Part
      *
      * @throws \OverflowException
      *
-     * @return $this
+     * @return self
      */
     public function addFieldValues(string $name, string $value, bool $inline = false)
     {
@@ -326,15 +326,15 @@ class Embed extends Part
     /**
      * Set the author of this embed.
      *
-     * @param string $name    Maximum length is 256 characters.
-     * @param string $iconurl The URL to the icon.
-     * @param string $url     The URL to the author.
+     * @param string      $name    Maximum length is 256 characters.
+     * @param string|null $iconurl The URL to the icon.
+     * @param string|null $url     The URL to the author.
      *
      * @throws \LengthException
      *
-     * @return $this
+     * @return self
      */
-    public function setAuthor(string $name, string $iconurl = '', string $url = ''): self
+    public function setAuthor(string $name, ?string $iconurl = null, ?string $url = null): self
     {
         if (poly_strlen($name) === 0) {
             $this->author = null;
@@ -356,14 +356,14 @@ class Embed extends Part
     /**
      * Set the footer of this embed.
      *
-     * @param string $text    Maximum length is 2048 characters.
-     * @param string $iconurl The URL to the icon.
+     * @param string      $text    Maximum length is 2048 characters.
+     * @param string|null $iconurl The URL to the icon.
      *
      * @throws \LengthException
      *
-     * @return $this
+     * @return self
      */
-    public function setFooter(string $text, string $iconurl = ''): self
+    public function setFooter(string $text, ?string $iconurl = null): self
     {
         if (poly_strlen($text) === 0) {
             $this->footer = null;
@@ -386,7 +386,7 @@ class Embed extends Part
      *
      * @param string|Attachment $url
      *
-     * @return $this
+     * @return self
      */
     public function setImage($url): self
     {
@@ -404,7 +404,7 @@ class Embed extends Part
      *
      * @param string $url
      *
-     * @return $this
+     * @return self
      */
     public function setThumbnail($url): self
     {
@@ -420,7 +420,7 @@ class Embed extends Part
      *
      * @throws \Exception
      *
-     * @return $this
+     * @return self
      */
     public function setTimestamp(?int $timestamp = null): self
     {
@@ -434,7 +434,7 @@ class Embed extends Part
      *
      * @param string $url
      *
-     * @return $this
+     * @return self
      */
     public function setURL(string $url): self
     {

@@ -1,5 +1,55 @@
 # Changelog
 
+## 1.9.0 (2023-04-26)
+
+This is a **SECURITY** and feature release for the 1.x series of ReactPHP's HTTP component.
+
+*   Security fix: This release fixes a medium severity security issue in ReactPHP's HTTP server component
+    that affects all versions between `v0.8.0` and `v1.8.0`. All users are encouraged to upgrade immediately.
+    (CVE-2023-26044 reported and fixed by @WyriHaximus)
+
+*   Feature: Support HTTP keep-alive for HTTP client (reusing persistent connections).
+    (#481, #484, #486 and #495 by @clue)
+
+    This feature offers significant performance improvements when sending many
+    requests to the same host as it avoids recreating the underlying TCP/IP
+    connection and repeating the TLS handshake for secure HTTPS requests.
+
+    ```php
+    $browser = new React\Http\Browser();
+
+    // Up to 300% faster! HTTP keep-alive is enabled by default
+    $response = React\Async\await($browser->get('https://httpbingo.org/redirect/6'));
+    assert($response instanceof Psr\Http\Message\ResponseInterface);
+    ```
+
+*   Feature: Add `Request` class to represent outgoing HTTP request message.
+    (#480 by @clue)
+
+*   Feature: Preserve request method and body for `307 Temporary Redirect` and `308 Permanent Redirect`.
+    (#442 by @dinooo13)
+
+*   Feature: Include buffer logic to avoid dependency on reactphp/promise-stream.
+    (#482 by @clue)
+
+*   Improve test suite and project setup and report failed assertions.
+    (#478 by @clue, #487 and #491 by @WyriHaximus and #475 and #479 by @SimonFrings)
+
+## 1.8.0 (2022-09-29)
+
+*   Feature: Support for default request headers.
+    (#461 by @51imyy)
+
+    ```php
+    $browser = new React\Http\Browser();
+    $browser = $browser->withHeader('User-Agent', 'ACME');
+
+    $browser->get($url)->then(…);
+    ```
+
+*   Feature: Forward compatibility with upcoming Promise v3.
+    (#460 by @clue)
+
 ## 1.7.0 (2022-08-23)
 
 This is a **SECURITY** and feature release for the 1.x series of ReactPHP's HTTP component.
@@ -19,7 +69,7 @@ This is a **SECURITY** and feature release for the 1.x series of ReactPHP's HTTP
     (#444 by @mrsimonbennett)
 
 *   Minor documentation improvements.
-    (#452 by @clue, #458 by @nhedger, #448 by @jorrit and #446 by @SimonFrings
+    (#452 by @clue, #458 by @nhedger, #448 by @jorrit and #446 by @SimonFrings)
 
 *   Improve test suite, update to use new reactphp/async package instead of clue/reactphp-block,
     skip memory tests when lowering memory limit fails and fix legacy HHVM build.

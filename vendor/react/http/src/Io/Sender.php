@@ -6,9 +6,9 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use React\EventLoop\LoopInterface;
 use React\Http\Client\Client as HttpClient;
-use React\Http\Message\Response;
 use React\Promise\PromiseInterface;
 use React\Promise\Deferred;
+use React\Socket\Connector;
 use React\Socket\ConnectorInterface;
 use React\Stream\ReadableStreamInterface;
 
@@ -50,7 +50,11 @@ class Sender
      */
     public static function createFromLoop(LoopInterface $loop, ConnectorInterface $connector = null)
     {
-        return new self(new HttpClient($loop, $connector));
+        if ($connector === null) {
+            $connector = new Connector(array(), $loop);
+        }
+
+        return new self(new HttpClient(new ClientConnectionManager($connector, $loop)));
     }
 
     private $http;
@@ -74,6 +78,9 @@ class Sender
      */
     public function send(RequestInterface $request)
     {
+        // support HTTP/1.1 and HTTP/1.0 only, ensured by `Browser` already
+        assert(\in_array($request->getProtocolVersion(), array('1.0', '1.1'), true));
+
         $body = $request->getBody();
         $size = $body->getSize();
 
@@ -91,12 +98,12 @@ class Sender
             $size = 0;
         }
 
-        $headers = array();
-        foreach ($request->getHeaders() as $name => $values) {
-            $headers[$name] = implode(', ', $values);
+        // automatically add `Authorization: Basic …` request header if URL includes `user:pass@host`
+        if ($request->getUri()->getUserInfo() !== '' && !$request->hasHeader('Authorization')) {
+            $request = $request->withHeader('Authorization', 'Basic ' . \base64_encode($request->getUri()->getUserInfo()));
         }
 
-        $requestStream = $this->http->request($request->getMethod(), (string)$request->getUri(), $headers, $request->getProtocolVersion());
+        $requestStream = $this->http->request($request);
 
         $deferred = new Deferred(function ($_, $reject) use ($requestStream) {
             // close request stream if request is cancelled
@@ -108,18 +115,8 @@ class Sender
             $deferred->reject($error);
         });
 
-        $requestStream->on('response', function (ResponseInterface $response, ReadableStreamInterface $body) use ($deferred, $request) {
-            $length = null;
-            $code = $response->getStatusCode();
-            if ($request->getMethod() === 'HEAD' || ($code >= 100 && $code < 200) || $code == Response::STATUS_NO_CONTENT || $code == Response::STATUS_NOT_MODIFIED) {
-                $length = 0;
-            } elseif (\strtolower($response->getHeaderLine('Transfer-Encoding')) === 'chunked') {
-                $body = new ChunkedDecoder($body);
-            } elseif ($response->hasHeader('Content-Length')) {
-                $length = (int) $response->getHeaderLine('Content-Length');
-            }
-
-            $deferred->resolve($response->withBody(new ReadableBodyStream($body, $length)));
+        $requestStream->on('response', function (ResponseInterface $response) use ($deferred, $request) {
+            $deferred->resolve($response);
         });
 
         if ($body instanceof ReadableStreamInterface) {

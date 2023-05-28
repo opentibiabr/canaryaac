@@ -51,7 +51,7 @@ class Reaction extends Part
      */
     public function isPartial(): bool
     {
-        return $this->message == null;
+        return $this->message === null;
     }
 
     /**
@@ -117,6 +117,7 @@ class Reaction extends Part
             foreach ((array) $response as $user) {
                 if (! $part = $this->discord->users->get('id', $user->id)) {
                     $part = new User($this->discord, (array) $user, true);
+                    $this->discord->users->pushItem($part);
                 }
 
                 $users->pushItem($part);

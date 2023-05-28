@@ -86,7 +86,7 @@ class Discord
      *
      * @var string Version.
      */
-    public const VERSION = 'v7.2.6';
+    public const VERSION = 'v7.3.4';
 
     /**
      * The logger.
@@ -1203,7 +1203,7 @@ class Discord
             }
 
             $data['session'] = $vs->session_id;
-            $this->logger->info('received session id for voice sesion', ['guild' => $channel->guild_id, 'session_id' => $vs->session_id]);
+            $this->logger->info('received session id for voice session', ['guild' => $channel->guild_id, 'session_id' => $vs->session_id]);
             $this->removeListener(Event::VOICE_STATE_UPDATE, $voiceStateUpdate);
         };
 
@@ -1302,6 +1302,9 @@ class Discord
 
         if (is_null($gateway)) {
             $this->http->get(Endpoint::GATEWAY_BOT)->done(function ($response) use ($buildParams) {
+                if ($response->shards > 1) {
+                    $this->logger->info('Please contact the DiscordPHP devs at https://discord.gg/dphp or https://github.com/discord-php/DiscordPHP/issues if you are interrested in assisting us with sharding support development.');
+                }
                 $buildParams($this->resume_gateway_url ?? $response->url, $response->session_start_limit);
             }, function ($e) use ($buildParams) {
                 // Can't access the API server so we will use the default gateway.
@@ -1352,7 +1355,7 @@ class Discord
                 'dnsConfig',
             ])
             ->setDefaults([
-                'loop' => LoopFactory::create(),
+                'loop' => class_exists('\React\EventLoop\Loop') ? \React\EventLoop\Loop::get() : LoopFactory::create(),
                 'logger' => null,
                 'loadAllMembers' => false,
                 'disabledEvents' => [],
@@ -1584,7 +1587,7 @@ class Discord
     }
 
     /**
-     * Add listerner for incoming application command from interaction
+     * Add listerner for incoming application command from interaction.
      *
      * @param string|array  $name
      * @param callable      $callback

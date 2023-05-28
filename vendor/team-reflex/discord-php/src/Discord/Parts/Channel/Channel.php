@@ -119,7 +119,6 @@ class Channel extends Part
         'type',
         'guild_id',
         'position',
-        'permission_overwrites',
         'name',
         'topic',
         'nsfw',
@@ -152,6 +151,18 @@ class Channel extends Part
         'threads' => ThreadRepository::class,
         'invites' => InviteRepository::class,
     ];
+
+    /**
+     * @inheritDoc
+     */
+    public function fill(array $attributes): void
+    {
+        parent::fill($attributes);
+
+        if (isset($attributes['permission_overwrites'])) {
+            $this->setPermissionOverwritesAttribute($attributes['permission_overwrites']);
+        }
+    }
 
     /**
      * @inheritdoc
@@ -353,6 +364,68 @@ class Channel extends Part
         }
 
         return $this->http->put(Endpoint::bind(Endpoint::CHANNEL_PERMISSIONS, $this->id, $part->id), $payload, $headers);
+    }
+
+    /**
+     * Change category of a channel.
+     *
+     * @param Channel|string|null $category The category channel to set it to (either a Channel part or the channel ID or null for none).
+     * @param int|null            $position The new channel position, not relative to category.
+     * @param string|null         $reason   Reason for Audit Log.
+     *
+     * @return ExtendedPromiseInterface<self>
+     *
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
+     * @throws NoPermissionsException
+     */
+    public function setCategory($category, ?int $position = null, ?string $reason = null): ExtendedPromiseInterface
+    {
+        if (! in_array($this->type, [self::TYPE_TEXT, self::TYPE_VOICE, self::TYPE_ANNOUNCEMENT, self::TYPE_FORUM])) {
+            return reject(new \RuntimeException('You can only move Text, Voice, Announcement or Forum channel type.'));
+        }
+
+        if ($botperms = $this->getBotPermissions()) {
+            if (! $botperms->manage_channels) {
+                return reject(new NoPermissionsException('You do not have permission to manage this channel.'));
+            }
+        }
+
+        if (is_string($category)) {
+            if ($cachedCategory = $this->guild->channels->get('id', $category)) {
+                $category = $cachedCategory;
+            }
+        }
+        if ($category instanceof Channel) {
+            if ($category->type !== self::TYPE_CATEGORY) {
+                return reject(new \InvalidArgumentException('You can only move channel into a category.'));
+            }
+
+            if ($botperms = $category->getBotPermissions()) {
+                if (! $botperms->manage_channels) {
+                    return reject(new NoPermissionsException('You do not have permission to manage the specified channel.'));
+                }
+            }
+
+            $category = $category->id;
+        }
+
+        $payload = ['parent_id' => $category];
+        if ($position !== null) {
+            $payload['position'] = $position;
+        }
+
+        $headers = [];
+        if (isset($reason)) {
+            $headers['X-Audit-Log-Reason'] = $reason;
+        }
+
+        return $this->http->patch(Endpoint::bind(Endpoint::CHANNEL, $this->id), $payload, $headers)->then(function ($response) {
+            $this->parent_id = $response->parent_id;
+            $this->position = $response->position;
+
+            return $this;
+        });
     }
 
     /**
@@ -754,19 +827,14 @@ class Channel extends Part
     /**
      * Sets the permission overwrites attribute.
      *
-     * @param array $overwrites
+     * @param ?array $overwrites
      */
-    protected function setPermissionOverwritesAttribute(array $overwrites): void
+    protected function setPermissionOverwritesAttribute(?array $overwrites): void
     {
         $this->attributes['permission_overwrites'] = $overwrites;
 
-        if (! is_null($overwrites)) {
-            foreach ($overwrites as $overwrite) {
-                $overwrite = (array) $overwrite;
-                $overwrite['channel_id'] = $this->id;
-
-                $this->overwrites->pushItem($this->factory->create(Overwrite::class, $overwrite, true));
-            }
+        foreach ($overwrites ?? [] as $overwrite) {
+            $this->overwrites->pushItem($this->overwrites->create((array) $overwrite, true));
         }
     }
 

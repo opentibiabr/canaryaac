@@ -27,6 +27,13 @@ final class MultipartParser
     private $maxFileSize;
 
     /**
+     * Based on $maxInputVars and $maxFileUploads
+     *
+     * @var int
+     */
+    private $maxMultipartBodyParts;
+
+    /**
      * ini setting "max_input_vars"
      *
      * Does not exist in PHP < 5.3.9 or HHVM, so assume PHP's default 1000 here.
@@ -62,9 +69,11 @@ final class MultipartParser
      */
     private $maxFileUploads;
 
+    private $multipartBodyPartCount = 0;
     private $postCount = 0;
     private $filesCount = 0;
     private $emptyCount = 0;
+    private $cursor = 0;
 
     /**
      * @param int|string|null $uploadMaxFilesize
@@ -87,6 +96,8 @@ final class MultipartParser
 
         $this->uploadMaxFilesize = IniUtil::iniSizeToBytes($uploadMaxFilesize);
         $this->maxFileUploads = $maxFileUploads === null ? (\ini_get('file_uploads') === '' ? 0 : (int)\ini_get('max_file_uploads')) : (int)$maxFileUploads;
+
+        $this->maxMultipartBodyParts = $this->maxInputVars + $this->maxFileUploads;
     }
 
     public function parse(ServerRequestInterface $request)
@@ -101,6 +112,8 @@ final class MultipartParser
 
         $request = $this->request;
         $this->request = null;
+        $this->multipartBodyPartCount = 0;
+        $this->cursor = 0;
         $this->postCount = 0;
         $this->filesCount = 0;
         $this->emptyCount = 0;
@@ -114,20 +127,24 @@ final class MultipartParser
         $len = \strlen($boundary);
 
         // ignore everything before initial boundary (SHOULD be empty)
-        $start = \strpos($buffer, $boundary . "\r\n");
+        $this->cursor = \strpos($buffer, $boundary . "\r\n");
 
-        while ($start !== false) {
+        while ($this->cursor !== false) {
             // search following boundary (preceded by newline)
             // ignore last if not followed by boundary (SHOULD end with "--")
-            $start += $len + 2;
-            $end = \strpos($buffer, "\r\n" . $boundary, $start);
+            $this->cursor += $len + 2;
+            $end = \strpos($buffer, "\r\n" . $boundary, $this->cursor);
             if ($end === false) {
                 break;
             }
 
             // parse one part and continue searching for next
-            $this->parsePart(\substr($buffer, $start, $end - $start));
-            $start = $end;
+            $this->parsePart(\substr($buffer, $this->cursor, $end - $this->cursor));
+            $this->cursor = $end;
+
+            if (++$this->multipartBodyPartCount > $this->maxMultipartBodyParts) {
+                break;
+            }
         }
     }
 

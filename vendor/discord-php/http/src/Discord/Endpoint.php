@@ -222,6 +222,8 @@ class Endpoint
     public const USER_CURRENT_CHANNELS = self::USER_CURRENT.'/channels';
     // GET
     public const USER_CURRENT_CONNECTIONS = self::USER_CURRENT.'/connections';
+    // GET, PUT
+    public const USER_CURRENT_APPLICATION_ROLE_CONNECTION = self::USER_CURRENT.'/applications/:application_id/role-connection';
     // GET
     public const APPLICATION_CURRENT = 'oauth2/applications/@me';
 
@@ -237,6 +239,9 @@ class Endpoint
     public const WEBHOOK_EXECUTE_GITHUB = self::WEBHOOK_EXECUTE.'/github';
     // PATCH, DELETE
     public const WEBHOOK_MESSAGE = self::WEBHOOK_TOKEN.'/messages/:message_id';
+
+    // GET, PUT
+    public const APPLICATION_ROLE_CONNECTION_METADATA = 'applications/:application_id/role-connections/metadata';
 
     /**
      * Regex to identify parameters in endpoints.

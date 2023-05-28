@@ -58,9 +58,9 @@ class MessageReaction extends Part
      */
     public function isPartial(): bool
     {
-        return $this->user == null ||
-            $this->message == null ||
-            $this->member == null;
+        return $this->user === null ||
+            $this->message === null ||
+            $this->member === null;
     }
 
     /**
@@ -70,7 +70,7 @@ class MessageReaction extends Part
     {
         $promise = resolve();
 
-        if ($this->member == null) {
+        if ($this->member === null) {
             $promise = $promise
                 ->then(function () {
                     return $this->http->get(Endpoint::bind(Endpoint::GUILD_MEMBER, $this->guild_id, $this->user_id));
@@ -80,7 +80,7 @@ class MessageReaction extends Part
                 });
         }
 
-        if ($this->message == null) {
+        if ($this->message === null) {
             $promise = $promise
                 ->then(function () {
                     return $this->http->get(Endpoint::bind(Endpoint::CHANNEL_MESSAGE, $this->channel_id, $this->message_id));
@@ -235,24 +235,24 @@ class MessageReaction extends Part
             }
         }
 
-        $reaction = $this->emoji->toReactionString();
+        $emoji = urlencode($this->emoji->id === null ? $this->emoji->name : "{$this->emoji->name}:{$this->emoji->id}");
 
         switch ($type) {
             case Message::REACT_DELETE_ALL:
                 $url = Endpoint::bind(Endpoint::MESSAGE_REACTION_ALL, $this->channel_id, $this->message_id);
                 break;
             case Message::REACT_DELETE_ME:
-                $url = Endpoint::bind(Endpoint::OWN_MESSAGE_REACTION, $this->channel_id, $this->message_id, $reaction);
+                $url = Endpoint::bind(Endpoint::OWN_MESSAGE_REACTION, $this->channel_id, $this->message_id, $emoji);
                 break;
             case Message::REACT_DELETE_EMOJI:
-                $url = Endpoint::bind(Endpoint::MESSAGE_REACTION_EMOJI, $this->channel_id, $this->message_id, $reaction);
+                $url = Endpoint::bind(Endpoint::MESSAGE_REACTION_EMOJI, $this->channel_id, $this->message_id, $emoji);
                 break;
             case Message::REACT_DELETE_ID:
             default:
                 if (! $userid = $this->user_id ?? $this->user->id) {
                     return reject(new \UnexpectedValueException('This reaction has no user id'));
                 }
-                $url = Endpoint::bind(Endpoint::USER_MESSAGE_REACTION, $this->channel_id, $this->message_id, $reaction, $userid);
+                $url = Endpoint::bind(Endpoint::USER_MESSAGE_REACTION, $this->channel_id, $this->message_id, $emoji, $userid);
                 break;
         }
 

@@ -150,8 +150,13 @@ class Interaction extends Part
     protected function getMemberAttribute(): ?Member
     {
         if (isset($this->attributes['member'])) {
-            if ($this->guild && $member = $this->guild->members->get('id', $this->attributes['member']->user->id)) {
-                return $member;
+            if ($guild = $this->guild) {
+                if ($member = $guild->members->get('id', $this->attributes['member']->user->id)) {
+                    // @todo Temporary workaround until member is cached from INTERACTION_CREATE event
+                    $member->permissions = $this->attributes['member']->permissions;
+
+                    return $member;
+                }
             }
 
             return $this->factory->create(Member::class, (array) $this->attributes['member'] + ['guild_id' => $this->guild_id], true);
@@ -494,7 +499,7 @@ class Interaction extends Part
     }
 
     /**
-     * Deletes a non ephemeral follow up message.
+     * Deletes a follow up message.
      *
      * @see https://discord.com/developers/docs/interactions/receiving-and-responding#delete-followup-message
      *

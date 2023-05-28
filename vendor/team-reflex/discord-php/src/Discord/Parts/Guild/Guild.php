@@ -91,6 +91,7 @@ use function React\Promise\resolve;
  * @property string                       $preferred_locale                         Preferred locale of the guild.
  * @property string                       $public_updates_channel_id                Notice channel id.
  * @property int|null                     $max_video_channel_users                  Maximum amount of users allowed in a video channel.
+ * @property int|null                     $max_stage_video_channel_users            Maximum amount of users in a stage video channel.
  * @property int|null                     $approximate_member_count                 Approximate number of members in this guild, returned from the GET /guilds/<id> endpoint when with_counts is true.
  * @property int|null                     $approximate_presence_count               Approximate number of non-offline members in this guild, returned from the GET /guilds/<id> endpoint when with_counts is true.
  * @property int                          $nsfw_level                               The guild NSFW level.
@@ -107,6 +108,7 @@ use function React\Promise\resolve;
  * @property bool                         $feature_discoverable                     Guild is able to be discovered in the directory.
  * @property bool                         $feature_featurable                       Guild is able to be featured in the directory.
  * @property bool                         $feature_has_directory_entry              Guild is listed in a directory channel.
+ * @property bool                         $feature_invites_disabled                 Guild has paused invites, preventing new users from joining.
  * @property bool                         $feature_invite_splash                    Guild has access to set an invite splash background.
  * @property bool                         $feature_linked_to_hub                    Guild is in a Student Hub.
  * @property bool                         $feature_member_verification_gate_enabled Guild has enabled membership screening.
@@ -212,6 +214,7 @@ class Guild extends Part
         'member_count',
         'voice_states',
         'max_video_channel_users',
+        'max_stage_video_channel_users',
         'approximate_member_count',
         'approximate_presence_count',
         'welcome_screen',
@@ -232,6 +235,7 @@ class Guild extends Part
         'feature_discoverable',
         'feature_featurable',
         'feature_has_directory_entry',
+        'feature_invites_disabled',
         'feature_invite_splash',
         'feature_linked_to_hub',
         'feature_member_verification_gate_enabled',
@@ -456,6 +460,11 @@ class Guild extends Part
         return in_array('HAS_DIRECTORY_ENTRY', $this->features);
     }
 
+    protected function getFeatureInvitesDisabledAttribute(): bool
+    {
+        return in_array('INVITES_DISABLED', $this->features);
+    }
+
     protected function getFeatureInviteSplashAttribute(): bool
     {
         return in_array('INVITE_SPLASH', $this->features);
@@ -622,6 +631,10 @@ class Guild extends Part
             ->setAllowedTypes('image', 'string')
             ->setAllowedTypes('roles', 'array')
             ->setDefault('roles', []);
+
+        if (is_null($filepath)) {
+            $resolver->setRequired('image');
+        }
 
         $options = $resolver->resolve($options);
 
@@ -994,7 +1007,7 @@ class Guild extends Part
      * For large guilds it's recommended to set the compute_prune_count option to false, forcing 'pruned' to null.
      * Requires the KICK_MEMBERS permission.
      *
-     * @see https://discord.com/developers/docs/resources/guild#get-guild-prune-count
+     * @see https://discord.com/developers/docs/resources/guild#begin-guild-prune
      *
      * @param array  $options An array of options.
      *                        days => number of days to count prune for (1-30)
@@ -1158,7 +1171,7 @@ class Guild extends Part
      *
      * @see https://discord.com/developers/docs/resources/guild#get-guild-widget
      *
-     * @return ExtendedPromiseInterface<WelcomeScreen>
+     * @return ExtendedPromiseInterface<Widget>
      */
     public function getWidget(): ExtendedPromiseInterface
     {
@@ -1193,10 +1206,10 @@ class Guild extends Part
      *
      * @see https://discord.com/developers/docs/resources/guild#modify-guild-mfa-level
      *
-     * @param int    $level  The new MFA level `Guild::MFA_NONE` or `Guild::MFA_ELEVATED`.
-     * @param string $reason Reason for Audit Log.
+     * @param int         $level  The new MFA level `Guild::MFA_NONE` or `Guild::MFA_ELEVATED`.
+     * @param string|null $reason Reason for Audit Log.
      *
-     * @return ExtendedPromiseInterface<Guild> This guild.
+     * @return ExtendedPromiseInterface<self> This guild.
      */
     public function updateMFALevel(int $level, ?string $reason = null): ExtendedPromiseInterface
     {

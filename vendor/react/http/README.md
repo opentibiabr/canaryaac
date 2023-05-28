@@ -69,12 +69,15 @@ multiple concurrent HTTP requests without blocking.
         * [withBase()](#withbase)
         * [withProtocolVersion()](#withprotocolversion)
         * [withResponseBuffer()](#withresponsebuffer)
+        * [withHeader()](#withheader)
+        * [withoutHeader()](#withoutheader)
     * [React\Http\Message](#reacthttpmessage)
         * [Response](#response)
             * [html()](#html)
             * [json()](#json)
             * [plaintext()](#plaintext)
             * [xml()](#xml)
+        * [Request](#request-1)
         * [ServerRequest](#serverrequest)
         * [ResponseException](#responseexception)
     * [React\Http\Middleware](#reacthttpmiddleware)
@@ -340,9 +343,10 @@ $browser->get($url, $headers)->then(function (Psr\Http\Message\ResponseInterface
 Any redirected requests will follow the semantics of the original request and
 will include the same request headers as the original request except for those
 listed below.
-If the original request contained a request body, this request body will never
-be passed to the redirected request. Accordingly, each redirected request will
-remove any `Content-Length` and `Content-Type` request headers.
+If the original request is a temporary (307) or a permanent (308) redirect, request
+body and headers will be passed to the redirected request. Otherwise, the request 
+body will never be passed to the redirected request. Accordingly, each redirected 
+request will remove any `Content-Length` and `Content-Type` request headers.
 
 If the original request used HTTP authentication with an `Authorization` request
 header, this request header will only be passed as part of the redirected
@@ -2385,6 +2389,36 @@ Notice that the [`Browser`](#browser) is an immutable object, i.e. this
 method actually returns a *new* [`Browser`](#browser) instance with the
 given setting applied.
 
+#### withHeader()
+
+The `withHeader(string $header, string $value): Browser` method can be used to
+add a request header for all following requests.
+
+```php
+$browser = $browser->withHeader('User-Agent', 'ACME');
+
+$browser->get($url)->then(…);
+```
+
+Note that the new header will overwrite any headers previously set with
+the same name (case-insensitive). Following requests will use these headers
+by default unless they are explicitly set for any requests.
+
+#### withoutHeader()
+
+The `withoutHeader(string $header): Browser` method can be used to
+remove any default request headers previously set via
+the [`withHeader()` method](#withheader).
+
+```php
+$browser = $browser->withoutHeader('User-Agent');
+
+$browser->get($url)->then(…);
+```
+
+Note that this method only affects the headers which were set with the
+method `withHeader(string $header, string $value): Browser`
+
 ### React\Http\Message
 
 #### Response
@@ -2594,6 +2628,24 @@ $response = React\Http\Message\Response::xml(
     "<error><message>Invalid user name given.</message></error>\n"
 )->withStatus(React\Http\Message\Response::STATUS_BAD_REQUEST);
 ```
+
+#### Request
+
+The `React\Http\Message\Request` class can be used to
+respresent an outgoing HTTP request message.
+
+This class implements the
+[PSR-7 `RequestInterface`](https://www.php-fig.org/psr/psr-7/#32-psrhttpmessagerequestinterface)
+which extends the
+[PSR-7 `MessageInterface`](https://www.php-fig.org/psr/psr-7/#31-psrhttpmessagemessageinterface).
+
+This is mostly used internally to represent each outgoing HTTP request
+message for the HTTP client implementation. Likewise, you can also use this
+class with other HTTP client implementations and for tests.
+
+> Internally, this implementation builds on top of an existing outgoing
+  request message and only adds support for streaming. This base class is
+  considered an implementation detail that may change in the future.
 
 #### ServerRequest
 
@@ -2924,7 +2976,7 @@ This project follows [SemVer](https://semver.org/).
 This will install the latest supported version:
 
 ```bash
-composer require react/http:^1.7
+composer require react/http:^1.9
 ```
 
 See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.

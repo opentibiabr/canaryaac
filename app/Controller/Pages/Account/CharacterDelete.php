@@ -28,12 +28,12 @@ class CharacterDelete extends Base{
         $filt = urldecode($name);
 
         if(SessionAdminLogin::isLogged() == true){
-            $selectPlayer = EntityPlayer::getPlayer('name = "'.$filt.'"')->fetchObject();
+            $selectPlayer = EntityPlayer::getPlayer([ 'name' => $filt])->fetchObject();
             if($selectPlayer->deletion == 1){
                 $request->getRouter()->redirect('/account');
             }
             if($selectPlayer->account_id == $AccountId){
-                $selectAccount = EntityPlayer::getAccount('id = "'.$selectPlayer->account_id.'"')->fetchObject();
+                $selectAccount = EntityPlayer::getAccount([ 'id' => $selectPlayer->account_id])->fetchObject();
                 if($selectAccount->password == $convert_password){
                     EntityPlayer::updatePlayer('id = "'.$selectPlayer->id.'"', [
                         'deletion' => 1
@@ -53,7 +53,7 @@ class CharacterDelete extends Base{
             $filt = urldecode($filter_name);
 
             $player = [];
-            $selectPlayer = EntityPlayer::getPlayer('name = "'.$filt.'"')->fetchObject();
+            $selectPlayer = EntityPlayer::getPlayer([ 'name' => $filt])->fetchObject();
             if($selectPlayer->deletion == 1){
                 $request->getRouter()->redirect('/account');
             }

@@ -57,9 +57,9 @@ class Houses extends Base{
         $idLogged = SessionAdminLogin::idLogged();
         $filter_house_id = filter_var($house_id, FILTER_SANITIZE_NUMBER_INT);
         if($_ENV['MULTI_WORLD'] == 'true'){
-            $select_house = EntityHouses::getHouses('house_id = "'.$filter_house_id.'"')->fetchObject();
+            $select_house = EntityHouses::getHouses([ 'house_id' => $filter_house_id])->fetchObject();
         } else {
-            $select_house = EntityHouses::getHouses('id = "'.$filter_house_id.'"')->fetchObject();
+            $select_house = EntityHouses::getHouses([ 'id' => $filter_house_id])->fetchObject();
         }
         if (empty($select_house)) {
             $request->getRouter()->redirect('/community/houses');
@@ -70,8 +70,8 @@ class Houses extends Base{
         if ($select_house->bid_end == strtotime(date('Y-m-d H:i:s'))) {
             $request->getRouter()->redirect('/community/houses');
         }
-        $owner_name = Player::getPlayer('id = "'.$select_house->owner.'"')->fetchObject();
-        $select_highest_bidder = Player::getPlayer('id = "'.$select_house->highest_bidder.'"')->fetchObject();
+        $owner_name = Player::getPlayer([ 'id' => $select_house->owner])->fetchObject();
+        $select_highest_bidder = Player::getPlayer([ 'id' => $select_house->highest_bidder])->fetchObject();
         if (empty($select_highest_bidder)) {
             $highest_bidder_name = '';
         } else {
@@ -101,9 +101,9 @@ class Houses extends Base{
             'guildid' => $select_house->guildid,
             'beds' => $select_house->beds,
         ];
-        $select_players = Player::getPlayer('account_id = "'.$idLogged.'"');
+        $select_players = Player::getPlayer([ 'account_id' => $idLogged]);
         while ($player = $select_players->fetchObject()) {
-            $select_house_owner = EntityHouses::getHouses('owner = "'.$player->id.'"')->fetchObject();
+            $select_house_owner = EntityHouses::getHouses([ 'owner' => $player->id])->fetchObject();
             if (empty($select_house_owner)) {
                 if ($player->world == $select_house->world_id) {
                     $arrayPlayers[] = [
@@ -145,9 +145,9 @@ class Houses extends Base{
         $filter_bid_player = filter_var($postVars['bid_player'], FILTER_SANITIZE_NUMBER_INT);
         $filter_house_id = filter_var($house_id, FILTER_SANITIZE_NUMBER_INT);
         if($_ENV['MULTI_WORLD'] == 'true'){
-            $select_house = EntityHouses::getHouses('house_id = "'.$filter_house_id.'"')->fetchObject();
+            $select_house = EntityHouses::getHouses([ 'house_id' => $filter_house_id])->fetchObject();
         } else {
-            $select_house = EntityHouses::getHouses('id = "'.$filter_house_id.'"')->fetchObject();
+            $select_house = EntityHouses::getHouses([ 'id' => $filter_house_id])->fetchObject();
         }
         if (empty($select_house)) {
             $request->getRouter()->redirect('/community/houses');
@@ -159,7 +159,7 @@ class Houses extends Base{
             $status = 'Your bid must be higher than the last one.';
             return self::viewBid($request, $house_id, $status);
         }
-        $select_player = Player::getPlayer('id = "'.$filter_bid_player.'"')->fetchObject();
+        $select_player = Player::getPlayer([ 'id' => $filter_bid_player])->fetchObject();
         if (empty($select_player)) {
             $request->getRouter()->redirect('/community/houses/' . $house_id . '/view');
         }
@@ -216,7 +216,7 @@ class Houses extends Base{
             $queryParams['world'] = null;
         }
         $filter_world = filter_var($queryParams['world'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $select_world = EntityWorlds::getWorlds('name = "'.$filter_world.'"')->fetchObject();
+        $select_world = EntityWorlds::getWorlds([ 'name' => $filter_world])->fetchObject();
         if($_ENV['MULTI_WORLD'] == 'true'){
             if (empty($select_world)) {
                 $world = 1;
@@ -246,9 +246,9 @@ class Houses extends Base{
             $title_Type = 'Guildhalls';
         }
         if($_ENV['MULTI_WORLD'] == 'true'){
-            $selectHouse = EntityHouses::getHouses('town_id = "'.$page_Town.'" AND world_id = "'.$world.'"', ''.$query_Order.'');
+            $selectHouse = EntityHouses::getHouses([ 'town_id' => $page_Town, 'world_id' => $world], $query_Order);
         } else {
-            $selectHouse = EntityHouses::getHouses('town_id = "'.$page_Town.'"', ''.$query_Order.'');
+            $selectHouse = EntityHouses::getHouses([ 'town_id' => $page_Town], $query_Order);
         }
         while($obHouse = $selectHouse->fetchObject()){
             $bid_date_end = floor(($obHouse->bid_end - strtotime(date('Y-m-d'))) / (60 * 60 * 24));
@@ -296,20 +296,20 @@ class Houses extends Base{
         }
         $filter_house_id = filter_var($house_id, FILTER_SANITIZE_NUMBER_INT);
         if($_ENV['MULTI_WORLD'] == 'true'){
-            $select_house = EntityHouses::getHouses('house_id = "'.$filter_house_id.'"')->fetchObject();
+            $select_house = EntityHouses::getHouses([ 'house_id' => $filter_house_id])->fetchObject();
         } else {
-            $select_house = EntityHouses::getHouses('id = "'.$filter_house_id.'"')->fetchObject();
+            $select_house = EntityHouses::getHouses([ 'id' => $filter_house_id])->fetchObject();
         }
         if (empty($select_house)) {
             $request->getRouter()->redirect('/community/houses');
         }
-        $select_highest_bidder = Player::getPlayer('id = "'.$select_house->highest_bidder.'"')->fetchObject();
+        $select_highest_bidder = Player::getPlayer([ 'id' => $select_house->highest_bidder])->fetchObject();
         if (empty($select_highest_bidder)) {
             $highest_bidder_name = '';
         } else {
             $highest_bidder_name = $select_highest_bidder->name;
         }
-        $select_owner = Player::getPlayer('id = "'.$select_house->owner.'"')->fetchObject();
+        $select_owner = Player::getPlayer([ 'id' => $select_house->owner])->fetchObject();
         if (empty($select_owner)) {
             $owner_name = '';
         } else {

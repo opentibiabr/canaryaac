@@ -137,7 +137,7 @@ class Server{
         $worldQuests = [];
         $selectWorldQuests = (new Database('global_storage'))->select();
         while($obWorldQuests = $selectWorldQuests->fetchObject()){
-            $selectQuests = (new Database('canary_worldquests'))->select('storage = "'.$obWorldQuests->key.'"');
+            $selectQuests = (new Database('canary_worldquests'))->select([ 'storage' => $obWorldQuests->key]);
             while($obQuests = $selectQuests->fetchObject()){
                 $worldQuests = [
                     'name' => $obQuests->name,
@@ -150,7 +150,7 @@ class Server{
 
     public static function convertTown($town_id)
     {
-        $selectTowns = (new Database('canary_towns'))->select('town_id = "'.$town_id.'"');
+        $selectTowns = (new Database('canary_towns'))->select([ 'town_id' => $town_id]);
         while($obTowns = $selectTowns->fetchObject()){
             return $obTowns->name;
         }
@@ -225,7 +225,7 @@ class Server{
 
     public static function getRecordPlayers($world_id = 1)
     {
-        $selectRecordPlayers = (new Database('server_config'))->select('config = "players_record"');
+        $selectRecordPlayers = (new Database('server_config'))->select([ 'config' => "players_record"]);
         while($obRecordPlayers = $selectRecordPlayers->fetchObject()){
             $playersRecord = [
                 'record' => $obRecordPlayers->value,
@@ -238,7 +238,7 @@ class Server{
     public static function getRecordPlayersWorlds()
     {
         $players_record = 0;
-        $selectRecordPlayers = (new Database('server_config'))->select('config = "players_record"');
+        $selectRecordPlayers = (new Database('server_config'))->select([ 'config' => "players_record"]);
         while($obRecordPlayers = $selectRecordPlayers->fetchObject()){
             $players_record = $players_record + $obRecordPlayers->value;
             $playersRecord = [
@@ -255,7 +255,7 @@ class Server{
 
         while($obPlayersOnline = $select->fetchObject()){
 
-            $selectPlayers = (new Database('players'))->select('id = "'.$obPlayersOnline->player_id.'"');
+            $selectPlayers = (new Database('players'))->select([ 'id' => $obPlayersOnline->player_id]);
 
             while($obPlayer = $selectPlayers->fetchObject()){
                 $playersOnline[] = [
@@ -270,13 +270,13 @@ class Server{
 
     public static function getCountPlayersOnline()
     {
-        $select = (new Database('players_online'))->select(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+        $select = (new Database('players_online'))->select(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
         return $select;
     }
 
     public static function getServerStatus()
     {
-        $select = (new Database('players_online'))->select(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+        $select = (new Database('players_online'))->select(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
         if($select > 0){
             $status = 'Server Online';
         }else{
@@ -376,7 +376,7 @@ class Server{
 
     public static function getWorldById($world_id)
     {
-        $selectWorlds = (new Database('canary_worlds'))->select('id = "'.$world_id.'"');
+        $selectWorlds = (new Database('canary_worlds'))->select([ 'id' => $world_id]);
 
         while($obWorlds = $selectWorlds->fetchObject()){
             $world = [

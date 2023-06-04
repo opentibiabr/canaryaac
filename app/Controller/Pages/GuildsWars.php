@@ -18,7 +18,7 @@ class GuildsWars extends Base{
 
     public static function getGuildWars($war_status)
     {
-        $select_wars = EntityGuilds::getWars('status = "'.$war_status.'"');
+        $select_wars = EntityGuilds::getWars([ 'status' => $war_status]);
         while ($war = $select_wars->fetchObject()) {
 
             $select_guild1 = Guilds::getGuildbyId($war->guild1);

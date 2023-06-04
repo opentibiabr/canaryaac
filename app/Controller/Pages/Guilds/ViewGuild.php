@@ -23,7 +23,7 @@ class ViewGuild extends Base{
 	{
 		$decodeUrl = urldecode($guild_name);
 		$filterName = filter_var($decodeUrl, FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbGuild = EntityGuilds::getGuilds('name = "'.$filterName.'"')->fetchObject();
+		$dbGuild = EntityGuilds::getGuilds([ 'name' => $filterName])->fetchObject();
 		if($dbGuild == true){
 			$guild_id = $dbGuild->id;
 		}
@@ -50,7 +50,7 @@ class ViewGuild extends Base{
     {
         $queryParams = $request->getQueryParams();
         $currentWorld = $queryParams['world'] ?? '';
-        $selectWorlds = EntityWorlds::getWorlds('name = "'.$currentWorld.'"')->fetchObject();
+        $selectWorlds = EntityWorlds::getWorlds([ 'name' => $currentWorld])->fetchObject();
         if(empty($selectWorlds)){
             return null;
         }else{
@@ -65,7 +65,7 @@ class ViewGuild extends Base{
 			$queryParams['world'] = '';
 		}
 		$filter_world = filter_var($queryParams['world'], FILTER_SANITIZE_SPECIAL_CHARS);
-		$select_world = EntityWorlds::getWorlds('name = "'.$filter_world.'"')->fetchObject();
+		$select_world = EntityWorlds::getWorlds([ 'name' => $filter_world])->fetchObject();
 		if (empty($select_world)) {
 			$select_world_id = 1;
 		} else {

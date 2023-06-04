@@ -21,16 +21,16 @@ class LastDeaths extends Base{
     {
         $queryParams = $request->getQueryParams();
         $currentPage = $queryParams['page'] ?? 1;
-        $totalAmount = EntityPlayer::getDeaths(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+        $totalAmount = EntityPlayer::getDeaths(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
 
         $obPagination = new Pagination($totalAmount, $currentPage, 10);
         $select_deaths = EntityPlayer::getDeaths(null, 'time DESC', $obPagination->getLimit());
 
         while($obDeaths = $select_deaths->fetchObject(EntityPlayer::class)){
 
-            $countDeaths = (int)EntityPlayer::getDeaths(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+            $countDeaths = (int)EntityPlayer::getDeaths(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
 
-            $select_player_death = EntityPlayer::getPlayer('id = "'.$obDeaths->player_id.'"')->fetchObject();
+            $select_player_death = EntityPlayer::getPlayer([ 'id' => $obDeaths->player_id])->fetchObject();
 
             $lasthit = ($obDeaths->is_player) ? $obDeaths->killed_by : $obDeaths->killed_by;
             $description = '<a href="'.URL.'/community/characters/'.$select_player_death->name.'">' . $select_player_death->name . '</a> died at level <b>' . $obDeaths->level . '</b> by ' . $lasthit;

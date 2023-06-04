@@ -40,7 +40,7 @@ class Achievements{
 
     public static function getAchievementByGrade($grade_id = 1)
     {
-        $select_achievements = EntityAchievements::getAchievements('grade = "'.$grade_id.'"');
+        $select_achievements = EntityAchievements::getAchievements([ 'grade' => $grade_id]);
         while ($achievements = $select_achievements->fetchObject()) {
             $base_storage = 300000 + $achievements->storage;
 
@@ -65,7 +65,7 @@ class Achievements{
 
     public static function getAchievementPlayer($grade_id = 1, $player_id)
     {
-        $select_achievements = EntityAchievements::getAchievements('grade = "'.$grade_id.'"');
+        $select_achievements = EntityAchievements::getAchievements([ 'grade' => $grade_id]);
         while ($achievements = $select_achievements->fetchObject()) {
             $base_storage = 300000 + $achievements->storage;
 

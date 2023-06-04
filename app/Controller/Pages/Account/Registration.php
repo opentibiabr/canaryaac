@@ -98,7 +98,7 @@ class Registration extends Base{
         }
         
 
-        $accountLogged = EntityAccount::getAccount('id = "'.$LoggedId.'"')->fetchObject();
+        $accountLogged = EntityAccount::getAccount([ 'id' => $LoggedId])->fetchObject();
         if($accountLogged->password != $convertPassword){
             return self::getRegistration($request, 'Error');
         }
@@ -131,7 +131,7 @@ class Registration extends Base{
             'mobile' => $filter_mobilenumber,
         ];
 
-        $selectRegister = EntityAccount::getAccountRegistration('account_id = "'.$LoggedId.'"')->fetchObject();
+        $selectRegister = EntityAccount::getAccountRegistration([ 'account_id' => $LoggedId])->fetchObject();
         if($selectRegister == true){
             $update = EntityAccount::updateRegister('account_id = "'.$LoggedId.'"', $UpdateRegistration);
             return self::getRegistration($request, 'Updated successfully.');
@@ -139,7 +139,7 @@ class Registration extends Base{
             $insert = EntityAccount::insertRegister($InsertRegistration);
         }
 
-        $recoveryKeyReturn = EntityAccount::getAccountRegistration('account_id = "'.$LoggedId.'"')->fetchObject();
+        $recoveryKeyReturn = EntityAccount::getAccountRegistration([ 'account_id' => $LoggedId])->fetchObject();
 
         $content = View::render('pages/account/registration_confirm', [
             'recoverykey' => $recoveryKeyReturn->recovery,
@@ -151,7 +151,7 @@ class Registration extends Base{
     {
         if(SessionAdminLogin::isLogged() == true){
             $LoggedId = SessionAdminLogin::idLogged();
-            $selectRegister = EntityAccount::getAccountRegistration('account_id = "'.$LoggedId.'"')->fetchObject();
+            $selectRegister = EntityAccount::getAccountRegistration([ 'account_id' => $LoggedId])->fetchObject();
             if($selectRegister == true){
                 $account = [
                     'status' => true,

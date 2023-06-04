@@ -67,7 +67,7 @@ class Login extends Base{
             return self::getLogin($request, 'true');
         }
 
-        $authentication = Account::getAuthentication('account_id = "'.$obAccount->id.'"')->fetchObject();
+        $authentication = Account::getAuthentication([ 'account_id' => $obAccount->id])->fetchObject();
         if (!empty($authentication)) {
             if ($authentication->status == 1) {
                 if (empty($postVars['token'])) {

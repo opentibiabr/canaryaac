@@ -86,8 +86,10 @@ var unloadhelper = false;
 var menuItemName = '';
 
 function LoadMenu(){
-    document.getElementById("submenu_"+activeSubmenuItem).style.color="white";
-    document.getElementById("ActiveSubmenuItemIcon_"+activeSubmenuItem).style.visibility="visible";
+    var element = document.getElementById("submenu_" + activeSubmenuItem);
+    if (element) {
+        element.style.color = "white";
+    }
     if(self.name.lastIndexOf("&")==-1){
         self.name="news=1&library=0&community=0&account=0&wars=0&support=0&shop=0&";
     }

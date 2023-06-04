@@ -23,7 +23,7 @@ class ResignLeadership extends Base{
 	{
 		$decodeUrl = urldecode($guild_name);
 		$filterName = filter_var($decodeUrl, FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbGuild = EntityGuilds::getGuilds('name = "'.$filterName.'"')->fetchObject();
+		$dbGuild = EntityGuilds::getGuilds([ 'name' => $filterName])->fetchObject();
 		if($dbGuild == true){
 			$guild_id = $dbGuild->id;
 		}
@@ -53,19 +53,19 @@ class ResignLeadership extends Base{
 		$filter_character = filter_var($postVars['character'], FILTER_SANITIZE_SPECIAL_CHARS);
 		$filter_password = filter_var($postVars['password'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-		$dbAccount = EntityAccount::getAccount('id = "'.$idLogged.'" AND password = "'.$filter_password.'"')->fetchObject();
+		$dbAccount = EntityAccount::getAccount([ 'id' => $idLogged, 'password' => $filter_password])->fetchObject();
 		if(empty($dbAccount)){
 			$status = 'Something went wrong.';
 			self::viewResignLeadership($request,$name,$status);
 		}
 
-		$dbPlayer = EntityPlayer::getPlayer('name = "'.$filter_character.'"')->fetchObject();
+		$dbPlayer = EntityPlayer::getPlayer([ 'name' => $filter_character])->fetchObject();
 		if(empty($dbPlayer)){
 			$status = 'Character does not exist.';
 			self::viewResignLeadership($request,$name,$status);
 		}
 
-		$dbMember = EntityGuilds::getMembership('player_id = "'.$dbPlayer->id.'" AND guild_id = "'.$guild_id.'"')->fetchObject();
+		$dbMember = EntityGuilds::getMembership([ 'player_id' => $dbPlayer->id, 'guild_id' => $guild_id])->fetchObject();
 		if(empty($dbMember)){
 			$status = 'Must be a member of the Guild.';
 			self::viewResignLeadership($request,$name,$status);

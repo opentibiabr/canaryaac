@@ -21,10 +21,10 @@ class Home extends Base{
 
     public static function getTotalVocations()
     {
-        $voc_sorcerer = (int)EntityPlayer::getPlayer('vocation = 1 or vocation = 5', null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
-        $voc_druid = (int)EntityPlayer::getPlayer('vocation = 2', null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
-        $voc_knight = (int)EntityPlayer::getPlayer('vocation = 3', null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
-        $voc_paladin = (int)EntityPlayer::getPlayer('vocation = 4', null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+        $voc_sorcerer = EntityPlayer::getPlayer(['vocation' => [1, 5]], null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
+        $voc_druid = (int)EntityPlayer::getPlayer(['vocation' => [2, 6]], null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
+        $voc_knight = (int)EntityPlayer::getPlayer(['vocation' => [4, 8]], null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
+        $voc_paladin = (int)EntityPlayer::getPlayer(['vocation' => [3, 7]], null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
 
         $vocations = [
             'sorcerer' => $voc_sorcerer,
@@ -58,11 +58,11 @@ class Home extends Base{
         $content = View::render('admin/modules/home/index', [
             'boosted_boss' => FunctionsServer::getBoostedBoss(),
             'boosted_creature' => FunctionsServer::getBoostedCreature(),
-            'total_guilds' => (int)EntityGuild::getGuilds(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
+            'total_guilds' => (int)EntityGuild::getGuilds(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
             'total_houses' => (int)EntityHouses::getHouses(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
-            'total_marketoffers' => (int)EntityMarket::getMarketOffers(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
-            'total_accounts' => (int)EntityPlayer::getAccount(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
-            'total_players' => (int)EntityPlayer::getPlayer(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
+            'total_marketoffers' => (int)EntityMarket::getMarketOffers(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
+            'total_accounts' => (int)EntityPlayer::getAccount(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
+            'total_players' => (int)EntityPlayer::getPlayer(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
             'total_vocations' => self::getTotalVocations(),
             'donate_stats' => self::statsDonates()
         ]);

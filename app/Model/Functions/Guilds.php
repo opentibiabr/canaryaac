@@ -40,7 +40,7 @@ class Guilds{
 	public static function getGuildbyId($guild_id)
 	{
 		$arrayGuild = [];
-		$guild = EntityGuild::getGuilds('id = "'.$guild_id.'"')->fetchObject();
+		$guild = EntityGuild::getGuilds([ 'id' => $guild_id])->fetchObject();
 		$arrayGuild = [
 			'id' => (int)$guild->id,
 			'level' => (int)$guild->level,
@@ -59,7 +59,7 @@ class Guilds{
 
 	public static function getGuildbyWorldId($world_id)
 	{
-		$select_guilds = EntityGuild::getGuilds('world_id = "'.$world_id.'"');
+		$select_guilds = EntityGuild::getGuilds([ 'world_id' => $world_id]);
 		while ($guild = $select_guilds->fetchObject()) {
 			$arrayGuild[] = [
 				'id' => (int)$guild->id,
@@ -81,7 +81,7 @@ class Guilds{
 
 	public static function convertRankGuild($rank_id)
 	{
-		$dbRank = EntityGuild::getRanks('id = "'.$rank_id.'"')->fetchObject();
+		$dbRank = EntityGuild::getRanks([ 'id' => $rank_id])->fetchObject();
 		$arrayPlayerRank = [
 			'id' => $dbRank->id,
 			'guild_id' => $dbRank->guild_id,
@@ -93,7 +93,7 @@ class Guilds{
 
 	public static function getRanks($guild_id)
 	{
-		$dbRanks = EntityGuild::getRanks('guild_id = "'.$guild_id.'"');
+		$dbRanks = EntityGuild::getRanks([ 'guild_id' => $guild_id]);
 		while($rank = $dbRanks->fetchObject()){
 			$arrayRank[] = [
 				'id' => $rank->id,
@@ -107,9 +107,9 @@ class Guilds{
 
 	public static function getMembersbyRank($guild_id, $rank_id)
 	{
-		$dbGuild_Members = EntityGuild::getMembership('guild_id = "'.$guild_id.'" AND rank_id = "'.$rank_id.'"');
+		$dbGuild_Members = EntityGuild::getMembership([ 'guild_id' => $guild_id, 'rank_id' => $rank_id]);
 		while ($member = $dbGuild_Members->fetchObject()){
-			$dbNameMember = EntityPlayer::getPlayer('id = "'.$member->player_id.'"')->fetchObject();
+			$dbNameMember = EntityPlayer::getPlayer([ 'id' => $member->player_id])->fetchObject();
 			$arrayMembers[] = [
 				'player_id' => $member->player_id,
 				'player_name' => $dbNameMember->name,
@@ -127,7 +127,7 @@ class Guilds{
 
 	public static function getAllMembers($guild_id)
 	{
-		$dbGuild_Ranks = EntityGuild::getRanks('guild_id = "'.$guild_id.'"', 'level DESC');
+		$dbGuild_Ranks = EntityGuild::getRanks([ 'guild_id' => $guild_id], 'level DESC');
 		while($guild_ranks = $dbGuild_Ranks->fetchObject()){
 			$arrayMembers = self::getMembersbyRank($guild_id, $guild_ranks->id);
 			$arrayRanks[] = [
@@ -141,9 +141,9 @@ class Guilds{
 	public static function getGuildMembership($guild_id)
 	{
 		$members = [];
-		$dbMembers = EntityGuild::getMembership('guild_id = "'.$guild_id.'"');
+		$dbMembers = EntityGuild::getMembership([ 'guild_id' => $guild_id]);
 		while($member = $dbMembers->fetchObject()){
-			$dbNameMember = EntityPlayer::getPlayer('id = "'.$member->player_id.'"')->fetchObject();
+			$dbNameMember = EntityPlayer::getPlayer([ 'id' => $member->player_id])->fetchObject();
 			$members[] = [
 				'player_name' => $dbNameMember->name,
 				'player_id' => $member->player_id,
@@ -158,9 +158,9 @@ class Guilds{
 	public static function getGuildInvites($guild_id)
 	{
 		$invites = [];
-		$dbInvites = EntityGuild::getInvites('guild_id = "'.$guild_id.'"');
+		$dbInvites = EntityGuild::getInvites([ 'guild_id' => $guild_id]);
 		while($invited = $dbInvites->fetchObject()){
-			$dbNameInvites = EntityPlayer::getPlayer('id = "'.$invited->player_id.'"')->fetchObject();
+			$dbNameInvites = EntityPlayer::getPlayer([ 'id' => $invited->player_id])->fetchObject();
 			$invites[] = [
 				'player_name' => $dbNameInvites->name,
 				'player_id' => $invited->player_id,
@@ -177,11 +177,11 @@ class Guilds{
 		if (SessionAdminLogin::isLogged() == true) {
 			$LoggedId = SessionAdminLogin::idLogged();
 
-			$dbMembers = EntityGuild::getMembership('guild_id = "' . $guild_id . '"');
+			$dbMembers = EntityGuild::getMembership([ 'guild_id' => $guild_id]);
 			while ($member = $dbMembers->fetchObject()) {
 
 				$rankConverted = self::convertRankGuild($member->rank_id);
-				$dbPlayer = EntityPlayer::getPlayer('id = "' . $member->player_id . '" AND account_id = "' . $LoggedId . '"')->fetchObject();
+				$dbPlayer = EntityPlayer::getPlayer([ 'id' => $member->player_id, 'account_id' => $LoggedId])->fetchObject();
 
 				if ($dbPlayer == true) {
 					if($rankConverted['rank_level'] == 3){
@@ -198,9 +198,9 @@ class Guilds{
 		$verifyViceLeader = false;
 		if (SessionAdminLogin::isLogged() == true) {
 			$LoggedId = SessionAdminLogin::idLogged();
-			$dbMembers = EntityGuild::getMembership('guild_id = "' . $guild_id . '" AND rank_id = 2');
+			$dbMembers = EntityGuild::getMembership([ 'guild_id' => $guild_id, 'rank_id' => 2]);
 			while ($member = $dbMembers->fetchObject()) {
-				$dbPlayer = EntityPlayer::getPlayer('id = "' . $member->player_id . '" AND account_id = "' . $LoggedId . '"')->fetchObject();
+				$dbPlayer = EntityPlayer::getPlayer([ 'id' => $member->player_id, 'account_id' => $LoggedId])->fetchObject();
 				if ($dbPlayer == true) {
 					$verifyViceLeader = true;
 				}
@@ -214,9 +214,9 @@ class Guilds{
 		$verifyMember = false;
 		if (SessionAdminLogin::isLogged() == true) {
 			$LoggedId = SessionAdminLogin::idLogged();
-			$dbMembers = EntityGuild::getMembership('guild_id = "' . $guild_id . '"');
+			$dbMembers = EntityGuild::getMembership([ 'guild_id' => $guild_id]);
 			while ($member = $dbMembers->fetchObject()) {
-				$dbPlayer = EntityPlayer::getPlayer('id = "' . $member->player_id . '" AND account_id = "' . $LoggedId . '"')->fetchObject();
+				$dbPlayer = EntityPlayer::getPlayer([ 'id' => $member->player_id, 'account_id' => $LoggedId])->fetchObject();
 				if ($dbPlayer == true) {
 					$verifyMember = true;
 				}
@@ -230,9 +230,9 @@ class Guilds{
 		$verifyInvited = false;
 		if (SessionAdminLogin::isLogged() == true) {
 			$LoggedId = SessionAdminLogin::idLogged();
-			$dbInvited = EntityGuild::getInvites('guild_id = "' . $guild_id . '"');
+			$dbInvited = EntityGuild::getInvites([ 'guild_id' => $guild_id]);
 			while ($invited = $dbInvited->fetchObject()) {
-				$dbPlayer = EntityPlayer::getPlayer('id = "' . $invited->player_id . '" AND account_id = "' . $LoggedId . '"')->fetchObject();
+				$dbPlayer = EntityPlayer::getPlayer([ 'id' => $invited->player_id, 'account_id' => $LoggedId])->fetchObject();
 				if ($dbPlayer == true) {
 					$verifyInvited = true;
 				}

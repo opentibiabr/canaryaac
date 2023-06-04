@@ -67,9 +67,9 @@ class Base{
                 'color' => 'd7d7d7',
                 'category' => 'news',
             ],
-            'Event Schedule' => [
+            'eventschedule' => [
                 'name' => 'Event Schedule',
-                'tag' => 'Event Schedule',
+                'tag' => 'eventschedule',
                 'link' => 'eventcalendar',
                 'color' => 'd7d7d7',
                 'category' => 'news',

@@ -21,7 +21,7 @@ class Newsarchive extends Base{
         if (!filter_var($id, FILTER_VALIDATE_INT)){
             $request->getRouter()->redirect('/newsarchive');
         }
-        $news = EntityNews::getNews('id = "'.$id.'"')->fetchObject();
+        $news = EntityNews::getNews([ 'id' => $id])->fetchObject();
         if (!$news) {
             $request->getRouter()->redirect('/newsarchive');
         }
@@ -89,7 +89,7 @@ class Newsarchive extends Base{
             $active_type_news = 1;
         }
 
-        $selectNews = EntityNews::getNews('date BETWEEN "'.$begin_date.'" AND "'.$end_date.'"', 'date ASC');
+        $selectNews = EntityNews::getNews(['date BETWEEN' => [$begin_date, $end_date]], 'date ASC');
         while ($news = $selectNews->fetchObject()) {
             if ($news->type == $active_type_ticker) {
                 $arrayNews[] = [

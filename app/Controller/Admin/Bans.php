@@ -19,7 +19,7 @@ class Bans extends Base{
     {
         $queryParams = $request->getQueryParams();
         $currentPage = $queryParams['page'] ?? 1;
-        $totalAmount = EntityBans::getAccountBans(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+        $totalAmount = EntityBans::getAccountBans(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
         $obPagination = new Pagination($totalAmount, $currentPage, 10);
         $results = EntityBans::getAccountBans(null, null, $obPagination->getLimit());
         while($obAllBans = $results->fetchObject(EntityBans::class)){

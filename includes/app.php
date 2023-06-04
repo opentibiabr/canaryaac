@@ -12,6 +12,7 @@ Dotenv::createImmutable(__DIR__.'/../')->load();
 // Defines the URL constant
 define('URL', $_ENV['URL']);
 define('OUTFITS_FOLDER', $_ENV['OUTFITS_FOLDER']);
+define('SITE_NAME', !empty($_ENV['SITE_NAME']) ? $_ENV['SITE_NAME'] : 'Canary AAC');
 
 // Configure Database settings
 Database::config(

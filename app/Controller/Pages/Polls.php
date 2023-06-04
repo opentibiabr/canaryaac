@@ -27,7 +27,7 @@ class Polls extends Base{
         $postVars = $request->getPostVars();
         $AccountId = SessionPlayerLogin::idLogged();
 
-        $select_poll = EntityPolls::getPolls('id = "'.$id.'"')->fetchObject();
+        $select_poll = EntityPolls::getPolls([ 'id' => $id])->fetchObject();
         if (empty($select_poll)) {
             $request->getRouter()->redirect('/community/polls');
         }
@@ -41,7 +41,7 @@ class Polls extends Base{
         if (!filter_var($postVars['poll_question'], FILTER_VALIDATE_INT)) {
             return self::viewPollById($request, $id);
         }
-        $select_questions = EntityPolls::getPollQuestions('id = "'.$postVars['poll_question'].'"')->fetchObject();
+        $select_questions = EntityPolls::getPollQuestions([ 'id' => $postVars['poll_question']])->fetchObject();
         if (empty($select_questions)) {
             $request->getRouter()->redirect('/community/polls');
         }
@@ -71,12 +71,12 @@ class Polls extends Base{
         }
         $AccountId = SessionPlayerLogin::idLogged();
 
-        $select_poll = EntityPolls::getPolls('id = "'.$id.'"')->fetchObject();
+        $select_poll = EntityPolls::getPolls([ 'id' => $id])->fetchObject();
         if (empty($select_poll)) {
             $request->getRouter()->redirect('/community/polls');
         }
 
-        $currentDate = strtotime(date('Y-m-d'));
+        $currentDate = strtotime(date('Y-m-d 23:59:59'));
         if ($select_poll->date_end < $currentDate) {
             $active_poll = true;
         }
@@ -105,11 +105,11 @@ class Polls extends Base{
         date_default_timezone_set($websiteInfo->timezone);
 
         $queryParams = $request->getQueryParams();
-        $totaAmount = EntityPolls::getPolls(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+        $totaAmount = EntityPolls::getPolls(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
         $currentPage = $queryParams['page'] ?? 1;
         $obPagination = new Pagination($totaAmount, $currentPage, 10);
-        $currentDate = strtotime(date('Y-m-d'));
-        $select_Polls = EntityPolls::getPolls('date_end < "'.$currentDate.'"', null, $obPagination->getLimit());
+        $currentDate = strtotime(date('Y-m-d 23:59:59'));
+        $select_Polls = EntityPolls::getPolls(['date_end <' => $currentDate], null, $obPagination->getLimit());
 
         while ($poll = $select_Polls->fetchObject()) {
             if ($poll->date_end < $currentDate) {

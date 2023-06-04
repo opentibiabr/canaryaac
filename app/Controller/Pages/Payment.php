@@ -23,8 +23,8 @@ class Payment extends Base{
     public static function viewPayment()
     {
         $idLogged = SessionAdminLogin::idLogged();
-        $dbAccount = EntityAccount::getAccount('id = "'.$idLogged.'"')->fetchObject();
-        $donateConfigs = EntityServerConfig::getInfoWebsite('id = "1"')->fetchObject();
+        $dbAccount = EntityAccount::getAccount([ 'id' => $idLogged])->fetchObject();
+        $donateConfigs = EntityServerConfig::getInfoWebsite([ 'id' => 1])->fetchObject();
 
         $select_products = EntityServerConfig::getProducts(null, 'id ASC');
         $product_web_id = 192;
@@ -52,7 +52,7 @@ class Payment extends Base{
     public static function viewPaymentData($request)
     {
         $idLogged = SessionAdminLogin::idLogged();
-        $dbAccount = EntityAccount::getAccount('id = "'.$idLogged.'"')->fetchObject();
+        $dbAccount = EntityAccount::getAccount([ 'id' => $idLogged])->fetchObject();
         $postVars = $request->getPostVars();
 
         if(!isset($postVars['payment_country'])){
@@ -76,7 +76,7 @@ class Payment extends Base{
 
     public static function viewPaymentConfirm($request)
     {
-        $donateConfigs = EntityServerConfig::getInfoWebsite('id = "1"')->fetchObject();
+        $donateConfigs = EntityServerConfig::getInfoWebsite([ 'id' => 1])->fetchObject();
         $postVars = $request->getPostVars();
 
         if(!isset($postVars['payment_email'])){
@@ -102,8 +102,8 @@ class Payment extends Base{
     public static function viewPaymentSummary($request)
     {
         $idLogged = SessionAdminLogin::idLogged();
-        $dbAccount = EntityAccount::getAccount('id = "'.$idLogged.'"')->fetchObject();
-        $donateConfigs = EntityServerConfig::getInfoWebsite('id = "1"')->fetchObject();
+        $dbAccount = EntityAccount::getAccount([ 'id' => $idLogged])->fetchObject();
+        $donateConfigs = EntityServerConfig::getInfoWebsite([ 'id' => 1])->fetchObject();
         $postVars = $request->getPostVars();
 
         if($postVars['TermsOfService'] != 1){

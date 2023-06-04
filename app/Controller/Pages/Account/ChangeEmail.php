@@ -37,9 +37,9 @@ class ChangeEmail extends Base{
             return self::viewChangeEmail($request);
         }
         $AccountId = SessionAdminLogin::idLogged();
-        $account = EntityPlayer::getAccount('id = "'.$AccountId.'"')->fetchObject();
+        $account = EntityPlayer::getAccount([ 'id' => $AccountId])->fetchObject();
         
-        $duplicateEmail = EntityPlayer::getAccount('email = "'.$newemail.'"')->fetchObject();
+        $duplicateEmail = EntityPlayer::getAccount([ 'email' => $newemail])->fetchObject();
         if($duplicateEmail == true){
             return self::viewChangeEmail($request);
         }

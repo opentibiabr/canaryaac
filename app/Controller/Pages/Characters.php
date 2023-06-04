@@ -55,8 +55,8 @@ class Characters extends Base
         $filter_name = filter_var($name, FILTER_SANITIZE_URL);
         $decode_name = urldecode($filter_name);
         if (!empty($decode_name)) {
-            $obPlayer = EntityPlayer::getPlayer('name = "' . $decode_name . '"')->fetchObject();
-            $dbAccount = Account::getAccount('id = "' . $obPlayer->account_id . '"')->fetchObject();
+            $obPlayer = EntityPlayer::getPlayer([ 'name' => $decode_name])->fetchObject();
+            $dbAccount = Account::getAccount([ 'id'=> $obPlayer->account_id])->fetchObject();
             if ($obPlayer == false) {
                 $request->getRouter()->redirect('/community/characters');
             }
@@ -64,7 +64,7 @@ class Characters extends Base
 
         if (!empty($dbAccount)) {
             $outfits = self::getOutfits();
-            $select_storage_outfit = EntityPlayer::getStorage('player_id = "' . $obPlayer->id . '"');
+            $select_storage_outfit = EntityPlayer::getStorage([ 'player_id =' => $obPlayer->id]);
             while ($outfit = $select_storage_outfit->fetchObject()) {
                 if (self::isInRangeOutfits($outfit->key, $outfit)) {
                     $index = $outfit->value >> 16;
@@ -100,7 +100,7 @@ class Characters extends Base
             }
 
             $mounts = self::getMounts();
-            $select_storage_mount = EntityPlayer::getStorage('player_id = "' . $obPlayer->id . '"');
+            $select_storage_mount = EntityPlayer::getStorage([ 'player_id =' => $obPlayer->id]);
             while ($mount = $select_storage_mount->fetchObject()) {
                 if (self::isInRangeMounts($mount->key, $mount)) {
                     $binaryValue = decbin($mount->value);

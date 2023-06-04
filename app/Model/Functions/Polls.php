@@ -21,10 +21,11 @@ class Polls
         $websiteInfo = EntityServerConfig::getInfoWebsite()->fetchObject();
         date_default_timezone_set($websiteInfo->timezone);
 
-        $currentDate = strtotime(date('Y-m-d'));
+        $currentDate = strtotime(date('Y-m-d 23:59:59'));
         $select_Polls = EntityPolls::getPolls(null, 'date_end DESC');
+        $arrayPolls = [];
         while ($poll = $select_Polls->fetchObject()) {
-            if ($poll->date_end > $currentDate) {
+            if ($poll->date_end >= $currentDate) {
                 $arrayPolls[] = [
                     'id' => $poll->id,
                     'player_id' => $poll->player_id,
@@ -35,7 +36,7 @@ class Polls
                 ];
             }
         }
-        return $arrayPolls ?? '';
+        return $arrayPolls;
     }
 
     public static function getEndPolls()
@@ -43,8 +44,9 @@ class Polls
         $websiteInfo = EntityServerConfig::getInfoWebsite()->fetchObject();
         date_default_timezone_set($websiteInfo->timezone);
 
-        $currentDate = strtotime(date('Y-m-d'));
+        $currentDate = strtotime(date('Y-m-d 23:59:59'));
         $select_Polls = EntityPolls::getPolls(null, 'date_end DESC');
+        $arrayPolls = [];
         while ($poll = $select_Polls->fetchObject()) {
             if ($poll->date_end < $currentDate) {
                 $arrayPolls[] = [
@@ -57,14 +59,14 @@ class Polls
                 ];
             }
         }
-        return $arrayPolls ?? '';
+        return $arrayPolls;
     }
 
     public static function getTotalVotesbyPollId($poll_id)
     {
         $filter_PollId = filter_var($poll_id, FILTER_SANITIZE_NUMBER_INT);
         $total_votes = 0;
-        $select_questions = EntityPolls::getPollQuestions('poll_id = "'.$filter_PollId.'"');
+        $select_questions = EntityPolls::getPollQuestions([ 'poll_id' => $filter_PollId]);
         while ($question = $select_questions->fetchObject()) {
             $total_votes += $question->votes;
         }
@@ -77,7 +79,7 @@ class Polls
         date_default_timezone_set($websiteInfo->timezone);
 
         $filter_PollId = filter_var($poll_id, FILTER_SANITIZE_NUMBER_INT);
-        $select_questions = EntityPolls::getPollQuestions('poll_id = "'.$filter_PollId.'"');
+        $select_questions = EntityPolls::getPollQuestions([ 'poll_id' => $filter_PollId]);
         if (empty($select_questions)) {
             return null;
         }
@@ -110,9 +112,9 @@ class Polls
             $account_id = SessionPlayerLogin::idLogged();
         }
 
-        $select_questions = EntityPolls::getPollQuestions('poll_id = "'.$poll_id.'"');
+        $select_questions = EntityPolls::getPollQuestions([ 'poll_id' => $poll_id]);
         while ($question = $select_questions->fetchObject()) {
-            $answer = EntityPolls::getPollAnswer('account_id = "'.$account_id.'" AND poll_id = "'.$question->poll_id.'"')->fetchObject();
+            $answer = EntityPolls::getPollAnswer([ 'account_id' => $account_id, 'poll_id' => $question->poll_id])->fetchObject();
             if ($answer) {
                 if ($answer->question_id == $question->id) {
                     $arrayQuestions[] = [
@@ -146,7 +148,7 @@ class Polls
 
     public static function verifyAccountQuestion($account_id, $question_id)
     {
-        $answer = EntityPolls::getPollAnswer('account_id = "'.$account_id.'" AND question_id = "'.$question_id.'"')->fetchObject();
+        $answer = EntityPolls::getPollAnswer([ 'account_id' => $account_id, 'question_id' => $question_id])->fetchObject();
         if (empty($answer)) {
             return false;
         } else {
@@ -156,7 +158,7 @@ class Polls
 
     public static function verifyAccountAnswer($account_id, $poll_id)
     {
-        $answer = EntityPolls::getPollAnswer('account_id = "'.$account_id.'" AND poll_id = "'.$poll_id.'"')->fetchObject();
+        $answer = EntityPolls::getPollAnswer([ 'account_id' => $account_id,'poll_id' => $poll_id])->fetchObject();
         if (empty($answer)) {
             return false;
         } else {

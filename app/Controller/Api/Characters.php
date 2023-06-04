@@ -25,7 +25,7 @@ class Characters extends Api{
         }
         $filter_name = filter_var($postVars['name'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-        $player = EntityPlayer::getPlayer('name LIKE "%'.$filter_name.'%"', null, 1)->fetchObject(EntityPlayer::class);
+        $player = EntityPlayer::getPlayer(['name LIKE' => $filter_name], null, 1)->fetchObject(EntityPlayer::class);
         $characters = [
             'outfit' => Player::getOutfit($player->id),
             'name' => $player->name,
@@ -46,7 +46,7 @@ class Characters extends Api{
             throw new Exception('Nenhum character foi encontrado.', 404);
         }
         $filter_name = filter_var($postVars['name'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $select_character = EntityPlayer::getPlayer('name LIKE "%'.$filter_name.'%"', null, 10);
+        $select_character = EntityPlayer::getPlayer(['name LIKE' => $filter_name], null, 10);
         while($player = $select_character->fetchObject(EntityPlayer::class)){
             $characters[] = [
                 'outfit' => Player::getOutfit($player->id),
@@ -67,7 +67,7 @@ class Characters extends Api{
         $queryParams = $request->getQueryParams();
 
         // pega informações do player (usando LIKE)
-        $results = EntityPlayer::getPlayerLike('name', $queryParams['name']);
+        $results = EntityPlayer::getPlayerLike(['name LIKE' => $queryParams['name']]);
 
         // trás informações do player
         $obPlayer = $results->fetchObject(EntityPlayer::class);

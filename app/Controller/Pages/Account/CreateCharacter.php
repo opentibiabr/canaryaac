@@ -54,7 +54,7 @@ class CreateCharacter extends Base{
 
         $AccountId = SessionAdminLogin::idLogged();
         $ServerConfig = EntityServerConfig::getInfoWebsite()->fetchObject();
-        $countPlayers = (int)EntityPlayer::getPlayer('account_id = "'.$AccountId.'"', null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+        $countPlayers = (int)EntityPlayer::getPlayer([ 'account_id' => $AccountId], null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
         if($countPlayers >= $ServerConfig->player_max){
             return self::viewCreateCharacter($request, 'Your account has reached the character limit.');
         }
@@ -81,7 +81,7 @@ class CreateCharacter extends Base{
         if($CountName > 29){
             return self::viewCreateCharacter($request, 'The name must be at least 29 characters long.');
         }
-        $verifyPlayerName = EntityPlayer::getPlayer('name = "'.$character_name.'"')->fetchObject();
+        $verifyPlayerName = EntityPlayer::getPlayer([ 'name' => $character_name])->fetchObject();
         if($verifyPlayerName == true){
             return self::viewCreateCharacter($request, 'This character name is already being used.');
         }
@@ -100,7 +100,7 @@ class CreateCharacter extends Base{
                 return self::viewCreateCharacter($request, 'Choose a vocation for the character.');
             }
 
-            $verifyVocation = EntityCreateAccount::getPlayerSamples('vocation = "'.$character_vocation.'"')->fetchObject();
+            $verifyVocation = EntityCreateAccount::getPlayerSamples([ 'vocation' => $character_vocation])->fetchObject();
             if($verifyVocation == false){
                 return self::viewCreateCharacter($request, 'Please select your character vocation!');
             }
@@ -108,7 +108,7 @@ class CreateCharacter extends Base{
             $character_vocation = 0;
         }
 
-        $selectWorlds = EntityWorlds::getWorlds('id = "'.$character_world.'"')->fetchObject();
+        $selectWorlds = EntityWorlds::getWorlds([ 'id' => $character_world])->fetchObject();
         if($selectWorlds == false){
             return self::viewCreateCharacter($request, 'Invalid world.');
         }
@@ -119,7 +119,7 @@ class CreateCharacter extends Base{
         if(self::getActiveVocation() == 0){
             $character_vocation = 0;
         }
-        $playerSample = EntityCreateAccount::getPlayerSamples('vocation = "'.$character_vocation.'"')->fetchObject();
+        $playerSample = EntityCreateAccount::getPlayerSamples([ 'vocation' => $character_vocation])->fetchObject();
 
         $character = [
             'name' => $character_name,

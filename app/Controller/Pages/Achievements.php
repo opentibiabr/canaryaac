@@ -19,7 +19,7 @@ class Achievements extends Base{
     {
         $content = View::render('pages/library/achievements', [
             'achievements' => FunctionsAchievements::getAllAchievements(),
-            'total_secretachievements' => (int)EntityAchievements::getAchievements('secret = "1"', null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
+            'total_secretachievements' => (int)EntityAchievements::getAchievements(['secret' => "1"], null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
         ]);
         return parent::getBase('Achievements', $content, 'achievements');
     }

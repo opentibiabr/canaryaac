@@ -105,7 +105,7 @@ class Accounts extends Base{
 
     public static function getAccountById($account_id)
     {
-        $select_account = EntityPlayer::getAccount('id = "'.$account_id.'"')->fetchObject();
+        $select_account = EntityPlayer::getAccount([ 'id' => $account_id])->fetchObject();
         return [
             'email' => $select_account->email,
             'page_access' => $select_account->page_access,

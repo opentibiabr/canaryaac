@@ -18,7 +18,7 @@ class Signature{
     {
         $bg_image = URL . '/resources/images/signature/bg.png';
         $filter_playerId = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-        $player = EntityPlayer::getPlayer('id = "'.$filter_playerId.'"')->fetchObject();
+        $player = EntityPlayer::getPlayer([ 'id' => $filter_playerId])->fetchObject();
         if (empty($player)) {
             return null;
         }

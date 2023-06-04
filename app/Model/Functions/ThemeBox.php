@@ -20,7 +20,7 @@ class ThemeBox
     public static function getHighscoresTop5()
     {
         $ribbon = 0;
-        $select_players = Player::getPlayer('deletion = "0" AND group_id <= "3"', 'level DESC', 5);
+        $select_players = Player::getPlayer([ 'deletion =' => "0", 'group_id <=' => "3"], 'level DESC', 5);
         while ($player = $select_players->fetchObject()) {
             $ribbon++;
             $arrayPlayers[] = [
@@ -40,7 +40,7 @@ class ThemeBox
         $websiteInfo = EntityServerConfig::getInfoWebsite()->fetchObject();
         date_default_timezone_set($websiteInfo->timezone);
 
-        $currentDate = strtotime(date('Y-m-d'));
+        $currentDate = strtotime(date('Y-m-d 23:59:59'));
         $poll = EntityPolls::getPolls(null, 'date_end DESC', 1)->fetchObject();
         if (empty($poll)) {
             return '';

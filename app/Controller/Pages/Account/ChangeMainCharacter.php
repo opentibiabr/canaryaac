@@ -26,8 +26,8 @@ class ChangeMainCharacter extends Base
             return self::viewChangeMain();
         }
         $filter_main = filter_var($postVars['selected_main'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $select_character = Player::getPlayer('account_id = "'.$idLogged.'" AND name = "'.$filter_main.'"')->fetchObject();
-        $current_main = Player::getPlayer('account_id = "'.$idLogged.'" AND main = "1"')->fetchObject();
+        $select_character = Player::getPlayer([ 'account_id' => $idLogged, 'name' => $filter_main])->fetchObject();
+        $current_main = Player::getPlayer([ 'account_id' => $idLogged, 'main' => 1])->fetchObject();
         if(empty($select_character)){
             return self::viewChangeMain();
         }
@@ -59,7 +59,7 @@ class ChangeMainCharacter extends Base
             return self::viewChangeMain();
         }
         $filter_main = filter_var($postVars['maincharacter'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $select_character = Player::getPlayer('account_id = "'.$idLogged.'" AND name = "'.$filter_main.'"')->fetchObject();
+        $select_character = Player::getPlayer([ 'account_id' =>  $idLogged, 'name' => $filter_main])->fetchObject();
         if(empty($select_character)){
             return self::viewChangeMain();
         }
@@ -78,8 +78,8 @@ class ChangeMainCharacter extends Base
     public static function viewChangeMain()
     {
         $idLogged = SessionAdminLogin::idLogged();
-        $main_character = Player::getPlayer('account_id = "'.$idLogged.'" AND main = "1" AND deletion = "0"')->fetchObject();
-        $select_players = Player::getPlayer('account_id = "'.$idLogged.'" AND main = "0" AND deletion = "0"');
+        $main_character = Player::getPlayer([ 'account_id' => $idLogged, 'main' => "1", 'deletion' => "0"])->fetchObject();
+        $select_players = Player::getPlayer([ 'account_id' => $idLogged, 'main' => "0", 'deletion' =>"0"]);
         while($player = $select_players->fetchObject()){
             $arrayPlayers[] = [
                 'id' => $player->id,

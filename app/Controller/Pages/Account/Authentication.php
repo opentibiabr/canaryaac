@@ -24,7 +24,7 @@ class Authentication extends Base
         $google2fa = new Google2FA();
         $LoggedId = SessionAdminLogin::idLogged();
 
-        $account = Account::getAccount('id = "'.$LoggedId.'"')->fetchObject();
+        $account = Account::getAccount([ 'id' => $LoggedId])->fetchObject();
         $website = ServerConfig::getInfoWebsite()->fetchObject();
 
 
@@ -48,7 +48,7 @@ class Authentication extends Base
         $LoggedId = SessionAdminLogin::idLogged();
         $google2fa = new Google2FA();
         $postVars = $request->getPostVars();
-        $authentication = Account::getAuthentication('account_id = "'.$LoggedId.'"')->fetchObject();
+        $authentication = Account::getAuthentication([ 'account_id' => $LoggedId])->fetchObject();
         $secretKey = $authentication->secret;
         $filter_token = filter_var($postVars['verificationcode'], FILTER_SANITIZE_SPECIAL_CHARS);
 
@@ -80,7 +80,7 @@ class Authentication extends Base
         $postVars = $request->getPostVars();
         $filter_confirmationkey = filter_var($postVars['confirmationkey'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-        $authentication = Account::getAuthentication('account_id = "'.$LoggedId.'"')->fetchObject();
+        $authentication = Account::getAuthentication([ 'account_id' => $LoggedId])->fetchObject();
         if($authentication->secret != $filter_confirmationkey){
             $request->getRouter()->redirect('/account/authentication');
         }
@@ -106,7 +106,7 @@ class Authentication extends Base
             $request->getRouter()->redirect('/account/authentication');
         }
 
-        $authentication = Account::getAuthentication('account_id = "'.$LoggedId.'"')->fetchObject();
+        $authentication = Account::getAuthentication([ 'account_id' => $LoggedId])->fetchObject();
         if(empty($authentication)){
             Account::insertAuthentication([
                 'account_id' => $LoggedId,
@@ -119,7 +119,7 @@ class Authentication extends Base
             }
         }
 
-        $authentication_secret = Account::getAuthentication('account_id = "'.$LoggedId.'"')->fetchObject();
+        $authentication_secret = Account::getAuthentication([ 'account_id' => $LoggedId])->fetchObject();
 
         $content = View::render('pages/account/authentication_confirm', [
             'secretkey' => $authentication_secret->secret,
@@ -138,7 +138,7 @@ class Authentication extends Base
         $LoggedId = SessionAdminLogin::idLogged();
         $postVars = $request->getPostVars();
 
-        $authentication = Account::getAuthentication('account_id = "'.$LoggedId.'"')->fetchObject();
+        $authentication = Account::getAuthentication([ 'account_id' => $LoggedId])->fetchObject();
         if($authentication->status != 1){
             $request->getRouter()->redirect('/account/manage');
         }
@@ -163,7 +163,7 @@ class Authentication extends Base
     public static function viewUnlinkbyRecoveryKey($request)
     {
         $LoggedId = SessionAdminLogin::idLogged();
-        $authentication = Account::getAuthentication('account_id = "'.$LoggedId.'"')->fetchObject();
+        $authentication = Account::getAuthentication([ 'account_id' => $LoggedId])->fetchObject();
         if($authentication->status != 1){
             $request->getRouter()->redirect('/account/manage');
         }
@@ -176,7 +176,7 @@ class Authentication extends Base
     {
         $postVars = $request->getPostVars();
         $LoggedId = SessionAdminLogin::idLogged();
-        $authentication = Account::getAuthentication('account_id = "'.$LoggedId.'"')->fetchObject();
+        $authentication = Account::getAuthentication([ 'account_id' => $LoggedId])->fetchObject();
         if($authentication->status != 1){
             $request->getRouter()->redirect('/account/manage');
         }
@@ -188,7 +188,7 @@ class Authentication extends Base
         $filter_key3 = filter_var($postVars['key3'], FILTER_SANITIZE_SPECIAL_CHARS);
         $filter_key4 = filter_var($postVars['key4'], FILTER_SANITIZE_SPECIAL_CHARS);
         $recoverykey = $filter_key1 . '-' . $filter_key2 . '-' . $filter_key3 . '-' . $filter_key4;
-        $account_recoverykey = Account::getAccountRegistration('account_id = "'.$LoggedId.'"')->fetchObject();
+        $account_recoverykey = Account::getAccountRegistration([ 'account_id' => $LoggedId])->fetchObject();
         if($account_recoverykey->recovery == $recoverykey){
             Account::deleteAuthentication('account_id = "'.$LoggedId.'"');
         }
@@ -203,7 +203,7 @@ class Authentication extends Base
     public static function viewAuthentication($request)
     {
         $LoggedId = SessionAdminLogin::idLogged();
-        $authentication = Account::getAuthentication('account_id = "'.$LoggedId.'"')->fetchObject();
+        $authentication = Account::getAuthentication([ 'account_id' => $LoggedId])->fetchObject();
         if (!empty($authentication)) {
             if ($authentication->status == 1) {
                 $request->getRouter()->redirect('/account/manage');

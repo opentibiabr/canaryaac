@@ -33,7 +33,7 @@ class Found extends Base{
 		}
 		$filter_pass = filter_var($postVars['password'], FILTER_SANITIZE_SPECIAL_CHARS);
 		$convert_pass = sha1($filter_pass);
-		$dbAccountLogged = EntityPlayer::getAccount('id = "'.$idLogged.'"')->fetchObject();
+		$dbAccountLogged = EntityPlayer::getAccount([ 'id' => $idLogged])->fetchObject();
 		if($dbAccountLogged->password != $convert_pass){
 			$status = 'Something went wrong with the password.';
 			return self::viewFoundGuild($request, $status);
@@ -47,7 +47,7 @@ class Found extends Base{
 			$status = 'The name must contain at least 5 characters.';
 			return self::viewFoundGuild($request, $status);
 		}
-		$dbGuilds = EntityGuilds::getGuilds('name = "'.$filter_name.'"')->fetchObject();
+		$dbGuilds = EntityGuilds::getGuilds([ 'name' => $filter_name])->fetchObject();
 		if(!empty($dbGuilds)){
 			$status = 'A Guild with this name already exists.';
 			return self::viewFoundGuild($request, $status);
@@ -57,18 +57,18 @@ class Found extends Base{
 			return self::viewFoundGuild($request,$status);
 		}
 		$filter_leader = filter_var($postVars['guild_leader'], FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbPlayerId = EntityPlayer::getPlayer('name = "'.$filter_leader.'" AND account_id = "'.$idLogged.'"')->fetchObject();
+		$dbPlayerId = EntityPlayer::getPlayer([ 'name' => $filter_leader, 'account_id' => $idLogged])->fetchObject();
 		if($dbPlayerId->deletion == 1){
 			$status = 'You cannot select a character with a deleted status.';
 			return self::viewFoundGuild($request, $status);
 		}
-		$dbPlayerLeader = EntityPlayer::getPlayer('name = "'.$filter_leader.'" AND account_id = "'.$idLogged.'"');
+		$dbPlayerLeader = EntityPlayer::getPlayer([ 'name' => $filter_leader, 'account_id' => $idLogged]);
 		while ($player = $dbPlayerLeader->fetchObject()) {
 			if ($player->level < $websiteInfo->player_guild) {
 				$status = 'The minimum level to found a Guild is '.$websiteInfo->player_guild.'.';
 				return self::viewFoundGuild($request, $status);
 			}
-			$dbMembers = EntityGuilds::getMembership('player_id = "'.$player->id.'"')->fetchObject();
+			$dbMembers = EntityGuilds::getMembership([ 'player_id' => $player->id])->fetchObject();
 			if (!empty($dbMembers)) {
 				$status = 'This character is already in a Guild.';
 				return self::viewFoundGuild($request, $status);
@@ -100,7 +100,7 @@ class Found extends Base{
 			'logo_name' => 'default_logo',
 			'world_id' => $filter_world
 		]);
-		$dbRanks = EntityGuilds::getRanks('guild_id = "'.$insertGuild.'" AND level = 3')->fetchObject();
+		$dbRanks = EntityGuilds::getRanks([ 'guild_id' => $insertGuild, 'level' => 3])->fetchObject();
 		self::insertMemberInFound($dbPlayerId->id, $insertGuild, $dbRanks->id);
 		$status = 'Guild created successfully.';
 		return self::viewFoundGuild($request, $status);
@@ -124,9 +124,9 @@ class Found extends Base{
 	public static function viewFoundGuild($request, $status = null)
 	{
 		$idLogged = SessionAdminLogin::idLogged();
-		$dbPlayersAccount = EntityPlayer::getPlayer('account_id = "'.$idLogged.'" AND deletion = "0"');
+		$dbPlayersAccount = EntityPlayer::getPlayer([ 'account_id' => $idLogged, 'deletion' => "0"]);
 		while($player = $dbPlayersAccount->fetchObject()){
-			$dbMembers = EntityGuilds::getMembership('player_id = "'.$player->id.'"')->fetchObject();
+			$dbMembers = EntityGuilds::getMembership([ 'player_id' => $player->id])->fetchObject();
 			if(empty($dbMembers)){
 				$arrayPlayers[] = [
 					'id' => $player->id,

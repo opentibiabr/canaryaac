@@ -296,8 +296,8 @@ class Base{
         if(SessionAdminLogin::isLogged() == true){
             $admin = SessionAdminLogin::idLogged();
 
-            $account = EntityPlayer::getAccount('id = "'.$admin.'"')->fetchObject();
-            $playerMain = EntityPlayer::getPlayer('account_id = "'.$account->id.'" AND main = "1"')->fetchObject();
+            $account = EntityPlayer::getAccount([ 'id' => $admin])->fetchObject();
+            $playerMain = EntityPlayer::getPlayer([ 'account_id' => $account->id, 'main' => "1"])->fetchObject();
 
             $logged = [
                 'id' => $account->id,

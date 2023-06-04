@@ -22,7 +22,7 @@ class EditMembers extends Base{
 	{
 		$decodeUrl = urldecode($guild_name);
 		$filterName = filter_var($decodeUrl, FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbGuild = EntityGuilds::getGuilds('name = "'.$filterName.'"')->fetchObject();
+		$dbGuild = EntityGuilds::getGuilds([ 'name' => $filterName])->fetchObject();
 		if($dbGuild == true){
 			$guild_id = $dbGuild->id;
 		}
@@ -74,13 +74,13 @@ class EditMembers extends Base{
 			$filter_character = filter_var($postVars['character'], FILTER_SANITIZE_SPECIAL_CHARS);
 			$filter_title = filter_var($postVars['newtitle'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-			$dbPlayers = EntityPlayer::getPlayer('name = "'.$filter_character.'"')->fetchObject();
+			$dbPlayers = EntityPlayer::getPlayer([ 'name' => $filter_character])->fetchObject();
 			if(empty($dbPlayers)){
 				$status = 'Invalid character.';
 				return self::viewEditMembers($request,$name,$status);
 			}
 
-			$dbMember = EntityGuilds::getMembership('player_id = "'.$dbPlayers->id.'" AND guild_id = "'.$guild_id.'"')->fetchObject();
+			$dbMember = EntityGuilds::getMembership([ 'player_id' => $dbPlayers->id, 'guild_id' => $guild_id])->fetchObject();
 			if(empty($dbMember)){
 				$status = 'This character does not belong to this guild.';
 				return self::viewEditMembers($request,$name,$status);
@@ -100,13 +100,13 @@ class EditMembers extends Base{
 			}
 			$filter_character = filter_var($postVars['character'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-			$dbPlayers = EntityPlayer::getPlayer('name = "'.$filter_character.'"')->fetchObject();
+			$dbPlayers = EntityPlayer::getPlayer([ 'name' => $filter_character])->fetchObject();
 			if(empty($dbPlayers)){
 				$status = 'Invalid character.';
 				return self::viewEditMembers($request,$name,$status);
 			}
 
-			$dbMember = EntityGuilds::getMembership('player_id = "'.$dbPlayers->id.'" AND guild_id = "'.$guild_id.'"')->fetchObject();
+			$dbMember = EntityGuilds::getMembership([ 'player_id' => $dbPlayers->id, 'guild_id' => $guild_id])->fetchObject();
 			if(empty($dbMember)){
 				$status = 'This character does not belong to this guild.';
 				return self::viewEditMembers($request,$name,$status);
@@ -129,19 +129,19 @@ class EditMembers extends Base{
 			$filter_character = filter_var($postVars['character'], FILTER_SANITIZE_SPECIAL_CHARS);
 			$filter_rank = filter_var($postVars['newrank'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-			$dbPlayers = EntityPlayer::getPlayer('name = "'.$filter_character.'"')->fetchObject();
+			$dbPlayers = EntityPlayer::getPlayer([ 'name' => $filter_character])->fetchObject();
 			if(empty($dbPlayers)){
 				$status = 'Invalid character.';
 				return self::viewEditMembers($request,$name,$status);
 			}
-			$dbMember = EntityGuilds::getMembership('player_id = "'.$dbPlayers->id.'" AND guild_id = "'.$guild_id.'"')->fetchObject();
+			$dbMember = EntityGuilds::getMembership([ 'player_id' => $dbPlayers->id, 'guild_id' => $guild_id])->fetchObject();
 			if(empty($dbMember)){
 				$status = 'This character does not belong to this guild.';
 				return self::viewEditMembers($request,$name,$status);
 			}
-			$dbRanks = EntityGuilds::getRanks('guild_id = "'.$guild_id.'" AND level = "'.$filter_rank.'"')->fetchObject();
+			$dbRanks = EntityGuilds::getRanks([ 'guild_id' => $guild_id, 'level' => $filter_rank])->fetchObject();
 			$newRank = $dbRanks->id;
-			EntityGuilds::updateRankOnMember('guild_id = "'.$guild_id.'" AND player_id = "'.$dbPlayers->id.'"', [
+			EntityGuilds::updateRankOnMember([ 'guild_id' => $guild_id, 'player_id' => $dbPlayers->id], [
 				'rank_id' => $newRank,
 			]);
 			$status = 'Updated successfully.';
@@ -155,10 +155,10 @@ class EditMembers extends Base{
 		if($isLeader == false){
 			$request->getRouter()->redirect('/community/guilds/'.$name.'/view');
 		}
-		$dbMembers = EntityGuilds::getMembership('guild_id = "'.self::convertGuildName($name).'"');
+		$dbMembers = EntityGuilds::getMembership([ 'guild_id' => self::convertGuildName($name)]);
 		while($member = $dbMembers->fetchObject()){
 			$memberRank = FunctionGuilds::convertRankGuild($member->rank_id);
-			$dbPlayers = EntityPlayer::getPlayer('id = "'.$member->player_id.'"');
+			$dbPlayers = EntityPlayer::getPlayer([ 'id' => $member->player_id]);
 			while($player = $dbPlayers->fetchObject()){
 				$arrayMembers[] = [
 					'player_name' => $player->name,

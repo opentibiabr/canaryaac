@@ -22,7 +22,7 @@ class InviteCharacter extends Base{
 	{
 		$decodeUrl = urldecode($guild_name);
 		$filterName = filter_var($decodeUrl, FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbGuild = EntityGuilds::getGuilds('name = "'.$filterName.'"')->fetchObject();
+		$dbGuild = EntityGuilds::getGuilds([ 'name' => $filterName])->fetchObject();
 		if($dbGuild == true){
 			$guild_id = $dbGuild->id;
 		}
@@ -42,7 +42,7 @@ class InviteCharacter extends Base{
 				return self::viewInviteCharacter($request,$name,$status_invite);
 			}
 			$input_name = filter_var($postVars['invite_name'], FILTER_SANITIZE_SPECIAL_CHARS);
-			$dbPlayer = EntityPlayer::getPlayer('name = "'.$input_name.'"')->fetchObject();
+			$dbPlayer = EntityPlayer::getPlayer([ 'name' => $input_name])->fetchObject();
 			if(empty($dbPlayer)){
 				$status_invite = 'Character does not exist.';
 				return self::viewInviteCharacter($request,$name,$status_invite);
@@ -51,13 +51,13 @@ class InviteCharacter extends Base{
 				$status_invite = 'Character is deleted.';
 				return self::viewInviteCharacter($request,$name,$status_invite);
 			}
-			$dbMembers = EntityGuilds::getMembership('player_id = "'.$dbPlayer->id.'"')->fetchObject();
+			$dbMembers = EntityGuilds::getMembership([ 'player_id' => $dbPlayer->id])->fetchObject();
 			if(!empty($dbMembers)){
 				$status_invite = 'This character already participates in a Guild.';
 				return self::viewInviteCharacter($request,$name,$status_invite);
 			}
 			$guild_id = self::convertGuildName($name);
-			$dbInvited = EntityGuilds::getInvites('player_id = "'.$dbPlayer->id.'" AND guild_id = "'.$guild_id.'"')->fetchObject();
+			$dbInvited = EntityGuilds::getInvites([ 'player_id' => $dbPlayer->id, 'guild_id' => $guild_id])->fetchObject();
 			if(!empty($dbInvited)){
 				$status_invite = 'This character is already invited.';
 				return self::viewInviteCharacter($request,$name,$status_invite);
@@ -77,13 +77,13 @@ class InviteCharacter extends Base{
 				return self::viewInviteCharacter($request,$name,null,$status_cancelinvite);
 			}
 			$input_cancelname = filter_var($postVars['cancel_name'], FILTER_SANITIZE_SPECIAL_CHARS);
-			$dbPlayer = EntityPlayer::getPlayer('name = "'.$input_cancelname.'"')->fetchObject();
+			$dbPlayer = EntityPlayer::getPlayer([ 'name' => $input_cancelname])->fetchObject();
 			if(empty($dbPlayer)){
 				$status_cancelinvite = 'Character does not exist.';
 				return self::viewInviteCharacter($request,$name,null,$status_cancelinvite);
 			}
 			$guild_id = self::convertGuildName($name);
-			$dbInvited = EntityGuilds::getInvites('player_id = "'.$dbPlayer->id.'" AND guild_id = "'.$guild_id.'"')->fetchObject();
+			$dbInvited = EntityGuilds::getInvites([ 'player_id' => $dbPlayer->id, 'guild_id' => $guild_id])->fetchObject();
 			if(empty($dbInvited)){
 				$status_cancelinvite = 'This character is not invited.';
 				return self::viewInviteCharacter($request,$name,null,$status_cancelinvite);

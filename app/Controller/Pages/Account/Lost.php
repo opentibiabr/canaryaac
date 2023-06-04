@@ -31,7 +31,7 @@ class Lost extends Base{
             $request->getRouter()->redirect('/account/lostaccount');
         }
         $filter_email = filter_var($postVars['email'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $account = EntityAccount::getAccount('email = "'.$filter_email.'"')->fetchObject();
+        $account = EntityAccount::getAccount([ 'email' => $filter_email])->fetchObject();
         if($account == false){
             $request->getRouter()->redirect('/account/lostaccount');
         }
@@ -49,7 +49,7 @@ class Lost extends Base{
         }
         $new_password = sha1($filter_password);
 
-        $account_recoverykey = EntityAccount::getAccountRegistration('account_id = "'.$account->id.'"')->fetchObject();
+        $account_recoverykey = EntityAccount::getAccountRegistration(['account_id' => $account->id])->fetchObject();
         if($account_recoverykey->recovery == $recoverykey){
             EntityAccount::updateAccount('email = "'.$filter_email.'"', [
                 'password' => $new_password
@@ -68,7 +68,7 @@ class Lost extends Base{
             return self::getLostAccount($request);
         }
 
-        $account = EntityAccount::getAccount('email = "'.$filter_email.'"')->fetchObject();
+        $account = EntityAccount::getAccount([ 'email' => $filter_email])->fetchObject();
         if($account == false){
             return self::getLostAccount($request);
         }

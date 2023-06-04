@@ -20,7 +20,7 @@ class GuildEvent extends Base{
 	{
 		$decodeUrl = urldecode($guild_name);
 		$filterName = filter_var($decodeUrl, FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbGuild = EntityGuilds::getGuilds('name = "'.$filterName.'"')->fetchObject();
+		$dbGuild = EntityGuilds::getGuilds([ 'name' => $filterName])->fetchObject();
 		if($dbGuild == true){
 			$guild_id = $dbGuild->id;
 		}
@@ -86,7 +86,7 @@ class GuildEvent extends Base{
 	public static function viewGuildEvents($request,$name)
 	{
 		$guild_id = self::convertGuildName($name);
-		$dbEvents = EntityGuilds::getEvents('guild_id = "'.$guild_id.'"', 'id DESC');
+		$dbEvents = EntityGuilds::getEvents([ 'guild_id' => $guild_id], 'id DESC');
 		while($event = $dbEvents->fetchObject()){
 			$events[] = [
 				'name' => $event->name,

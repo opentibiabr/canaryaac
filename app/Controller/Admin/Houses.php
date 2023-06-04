@@ -107,8 +107,8 @@ class Houses extends Base{
             'status' => $errorMessage,
             'houses' => self::getAllHouses(),
             'worlds' => FunctionsServer::getWorlds(),
-            'total_houses' => (int)EntityHouse::getHouses(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
-            'total_houses_rented' => (int)EntityHouse::getHouses('owner != 0', null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
+            'total_houses' => (int)EntityHouse::getHouses(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
+            'total_houses_rented' => (int)EntityHouse::getHouses([ 'owner' != 0], null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
         ]);
 
         return parent::getPanel('Houses', $content, 'houses');

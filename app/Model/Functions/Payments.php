@@ -62,7 +62,7 @@ class Payments
         $payment_paid_price = 0;
         $payment_canceled_price = 0;
 
-        $select_payments = EntityPayments::getPayment('date BETWEEN "' . $date_start . '" AND "' . $date_end . '"');
+        $select_payments = EntityPayments::getPayment([ 'date BETWEEN' => [$date_start, $date_end]]);
         while ($payment = $select_payments->fetchObject()) {
             if ($payment->status == 4) {
                 $payment_paid_coins += $payment->total_coins;
@@ -89,7 +89,7 @@ class Payments
     {
         $total_coins_approved = 0;
         $final_price_approved = 0;
-        $select_payments_approved = EntityPayments::getPayment('status = 4');
+        $select_payments_approved = EntityPayments::getPayment([ 'status' => 4]);
         while ($payment_approved = $select_payments_approved->fetchObject()) {
             $total_coins_approved += $payment_approved->total_coins;
             $final_price_approved += $payment_approved->final_price;
@@ -97,7 +97,7 @@ class Payments
 
         $total_coins_cancelled = 0;
         $final_price_cancelled = 0;
-        $select_payments_cancelled = EntityPayments::getPayment('status = 1');
+        $select_payments_cancelled = EntityPayments::getPayment([ 'status' => 1]);
         while ($payment_cancelled = $select_payments_cancelled->fetchObject()) {
             $total_coins_cancelled += $payment_cancelled->total_coins;
             $final_price_cancelled += $payment_cancelled->final_price;

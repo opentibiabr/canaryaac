@@ -23,7 +23,7 @@ class Guilds extends Base{
         
         $select = EntityGuild::getGuilds();
         while($obAllGuilds = $select->fetchObject()){
-            $dbPlayerNameAllGuilds = EntityPlayer::getPlayer('id = "'.$obAllGuilds->ownerid.'"')->fetchObject();
+            $dbPlayerNameAllGuilds = EntityPlayer::getPlayer([ 'id' => $obAllGuilds->ownerid])->fetchObject();
             $allGuilds[] = [
                 'id' => (int)$obAllGuilds->id,
                 'level' => (int)$obAllGuilds->level,
@@ -85,7 +85,7 @@ class Guilds extends Base{
     public static function viewEditGuild($request, $id, $errorMessage = null)
     {
         $dbGuild = EntityGuild::getGuilds('id = "'.$id.'"')->fetchObject();
-        $dbPlayerGuild = EntityPlayer::getPlayer('id = "'.$dbGuild->ownerid.'"')->fetchObject();
+        $dbPlayerGuild = EntityPlayer::getPlayer([ 'id' => $dbGuild->ownerid])->fetchObject();
         $guild = [
             'name' => $dbGuild->name,
             'owner' => $dbPlayerGuild->name,
@@ -97,9 +97,9 @@ class Guilds extends Base{
         ];
 
         
-        $dbMembers = EntityGuild::getMembership('guild_id = "'.$dbGuild->id.'"');
+        $dbMembers = EntityGuild::getMembership([ 'guild_id' => $dbGuild->id]);
         while($member = $dbMembers->fetchObject()){
-            $dbNameMember = EntityPlayer::getPlayer('id = "'.$member->player_id.'"')->fetchObject();
+            $dbNameMember = EntityPlayer::getPlayer([ 'id' => $member->player_id])->fetchObject();
             $members[] = [
                 'player_name' => $dbNameMember->name,
                 'player_id' => $member->player_id,
@@ -109,9 +109,9 @@ class Guilds extends Base{
             ];
         }
         
-        $dbInvites = EntityGuild::getInvites('guild_id = "'.$dbGuild->id.'"');
+        $dbInvites = EntityGuild::getInvites([ 'guild_id' => $dbGuild->id]);
         while($invited = $dbInvites->fetchObject()){
-            $dbNameInvites = EntityPlayer::getPlayer('id = "'.$invited->player_id.'"')->fetchObject();
+            $dbNameInvites = EntityPlayer::getPlayer([ 'id' => $invited->player_id])->fetchObject();
             $invites[] = [
                 'player_name' => $dbNameInvites->name,
                 'player_id' => $invited->player_id,
@@ -134,10 +134,10 @@ class Guilds extends Base{
         $content = View::render('admin/modules/guilds/index', [
             'status' => $errorMessage,
             'guilds' => self::getAllGuilds(),
-            'total_guilds' => (int)EntityGuild::getGuilds(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
-            'total_guildmembership' => (int)EntityGuild::getMembership(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
-            'total_guildwarskills' => (int)EntityGuild::getWars(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
-            'total_guildwars' => (int)EntityGuild::getWars(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
+            'total_guilds' => (int)EntityGuild::getGuilds(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
+            'total_guildmembership' => (int)EntityGuild::getMembership(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
+            'total_guildwarskills' => (int)EntityGuild::getWars(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
+            'total_guildwars' => (int)EntityGuild::getWars(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
         ]);
 
         return parent::getPanel('Guilds', $content, 'guilds');

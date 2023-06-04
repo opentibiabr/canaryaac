@@ -23,7 +23,7 @@ class JoinGuild extends Base{
 	{
 		$decodeUrl = urldecode($guild_name);
 		$filterName = filter_var($decodeUrl, FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbGuild = EntityGuilds::getGuilds('name = "'.$filterName.'"')->fetchObject();
+		$dbGuild = EntityGuilds::getGuilds([ 'name' => $filterName])->fetchObject();
 		if($dbGuild == true){
 			$guild_id = $dbGuild->id;
 		}
@@ -41,19 +41,19 @@ class JoinGuild extends Base{
 			return self::viewJoinGuild($request,$name,$status);
 		}
 		$character_name = filter_var($postVars['character_join'], FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbPlayer = EntityPlayer::getPlayer('name = "'.$character_name.'" AND account_id = "'.$idLogged.'"')->fetchObject();
+		$dbPlayer = EntityPlayer::getPlayer([ 'name' => $character_name, 'account_id' => $idLogged])->fetchObject();
 		if(empty($dbPlayer)){
 			$status = 'Invalid character.';
 			return self::viewJoinGuild($request,$name,$status);
 		}
 
-		$dbMember = EntityGuilds::getMembership('player_id = "'.$dbPlayer->id.'"')->fetchObject();
+		$dbMember = EntityGuilds::getMembership([ 'player_id' => $dbPlayer->id])->fetchObject();
 		if(!empty($dbMember)){
 			$status = 'This character is in a Guild.';
 			return self::viewJoinGuild($request,$name,$status);
 		}
 
-		$dbApplication = EntityGuilds::getApplications('player_id = "'.$dbPlayer->id.'"')->fetchObject();
+		$dbApplication = EntityGuilds::getApplications([ 'player_id' => $dbPlayer->id])->fetchObject();
 		if(!empty($dbApplication)){
 			$status = 'This character is applied to another Guild.';
 			return self::viewJoinGuild($request,$name,$status);
@@ -61,7 +61,7 @@ class JoinGuild extends Base{
 
 		EntityGuilds::deleteInvite('player_id = "'.$dbPlayer->id.'" AND guild_id = "'.$guild_id.'"');
 			
-		$dbRanks = EntityGuilds::getRanks('guild_id = "'.$guild_id.'" AND level = 1')->fetchObject();
+		$dbRanks = EntityGuilds::getRanks([ 'guild_id' => $guild_id, 'level' => 1])->fetchObject();
 		
 		EntityGuilds::insertJoinMember([
 			'player_id' => $dbPlayer->id,
@@ -76,9 +76,9 @@ class JoinGuild extends Base{
     {
 		$guild_id = self::convertGuildName($name);
 		$idLogged = SessionAdminLogin::idLogged();
-		$dbPlayersAccount = EntityPlayer::getPlayer('account_id = "'.$idLogged.'"');
+		$dbPlayersAccount = EntityPlayer::getPlayer([ 'account_id' => $idLogged]);
 		while($playersAccount = $dbPlayersAccount->fetchObject()){
-			$dbInvitation = EntityGuilds::getInvites('player_id = "'.$playersAccount->id.'" AND guild_id = "'.$guild_id.'"');
+			$dbInvitation = EntityGuilds::getInvites([ 'player_id' => $playersAccount->id, 'guild_id' => $guild_id]);
 			while($invitation = $dbInvitation->fetchObject()){
 				$arrayInvitations[] = [
 					'id' => $playersAccount->id,

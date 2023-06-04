@@ -9,7 +9,7 @@
 
 namespace App\Controller\Pages;
 
-use \App\Utils\View;
+use App\Utils\View;
 use App\Model\Entity\Houses as EntityHouses;
 use App\Model\Entity\Player;
 use App\Model\Entity\Worlds;
@@ -18,13 +18,13 @@ use App\Model\Functions\Player as FunctionsPlayer;
 use App\Session\Admin\Login as SessionAdminLogin;
 use App\Model\Functions\Server as FunctionsServer;
 
-class Houses extends Base{
-
+class Houses extends Base
+{
     public static function getArrayTowns()
     {
         $select_town = Worlds::getTowns();
         $arrayTown = [];
-    
+
         while ($town = $select_town->fetchObject()) {
             $arrayTown[] = [
                 'id' => $town->town_id,
@@ -47,7 +47,7 @@ class Houses extends Base{
             }
         }
         return '';
-    }    
+    }
 
     public static function viewBid($request, $house_id, $status = null)
     {
@@ -56,7 +56,7 @@ class Houses extends Base{
         }
         $idLogged = SessionAdminLogin::idLogged();
         $filter_house_id = filter_var($house_id, FILTER_SANITIZE_NUMBER_INT);
-        if($_ENV['MULTI_WORLD'] == 'true'){
+        if($_ENV['MULTI_WORLD'] == 'true') {
             $select_house = EntityHouses::getHouses('house_id = "'.$filter_house_id.'"')->fetchObject();
         } else {
             $select_house = EntityHouses::getHouses('id = "'.$filter_house_id.'"')->fetchObject();
@@ -144,7 +144,7 @@ class Houses extends Base{
         $filter_bid_limit = filter_var($postVars['bid_limit'], FILTER_SANITIZE_NUMBER_INT);
         $filter_bid_player = filter_var($postVars['bid_player'], FILTER_SANITIZE_NUMBER_INT);
         $filter_house_id = filter_var($house_id, FILTER_SANITIZE_NUMBER_INT);
-        if($_ENV['MULTI_WORLD'] == 'true'){
+        if($_ENV['MULTI_WORLD'] == 'true') {
             $select_house = EntityHouses::getHouses('house_id = "'.$filter_house_id.'"')->fetchObject();
         } else {
             $select_house = EntityHouses::getHouses('id = "'.$filter_house_id.'"')->fetchObject();
@@ -185,7 +185,7 @@ class Houses extends Base{
             }
         }
 
-        if($_ENV['MULTI_WORLD'] == 'true'){
+        if($_ENV['MULTI_WORLD'] == 'true') {
             EntityHouses::updateHouse('house_id = "'.$select_house->house_id.'"', [
                 'last_bid' => $filter_bid_limit,
                 'bid' => $filter_bid_limit,
@@ -217,7 +217,7 @@ class Houses extends Base{
         }
         $filter_world = filter_var($queryParams['world'], FILTER_SANITIZE_SPECIAL_CHARS);
         $select_world = EntityWorlds::getWorlds('name = "'.$filter_world.'"')->fetchObject();
-        if($_ENV['MULTI_WORLD'] == 'true'){
+        if($_ENV['MULTI_WORLD'] == 'true') {
             if (empty($select_world)) {
                 $world = 1;
             } else {
@@ -228,7 +228,7 @@ class Houses extends Base{
         }
 
         $query_Order = '';
-        if(isset($queryParams['order'])){
+        if(isset($queryParams['order'])) {
             if ($queryParams['order'] == 'name') {
                 $query_Order = 'name ASC';
             }
@@ -240,17 +240,17 @@ class Houses extends Base{
             }
         }
 
-        if($page_Type == 'houses'){
+        if($page_Type == 'houses') {
             $title_Type = 'Houses and Flats';
-        }elseif($page_Type == 'guildhalls'){
+        } elseif($page_Type == 'guildhalls') {
             $title_Type = 'Guildhalls';
         }
-        if($_ENV['MULTI_WORLD'] == 'true'){
+        if($_ENV['MULTI_WORLD'] == 'true') {
             $selectHouse = EntityHouses::getHouses('town_id = "'.$page_Town.'" AND world_id = "'.$world.'"', ''.$query_Order.'');
         } else {
             $selectHouse = EntityHouses::getHouses('town_id = "'.$page_Town.'"', ''.$query_Order.'');
         }
-        while($obHouse = $selectHouse->fetchObject()){
+        while($obHouse = $selectHouse->fetchObject()) {
             $bid_date_end = floor(($obHouse->bid_end - strtotime(date('Y-m-d'))) / (60 * 60 * 24));
             $houses[] = [
                 'house_id' => ($_ENV['MULTI_WORLD'] == 'true' ? $obHouse->house_id : $obHouse->id),
@@ -295,7 +295,7 @@ class Houses extends Base{
             $request->getRouter()->redirect('/community/houses');
         }
         $filter_house_id = filter_var($house_id, FILTER_SANITIZE_NUMBER_INT);
-        if($_ENV['MULTI_WORLD'] == 'true'){
+        if($_ENV['MULTI_WORLD'] == 'true') {
             $select_house = EntityHouses::getHouses('house_id = "'.$filter_house_id.'"')->fetchObject();
         } else {
             $select_house = EntityHouses::getHouses('id = "'.$filter_house_id.'"')->fetchObject();
@@ -358,5 +358,4 @@ class Houses extends Base{
         ]);
         return parent::getBase('Houses', $content, 'houses');
     }
-
 }

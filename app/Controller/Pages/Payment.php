@@ -13,13 +13,13 @@ use App\Model\Entity\Account as EntityAccount;
 use App\Payment\PagSeguro\ApiPagSeguro;
 use App\Payment\MercadoPago\ApiMercadoPago;
 use App\Payment\PayPal\ApiPayPal;
-use \App\Utils\View;
+use App\Utils\View;
 use App\Session\Admin\Login as SessionAdminLogin;
 use App\Model\Entity\Payments as EntityPayments;
 use App\Model\Entity\ServerConfig as EntityServerConfig;
 
-class Payment extends Base{
-
+class Payment extends Base
+{
     public static function viewPayment()
     {
         $idLogged = SessionAdminLogin::idLogged();
@@ -55,13 +55,13 @@ class Payment extends Base{
         $dbAccount = EntityAccount::getAccount('id = "'.$idLogged.'"')->fetchObject();
         $postVars = $request->getPostVars();
 
-        if(!isset($postVars['payment_country'])){
+        if(!isset($postVars['payment_country'])) {
             $request->getRouter()->redirect('/payment');
         }
-        if(!isset($postVars['payment_method'])){
+        if(!isset($postVars['payment_method'])) {
             $request->getRouter()->redirect('/payment');
         }
-        if(!isset($postVars['payment_coins'])){
+        if(!isset($postVars['payment_coins'])) {
             $request->getRouter()->redirect('/payment');
         }
 
@@ -79,16 +79,16 @@ class Payment extends Base{
         $donateConfigs = EntityServerConfig::getInfoWebsite('id = "1"')->fetchObject();
         $postVars = $request->getPostVars();
 
-        if(!isset($postVars['payment_email'])){
+        if(!isset($postVars['payment_email'])) {
             $request->getRouter()->redirect('/payment');
         }
-        if(!filter_var($postVars['payment_email'], FILTER_VALIDATE_EMAIL)){
+        if(!filter_var($postVars['payment_email'], FILTER_VALIDATE_EMAIL)) {
             $request->getRouter()->redirect('/payment');
         }
 
         $filter_coins = filter_var($postVars['payment_coins'], FILTER_SANITIZE_NUMBER_INT);
         $final_price = $filter_coins * $donateConfigs->coin_price;
-        
+
         $content = View::render('pages/shop/paymentconfirm', [
             'method' => $postVars['payment_method'],
             'coins' => $filter_coins,
@@ -106,19 +106,19 @@ class Payment extends Base{
         $donateConfigs = EntityServerConfig::getInfoWebsite('id = "1"')->fetchObject();
         $postVars = $request->getPostVars();
 
-        if($postVars['TermsOfService'] != 1){
+        if($postVars['TermsOfService'] != 1) {
             $request->getRouter()->redirect('/payment');
         }
-        if(!isset($postVars['payment_coins'])){
+        if(!isset($postVars['payment_coins'])) {
             $request->getRouter()->redirect('/payment');
         }
-        if(!isset($postVars['payment_method'])){
+        if(!isset($postVars['payment_method'])) {
             $request->getRouter()->redirect('/payment');
         }
-        if(!isset($postVars['payment_country'])){
+        if(!isset($postVars['payment_country'])) {
             $request->getRouter()->redirect('/payment');
         }
-        if(!isset($postVars['payment_email'])){
+        if(!isset($postVars['payment_email'])) {
             $request->getRouter()->redirect('/payment');
         }
 
@@ -132,14 +132,13 @@ class Payment extends Base{
             $request->getRouter()->redirect('/payment');
         }
 
-        if(!filter_var($postVars['payment_email'], FILTER_VALIDATE_EMAIL)){
+        if(!filter_var($postVars['payment_email'], FILTER_VALIDATE_EMAIL)) {
             $request->getRouter()->redirect('/payment');
         }
         $filter_email = filter_var($postVars['payment_email'], FILTER_SANITIZE_EMAIL);
 
         $filter_method = filter_var($postVars['payment_method'], FILTER_SANITIZE_SPECIAL_CHARS);
-        switch($filter_method)
-        {
+        switch($filter_method) {
             case 'paypal':
                 $url_method = 1;
                 break;
@@ -155,22 +154,22 @@ class Payment extends Base{
             default:
                 $url_method = 0;
         }
-        if($url_method == 0){
+        if($url_method == 0) {
             $request->getRouter()->redirect('/payment');
         }
 
-        if(!filter_var($postVars['payment_coins'], FILTER_VALIDATE_INT)){
+        if(!filter_var($postVars['payment_coins'], FILTER_VALIDATE_INT)) {
             $request->getRouter()->redirect('/payment');
         }
         $filter_coins = filter_var($postVars['payment_coins'], FILTER_SANITIZE_NUMBER_INT);
         $final_price = $donateConfigs->coin_price;
-        if($final_price == 0){
+        if($final_price == 0) {
             $request->getRouter()->redirect('/payment');
         }
         $price = $final_price * $filter_coins;
 
         // METHOD PAGSEGURO
-        if($url_method == 2){
+        if($url_method == 2) {
             $reference = uniqid();
             $checkout = [
                 'reference' => $reference,
@@ -195,7 +194,7 @@ class Payment extends Base{
         }
 
         // METHOD PAYPAL
-        if($url_method == 1){
+        if($url_method == 1) {
             $reference = uniqid();
             $checkout = [
                 'reference' => $reference,
@@ -220,10 +219,11 @@ class Payment extends Base{
         }
 
         // METHOD PIX
-        if($url_method == 3){}
+        if($url_method == 3) {
+        }
 
         // METHOD MERCADO PAGO
-        if($url_method == 4){
+        if($url_method == 4) {
             $reference = uniqid();
             $checkout = [
                 'reference' => $reference,
@@ -254,5 +254,4 @@ class Payment extends Base{
         ]);
         return parent::getBase('Webshop', $content, 'donate');
     }
-
 }

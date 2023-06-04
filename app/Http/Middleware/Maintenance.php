@@ -10,12 +10,11 @@
 namespace App\Http\Middleware;
 
 use App\Http\Request;
-use Closure;
 use App\Http\Response;
 use Exception;
 
-class Maintenance{
-
+class Maintenance
+{
     /**
      * Method responsible for running the middleware
      *
@@ -26,12 +25,11 @@ class Maintenance{
     public function handle($request, $next)
     {
         // Check website maintenance status
-        if($_ENV['MAINTENANCE'] == 'true'){
+        if($_ENV['MAINTENANCE'] == 'true') {
             throw new Exception('Página em manutenção. Tente novamente mais tarde.', 200);
         }
 
         // Runs the next level of middleware
         return $next($request);
     }
-
 }

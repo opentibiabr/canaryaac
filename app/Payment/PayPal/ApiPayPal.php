@@ -19,8 +19,8 @@ use PayPal\Api\Transaction;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Rest\ApiContext;
 
-class ApiPayPal{
-
+class ApiPayPal
+{
     public static function apiContext()
     {
         date_default_timezone_set(@date_default_timezone_get());

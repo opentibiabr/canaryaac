@@ -14,8 +14,8 @@ use PayPal\Api\PaymentExecution;
 use App\Model\Entity\Payments as EntityPayments;
 use App\Model\Entity\Account as EntityAccount;
 
-class NotifyPayPal {
-
+class NotifyPayPal
+{
     public static function ReturnPayPal()
     {
         $payerId = filter_input(INPUT_GET, 'PayerID', FILTER_SANITIZE_STRING);
@@ -27,7 +27,7 @@ class NotifyPayPal {
         $response = $payment->execute($execution, ApiPayPal::apiContext());
         $arrayResponse = $response->toArray();
 
-        if($arrayResponse['status'] == 'PAID'){
+        if($arrayResponse['status'] == 'PAID') {
 
             $dbPayment = EntityPayments::getPayment('preference = "'.$payment->preference_id.'"')->fetchObject();
             $dbAccount = EntityAccount::getAccount('id = "'.$dbPayment->account_id.'"')->fetchObject();

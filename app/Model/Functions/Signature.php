@@ -12,8 +12,8 @@ namespace App\Model\Functions;
 use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Functions\Player as FunctionsPlayer;
 
-class Signature{
-
+class Signature
+{
     public static function generate($request, $id)
     {
         $bg_image = URL . '/resources/images/signature/bg.png';
@@ -22,7 +22,7 @@ class Signature{
         if (empty($player)) {
             return null;
         }
-        
+
         $signature = imagecreatefrompng($bg_image);
         $color_white = imagecolorallocate($signature, 255, 255, 255);
 

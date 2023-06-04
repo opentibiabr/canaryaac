@@ -11,8 +11,8 @@ namespace App\Controller\Admin;
 
 use App\Utils\View;
 
-class SweetAlert{
-
+class SweetAlert
+{
     public static function Types($title = 'Success!', $message = null, $icon = 'success', $confirmButton = 'btn btn-primary')
     {
         return View::render('admin/sweetalert/types', [

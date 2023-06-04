@@ -14,7 +14,6 @@ use App\Model\Entity\ServerConfig as EntityServerConfig;
 
 class Payments
 {
-
     public static function getProducts()
     {
         $select_ServerConfig = EntityServerConfig::getInfoWebsite()->fetchObject();
@@ -117,19 +116,14 @@ class Payments
         switch ($status) {
             case 1:
                 return '<span class="badge rounded-pill badge-light-danger" text-capitalized=""> Canceled </span>';
-                exit;
             case 2:
                 return '<span class="badge rounded-pill badge-light-info" text-capitalized=""> Open </span>';
-                exit;
             case 3:
                 return '<span class="badge rounded-pill badge-light-warning" text-capitalized=""> Under Analysis </span>';
-                exit;
             case 4:
                 return '<span class="badge rounded-pill badge-light-success" text-capitalized=""> Paid </span>';
-                exit;
             default:
                 return '<span class="badge rounded-pill badge-light-danger" text-capitalized=""> Canceled </span>';
-                exit;
         }
     }
 
@@ -138,17 +132,12 @@ class Payments
         switch ($method) {
             case 'paypal':
                 return '<img src="'. URL . '/resources/images/payment/paymentmethodcategory31.gif">';
-                exit;
             case 'pagseguro':
                 return '<img src="'. URL . '/resources/images/payment/paymentmethodcategory32.gif">';
-                exit;
             case 'mercadopago':
                 return '<img src="'. URL . '/resources/images/payment/paymentmethodcategory144.gif">';
-                exit;
             default:
                 return '';
-                exit;
         }
     }
-
 }

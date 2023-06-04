@@ -11,8 +11,8 @@ namespace App\Model\Functions;
 
 use ZipArchive;
 
-class ClientEditor{
-
+class ClientEditor
+{
     private $battlEyeDisableBytes;
 
     private $rsa;
@@ -104,7 +104,7 @@ class ClientEditor{
             }
             $newClientExe .= $line . "\r\n";
         }
-        $zip = new ZipArchive;
+        $zip = new ZipArchive();
         $res = $zip->open($outfitFilePath, ZipArchive::CREATE);
         if ($res === true) {
             $zip->addFromString('client.exe', $newClientExe);

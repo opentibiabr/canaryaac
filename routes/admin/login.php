@@ -7,7 +7,7 @@ $obRouter->get('/admin/login', [
     'middlewares' => [
         'required-admin-logout',
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Login::getLogin($request));
     }
 ]);
@@ -15,7 +15,7 @@ $obRouter->post('/admin/login', [
     'middlewares' => [
         'required-admin-logout',
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Login::setLogin($request));
     }
 ]);
@@ -24,7 +24,7 @@ $obRouter->get('/admin/logout', [
     'middlewares' => [
         'required-admin-login'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Login::setLogout($request));
     }
 ]);

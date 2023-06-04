@@ -11,23 +11,25 @@ namespace App\Controller\Admin;
 
 use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Functions\Player;
-use \App\Utils\View;
+use App\Utils\View;
 use App\Session\Admin\Login as SessionAdminLogin;
 
-class Base{
-
+class Base
+{
     public static function getPagination($request, $obPagination)
     {
         $pages = $obPagination->getPages();
-        if(count($pages) <= 1) return '';
+        if (count($pages) <= 1) {
+            return '';
+        }
 
         $links = '';
         $url = $request->getRouter()->getCurrentUrl();
         $queryParams = $request->getQueryParams();
 
-        foreach($pages as $page){
+        foreach ($pages as $page) {
             $queryParams['page'] = $page['page'];
-            $link = $url.'?'.http_build_query($queryParams);
+            $link = $url . '?' . http_build_query($queryParams);
             $links .= View::render('admin/modules/pagination/link', [
                 'page' => $page['page'],
                 'link' => $link,
@@ -280,7 +282,7 @@ class Base{
             $menuFinal[$i]['nivel'] = $nivel;
             self::consctructMenu($menus, $menuFinal[$i]['submenu'], $menuFinal[$i]['id'], $nivel, $currentModule);
         }
-        return $menuFinal;        
+        return $menuFinal;
     }
 
     public static function formatMenu($currentModule)
@@ -293,11 +295,11 @@ class Base{
     public static function getAccountLogged()
     {
         $logged = [];
-        if(SessionAdminLogin::isLogged() == true){
+        if (SessionAdminLogin::isLogged() == true) {
             $admin = SessionAdminLogin::idLogged();
 
-            $account = EntityPlayer::getAccount('id = "'.$admin.'"')->fetchObject();
-            $playerMain = EntityPlayer::getPlayer('account_id = "'.$account->id.'" AND main = "1"')->fetchObject();
+            $account = EntityPlayer::getAccount('id = "' . $admin . '"')->fetchObject();
+            $playerMain = EntityPlayer::getPlayer('account_id = "' . $account->id . '" AND main = "1"')->fetchObject();
 
             $logged = [
                 'id' => $account->id,
@@ -327,5 +329,4 @@ class Base{
             'admin' => self::getAccountLogged(),
         ]);
     }
-
 }

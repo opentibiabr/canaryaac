@@ -10,12 +10,10 @@
 namespace App\Http\Middleware;
 
 use App\Http\Request;
-use Closure;
 use App\Http\Response;
-use Exception;
 
-class Api{
-
+class Api
+{
     /**
      * Method responsible for running the middleware
      *
@@ -30,5 +28,4 @@ class Api{
         // Runs the next level of middleware
         return $next($request);
     }
-
 }

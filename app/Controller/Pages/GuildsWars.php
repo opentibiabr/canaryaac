@@ -9,13 +9,13 @@
 
 namespace App\Controller\Pages;
 
-use \App\Utils\View;
+use App\Utils\View;
 use App\Controller\Pages\Base;
 use App\Model\Entity\Guilds as EntityGuilds;
 use App\Model\Functions\Guilds;
 
-class GuildsWars extends Base{
-
+class GuildsWars extends Base
+{
     public static function getGuildWars($war_status)
     {
         $select_wars = EntityGuilds::getWars('status = "'.$war_status.'"');
@@ -72,5 +72,4 @@ class GuildsWars extends Base{
         ]);
         return parent::getBase('Guild Wars', $content, $currentPage = 'endedwars');
     }
-
 }

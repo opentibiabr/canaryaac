@@ -14,43 +14,36 @@ use App\Utils\View;
 
 class Compendium extends Base
 {
-
     public static function convertNewsCategory($category_id)
     {
         switch ($category_id) {
             case 3:
                 return 'USEFUL INFO';
-                exit;
             case 4:
                 return 'SUPPORT';
-                exit;
             case 13:
                 return 'CLIENT FEATURES';
-                exit;
             case 15:
                 return 'GAME CONTENTS';
-                exit;
             case 20:
                 return 'MAJOR UPDATES';
-                exit;
             default:
                 return null;
-                exit;
         }
     }
 
     public static function updateCompendium($request, $id)
     {
         $postVars = $request->getPostVars();
-        if(empty($postVars['compendium_headline'])){
+        if (empty($postVars['compendium_headline'])) {
             $status = Alert::getError('Insira um titulo.');
             return self::viewCompendium($request, $status);
         }
-        if(empty($postVars['compendium_category'])){
+        if (empty($postVars['compendium_category'])) {
             $status = Alert::getError('Selecione uma categoria.');
             return self::viewCompendium($request, $status);
         }
-        if(empty($postVars['compendium_message'])){
+        if (empty($postVars['compendium_message'])) {
             $status = Alert::getError('Insira uma mensagem.');
             return self::viewCompendium($request, $status);
         }
@@ -62,12 +55,12 @@ class Compendium extends Base
         }
 
         if (isset($postVars['compendium_delete'])) {
-            EntityCompendium::deleteCompendium('id = "'.$id.'"');
+            EntityCompendium::deleteCompendium('id = "' . $id . '"');
             $status = Alert::getSuccess('Deletado com sucesso.');
             return self::viewCompendium($request, $status);
         }
 
-        EntityCompendium::updateCompendium('id = "'.$id.'"', [
+        EntityCompendium::updateCompendium('id = "' . $id . '"', [
             'category' => $filter_category,
             'headline' => $postVars['compendium_headline'],
             'message' => $postVars['compendium_message'],
@@ -79,15 +72,15 @@ class Compendium extends Base
     public static function insertCompendium($request)
     {
         $postVars = $request->getPostVars();
-        if(empty($postVars['compendium_headline'])){
+        if (empty($postVars['compendium_headline'])) {
             $status = Alert::getError('Insira um titulo.');
             return self::viewCompendium($request, $status);
         }
-        if(empty($postVars['compendium_category'])){
+        if (empty($postVars['compendium_category'])) {
             $status = Alert::getError('Selecione uma categoria.');
             return self::viewCompendium($request, $status);
         }
-        if(empty($postVars['compendium_message'])){
+        if (empty($postVars['compendium_message'])) {
             $status = Alert::getError('Insira uma mensagem.');
             return self::viewCompendium($request, $status);
         }
@@ -131,7 +124,7 @@ class Compendium extends Base
 
     public static function getCompendiumById($compendium_id)
     {
-        $compendium = EntityCompendium::getCompendium('id = "'.$compendium_id.'"')->fetchObject();
+        $compendium = EntityCompendium::getCompendium('id = "' . $compendium_id . '"')->fetchObject();
         $arrayCompendium = [
             'id' => $compendium->id,
             'category' => $compendium->category,
@@ -169,5 +162,4 @@ class Compendium extends Base
         ]);
         return parent::getPanel('Compendium', $content, 'view_compendium');
     }
-
 }

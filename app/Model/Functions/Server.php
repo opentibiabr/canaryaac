@@ -11,8 +11,8 @@ namespace App\Model\Functions;
 
 use App\DatabaseManager\Database;
 
-class Server{
-    
+class Server
+{
     public static function convertGold($gold)
     {
         $count = strlen($gold);
@@ -39,8 +39,8 @@ class Server{
             '6' => 'North America',
             '7' => 'South America'
         ];
-        foreach($location as $key => $value){
-            if($key == $location_id){
+        foreach($location as $key => $value) {
+            if($key == $location_id) {
                 return $value ?? '';
             }
         }
@@ -58,8 +58,8 @@ class Server{
             '6' => 'USA',
             '7' => 'BRA'
         ];
-        foreach($location as $key => $value){
-            if($key == $location_id){
+        foreach($location as $key => $value) {
+            if($key == $location_id) {
                 return $value ?? '';
             }
         }
@@ -77,8 +77,8 @@ class Server{
             '6' => '/global/content/option_server_location_usa.png',
             '7' => '/global/content/option_server_location_bra.png'
         ];
-        foreach($location as $key => $value){
-            if($key == $location_id){
+        foreach($location as $key => $value) {
+            if($key == $location_id) {
                 return $value ?? '';
             }
         }
@@ -93,8 +93,8 @@ class Server{
             '3' => 'Retro Open PvP',
             '4' => 'Retro Hardcore PvP'
         ];
-        foreach($types as $key => $value){
-            if($key == $pvp_type){
+        foreach($types as $key => $value) {
+            if($key == $pvp_type) {
                 return $value ?? '';
             }
         }
@@ -109,8 +109,8 @@ class Server{
             '3' => 'Retro Open',
             '4' => 'Retro Hardcore'
         ];
-        foreach($types as $key => $value){
-            if($key == $pvp_type){
+        foreach($types as $key => $value) {
+            if($key == $pvp_type) {
                 return $value ?? '';
             }
         }
@@ -125,8 +125,8 @@ class Server{
             '3' => '/global/content/option_server_pvp_type_retro.gif',
             '4' => '/global/content/option_server_pvp_type_retrohardcore.gif'
         ];
-        foreach($types as $key => $value){
-            if($key == $pvp_type){
+        foreach($types as $key => $value) {
+            if($key == $pvp_type) {
                 return $value ?? '';
             }
         }
@@ -136,9 +136,9 @@ class Server{
     {
         $worldQuests = [];
         $selectWorldQuests = (new Database('global_storage'))->select();
-        while($obWorldQuests = $selectWorldQuests->fetchObject()){
+        while($obWorldQuests = $selectWorldQuests->fetchObject()) {
             $selectQuests = (new Database('canary_worldquests'))->select('storage = "'.$obWorldQuests->key.'"');
-            while($obQuests = $selectQuests->fetchObject()){
+            while($obQuests = $selectQuests->fetchObject()) {
                 $worldQuests = [
                     'name' => $obQuests->name,
                     'description' => $obQuests->description
@@ -151,7 +151,7 @@ class Server{
     public static function convertTown($town_id)
     {
         $selectTowns = (new Database('canary_towns'))->select('town_id = "'.$town_id.'"');
-        while($obTowns = $selectTowns->fetchObject()){
+        while($obTowns = $selectTowns->fetchObject()) {
             return $obTowns->name;
         }
     }
@@ -162,8 +162,8 @@ class Server{
             '0' => 'blocked',
             '1' => 'released'
         ];
-        foreach($transfer as $key => $value){
-            if($key == $transfertype_id){
+        foreach($transfer as $key => $value) {
+            if($key == $transfertype_id) {
                 return $value;
             }
         }
@@ -175,8 +175,8 @@ class Server{
             '0' => 'premium',
             '1' => 'free premium'
         ];
-        foreach($premium as $key => $value){
-            if($key == $premium_type){
+        foreach($premium as $key => $value) {
+            if($key == $premium_type) {
                 return $value;
             }
         }
@@ -189,8 +189,8 @@ class Server{
             '1' => 'Protected by BattlEye for a while.',
             '2' => 'Protected by BattlEye since its release.'
         ];
-        foreach($battle_eye as $key => $value){
-            if($key == $battleEye_id){
+        foreach($battle_eye as $key => $value) {
+            if($key == $battleEye_id) {
                 return $value;
             }
         }
@@ -203,8 +203,8 @@ class Server{
             '1' => '/global/content/icon_battleyeinitial.gif',
             '2' => '/global/content/icon_battleyeinitial.gif'
         ];
-        foreach($battle_eye as $key => $value){
-            if($key == $battleEye_id){
+        foreach($battle_eye as $key => $value) {
+            if($key == $battleEye_id) {
                 return $value;
             }
         }
@@ -216,8 +216,8 @@ class Server{
             '0' => 'Regular',
             '1' => 'Experimental'
         ];
-        foreach($world_type as $key => $value){
-            if($key == $worldtype_id){
+        foreach($world_type as $key => $value) {
+            if($key == $worldtype_id) {
                 return $value;
             }
         }
@@ -226,7 +226,7 @@ class Server{
     public static function getRecordPlayers($world_id = 1)
     {
         $selectRecordPlayers = (new Database('server_config'))->select('config = "players_record"');
-        while($obRecordPlayers = $selectRecordPlayers->fetchObject()){
+        while($obRecordPlayers = $selectRecordPlayers->fetchObject()) {
             $playersRecord = [
                 'record' => $obRecordPlayers->value,
                 'timestamp' => $obRecordPlayers->timestamp
@@ -239,7 +239,7 @@ class Server{
     {
         $players_record = 0;
         $selectRecordPlayers = (new Database('server_config'))->select('config = "players_record"');
-        while($obRecordPlayers = $selectRecordPlayers->fetchObject()){
+        while($obRecordPlayers = $selectRecordPlayers->fetchObject()) {
             $players_record = $players_record + $obRecordPlayers->value;
             $playersRecord = [
                 'record' => $players_record,
@@ -253,11 +253,11 @@ class Server{
     {
         $select = (new Database('players_online'))->select();
 
-        while($obPlayersOnline = $select->fetchObject()){
+        while($obPlayersOnline = $select->fetchObject()) {
 
             $selectPlayers = (new Database('players'))->select('id = "'.$obPlayersOnline->player_id.'"');
 
-            while($obPlayer = $selectPlayers->fetchObject()){
+            while($obPlayer = $selectPlayers->fetchObject()) {
                 $playersOnline[] = [
                     'name' => $obPlayer->name,
                     'vocation' => $obPlayer->vocation,
@@ -277,9 +277,9 @@ class Server{
     public static function getServerStatus()
     {
         $select = (new Database('players_online'))->select(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
-        if($select > 0){
+        if($select > 0) {
             $status = 'Server Online';
-        }else{
+        } else {
             $status = 'Server Offline';
         }
         return $status;
@@ -295,7 +295,7 @@ class Server{
     {
         $boostedBoss = [];
         $results = (new Database('boosted_boss'))->select();
-        while($obBoostedBoss = $results->fetchObject()){
+        while($obBoostedBoss = $results->fetchObject()) {
             $boostedBoss = [
                 'image_url' => self::getMonsterImage($obBoostedBoss->looktype, $obBoostedBoss->lookaddons, $obBoostedBoss->lookbody, $obBoostedBoss->lookfeet, $obBoostedBoss->lookhead, $obBoostedBoss->looklegs),
                 'looktype' => $obBoostedBoss->looktype,
@@ -317,7 +317,7 @@ class Server{
     {
         $boostedCreature = [];
         $results = (new Database('boosted_creature'))->select();
-        while($obBoostedCreature = $results->fetchObject()){
+        while($obBoostedCreature = $results->fetchObject()) {
             $boostedCreature = [
                 'image_url' => self::getMonsterImage($obBoostedCreature->looktype, $obBoostedCreature->lookaddons, $obBoostedCreature->lookbody, $obBoostedCreature->lookfeet, $obBoostedCreature->lookhead, $obBoostedCreature->looklegs),
                 'looktype' => $obBoostedCreature->looktype,
@@ -340,7 +340,7 @@ class Server{
         global $globalWorldId;
         $selectWorlds = (new Database('canary_worlds'))->select();
 
-        while($obWorlds = $selectWorlds->fetchObject()){
+        while($obWorlds = $selectWorlds->fetchObject()) {
             $world[] = [
                 'id' => $obWorlds->id,
                 'name' => $obWorlds->name,
@@ -378,7 +378,7 @@ class Server{
     {
         $selectWorlds = (new Database('canary_worlds'))->select('id = "'.$world_id.'"');
 
-        while($obWorlds = $selectWorlds->fetchObject()){
+        while($obWorlds = $selectWorlds->fetchObject()) {
             $world = [
                 'id' => $obWorlds->id,
                 'name' => $obWorlds->name,
@@ -402,5 +402,4 @@ class Server{
         }
         return $world ?? null;
     }
-
 }

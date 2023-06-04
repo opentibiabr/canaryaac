@@ -7,7 +7,7 @@ $obRouter->get('/api/v1/outfit', [
     'middlewares' => [
         'api'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Api\Outfit::getOutfit($request), 'application/json');
     }
 ]);

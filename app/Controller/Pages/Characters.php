@@ -10,7 +10,7 @@
 namespace App\Controller\Pages;
 
 use App\Model\Entity\Account;
-use \App\Utils\View;
+use App\Utils\View;
 use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Entity\ServerConfig as EntityServerConfig;
 use App\Model\Functions\Player;
@@ -28,7 +28,6 @@ const PSTRG_MOUNTS_CURRENTMOUNT = (PSTRG_MOUNTS_RANGE_START + 10);
 
 class Characters extends Base
 {
-
     public static function isInRangeMounts($key, $range)
     {
         return ($key >= PSTRG_MOUNTS_RANGE_START) && (($key - PSTRG_MOUNTS_RANGE_START) <= PSTRG_MOUNTS_RANGE_SIZE);
@@ -316,5 +315,4 @@ class Characters extends Base
         ]);
         return parent::getBase('Characters', $content, 'characters');
     }
-
 }

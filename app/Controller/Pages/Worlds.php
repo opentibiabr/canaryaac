@@ -9,17 +9,15 @@
 
 namespace App\Controller\Pages;
 
-use App\Controller\Admin\Players;
 use App\DatabaseManager\Pagination;
 use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Functions\Player;
 use App\Model\Entity\Worlds as EntityWorlds;
-use \App\Utils\View;
+use App\Utils\View;
 use App\Model\Functions\Server;
-use App\Model\Functions\ServerStatus;
 
-class Worlds extends Base{
-    
+class Worlds extends Base
+{
     public static function getWorld($request)
     {
         $queryParams = $request->getQueryParams();
@@ -27,20 +25,20 @@ class Worlds extends Base{
         $world = [];
 
         $selectWorlds = EntityWorlds::getWorlds('name = "'.$currentWorld.'"');
-        while($obWorlds = $selectWorlds->fetchObject()){
+        while($obWorlds = $selectWorlds->fetchObject()) {
             $world = [
                 'id' => $obWorlds->id,
                 'name' => $obWorlds->name
             ];
         }
-        if(empty($world)){
+        if(empty($world)) {
             return false;
-        }else{
+        } else {
             return $world;
         }
     }
 
-    public static function getPlayersOnline($request,&$obPagination)
+    public static function getPlayersOnline($request, &$obPagination)
     {
         $queryParams = $request->getQueryParams();
         $currentPage = $queryParams['page'] ?? 1;
@@ -49,9 +47,9 @@ class Worlds extends Base{
         $obPagination = new Pagination($totalAmount, $currentPage, 50);
         $select_PlayersOnline = EntityWorlds::getPlayersOnline(null, null, $obPagination->getLimit());
 
-        while($obOnline = $select_PlayersOnline->fetchObject(EntityWorlds::class)){
+        while($obOnline = $select_PlayersOnline->fetchObject(EntityWorlds::class)) {
             $playersInfo = EntityPlayer::getPlayer('id = "'.$obOnline->player_id.'"');
-            while($obPlayers = $playersInfo->fetchObject()){
+            while($obPlayers = $playersInfo->fetchObject()) {
                 $players[] = [
                     'name' => $obPlayers->name,
                     'level' => $obPlayers->level,

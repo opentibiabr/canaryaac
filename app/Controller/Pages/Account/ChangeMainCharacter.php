@@ -9,7 +9,7 @@
 
 namespace App\Controller\Pages\Account;
 
-use \App\Utils\View;
+use App\Utils\View;
 use App\Controller\Pages\Base;
 use App\Model\Entity\Player;
 use App\Model\Functions\Player as FunctionsPlayer;
@@ -17,31 +17,30 @@ use App\Session\Admin\Login as SessionAdminLogin;
 
 class ChangeMainCharacter extends Base
 {
-
     public static function viewChangedMain($request)
     {
         $idLogged = SessionAdminLogin::idLogged();
         $postVars = $request->getPostVars();
-        if(empty($postVars['selected_main'])){
+        if (empty($postVars['selected_main'])) {
             return self::viewChangeMain();
         }
         $filter_main = filter_var($postVars['selected_main'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $select_character = Player::getPlayer('account_id = "'.$idLogged.'" AND name = "'.$filter_main.'"')->fetchObject();
-        $current_main = Player::getPlayer('account_id = "'.$idLogged.'" AND main = "1"')->fetchObject();
-        if(empty($select_character)){
+        $select_character = Player::getPlayer('account_id = "' . $idLogged . '" AND name = "' . $filter_main . '"')->fetchObject();
+        $current_main = Player::getPlayer('account_id = "' . $idLogged . '" AND main = "1"')->fetchObject();
+        if (empty($select_character)) {
             return self::viewChangeMain();
         }
-        if($select_character->main == 1){
+        if ($select_character->main == 1) {
             return self::viewChangeMain();
         }
-        if($select_character->deletion == 1){
+        if ($select_character->deletion == 1) {
             return self::viewChangeMain();
         }
 
-        Player::updatePlayer('id = "'.$current_main->id.'"', [
+        Player::updatePlayer('id = "' . $current_main->id . '"', [
             'main' => '0',
         ]);
-        Player::updatePlayer('id = "'.$select_character->id.'"', [
+        Player::updatePlayer('id = "' . $select_character->id . '"', [
             'main' => '1',
         ]);
 
@@ -55,18 +54,18 @@ class ChangeMainCharacter extends Base
     {
         $idLogged = SessionAdminLogin::idLogged();
         $postVars = $request->getPostVars();
-        if(empty($postVars['maincharacter'])){
+        if (empty($postVars['maincharacter'])) {
             return self::viewChangeMain();
         }
         $filter_main = filter_var($postVars['maincharacter'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $select_character = Player::getPlayer('account_id = "'.$idLogged.'" AND name = "'.$filter_main.'"')->fetchObject();
-        if(empty($select_character)){
+        $select_character = Player::getPlayer('account_id = "' . $idLogged . '" AND name = "' . $filter_main . '"')->fetchObject();
+        if (empty($select_character)) {
             return self::viewChangeMain();
         }
-        if($select_character->main == 1){
+        if ($select_character->main == 1) {
             return self::viewChangeMain();
         }
-        if($select_character->deletion == 1){
+        if ($select_character->deletion == 1) {
             return self::viewChangeMain();
         }
         $content = View::render('pages/account/changemain_confirm', [
@@ -78,9 +77,9 @@ class ChangeMainCharacter extends Base
     public static function viewChangeMain()
     {
         $idLogged = SessionAdminLogin::idLogged();
-        $main_character = Player::getPlayer('account_id = "'.$idLogged.'" AND main = "1" AND deletion = "0"')->fetchObject();
-        $select_players = Player::getPlayer('account_id = "'.$idLogged.'" AND main = "0" AND deletion = "0"');
-        while($player = $select_players->fetchObject()){
+        $main_character = Player::getPlayer('account_id = "' . $idLogged . '" AND main = "1" AND deletion = "0"')->fetchObject();
+        $select_players = Player::getPlayer('account_id = "' . $idLogged . '" AND main = "0" AND deletion = "0"');
+        while ($player = $select_players->fetchObject()) {
             $arrayPlayers[] = [
                 'id' => $player->id,
                 'name' => $player->name,
@@ -94,5 +93,4 @@ class ChangeMainCharacter extends Base
         ]);
         return parent::getBase('Account Management', $content, 'account');
     }
-
 }

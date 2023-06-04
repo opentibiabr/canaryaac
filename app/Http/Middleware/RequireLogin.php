@@ -11,14 +11,13 @@ namespace App\Http\Middleware;
 
 use App\Session\Admin\Login as SessionPlayerLogin;
 
-class RequireLogin{
-    
+class RequireLogin
+{
     public static function handle($request, $next)
     {
-        if(!SessionPlayerLogin::isLogged()){
+        if(!SessionPlayerLogin::isLogged()) {
             $request->getRouter()->redirect('/account/login');
         }
         return $next($request);
     }
-    
 }

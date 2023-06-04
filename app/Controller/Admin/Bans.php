@@ -13,18 +13,18 @@ use App\Utils\View;
 use App\Model\Entity\Bans as EntityBans;
 use App\DatabaseManager\Pagination;
 
-class Bans extends Base{
-
-    public static function getAllBans($request,&$obPagination)
+class Bans extends Base
+{
+    public static function getAllBans($request, &$obPagination)
     {
         $queryParams = $request->getQueryParams();
         $currentPage = $queryParams['page'] ?? 1;
         $totalAmount = EntityBans::getAccountBans(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
         $obPagination = new Pagination($totalAmount, $currentPage, 10);
         $results = EntityBans::getAccountBans(null, null, $obPagination->getLimit());
-        while($obAllBans = $results->fetchObject(EntityBans::class)){
+        while ($obAllBans = $results->fetchObject(EntityBans::class)) {
             $allBans[] = [
-                'account_id' => (int)$obAllBans->account_id,
+                'account_id' => (int) $obAllBans->account_id,
                 'reason' => $obAllBans->reason,
                 'banned_at' => $obAllBans->banned_at,
                 'expires_at' => $obAllBans->expires_at,
@@ -43,5 +43,4 @@ class Bans extends Base{
 
         return parent::getPanel('Banishments', $content, 'bans');
     }
-
 }

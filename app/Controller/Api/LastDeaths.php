@@ -12,13 +12,13 @@ namespace App\Controller\Api;
 use App\Model\Entity\Player as EntityPlayer;
 use Exception;
 
-class LastDeaths extends Api{
-
+class LastDeaths extends Api
+{
     public static function getDeaths($request)
     {
         $deaths = [];
         $select = EntityPlayer::getDeaths(null, 'time DESC');
-        while($obDeaths = $select->fetchObject(EntityPlayer::class)){
+        while ($obDeaths = $select->fetchObject(EntityPlayer::class)) {
             $deaths[] = [
                 'time' => $obDeaths->time,
                 'level' => $obDeaths->level,
@@ -31,7 +31,7 @@ class LastDeaths extends Api{
             ];
         }
 
-        if($obDeaths == false){
+        if ($obDeaths == false) {
             throw new Exception('Nenhuma morte foi encontrada.', 404);
         }
 
@@ -42,5 +42,4 @@ class LastDeaths extends Api{
     {
         return self::getDeaths($request);
     }
-    
 }

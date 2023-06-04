@@ -9,8 +9,10 @@
 
 namespace App\Controller\Api;
 
-class Api{
+use App\Http\Request;
 
+class Api
+{
     /**
      * Método responsável por retornar os detalhes da API
      *
@@ -33,9 +35,8 @@ class Api{
         $pages = $obPagination->getPages();
 
         return [
-            'current' => isset($queryParams['page']) ? (int)$queryParams['page'] : 1,
+            'current' => isset($queryParams['page']) ? (int) $queryParams['page'] : 1,
             'total' => !empty($pages) ? count($pages) : 1
         ];
     }
-    
 }

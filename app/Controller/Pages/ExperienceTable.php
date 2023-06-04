@@ -9,11 +9,11 @@
 
 namespace App\Controller\Pages;
 
-use \App\Utils\View;
+use App\Utils\View;
 use App\Model\Functions\Server;
 
-class ExperienceTable extends Base{
-
+class ExperienceTable extends Base
+{
     public static function viewExperienceTable()
     {
         $content = View::render('pages/library/experiencetable', [
@@ -21,5 +21,4 @@ class ExperienceTable extends Base{
         ]);
         return parent::getBase('Experience Table', $content, 'experiencetable');
     }
-
 }

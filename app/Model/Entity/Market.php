@@ -11,12 +11,15 @@ namespace App\Model\Entity;
 
 use App\DatabaseManager\Database;
 
-class Market{
-    public static function getMarketOffers($where = null, $order = null, $limit = null, $fields = '*'){
+class Market
+{
+    public static function getMarketOffers($where = null, $order = null, $limit = null, $fields = '*')
+    {
         return (new Database('market_offers'))->select($where, $order, $limit, $fields);
     }
 
-    public static function getMarketHistory($where = null, $order = null, $limit = null, $fields = '*'){
+    public static function getMarketHistory($where = null, $order = null, $limit = null, $fields = '*')
+    {
         return (new Database('market_history'))->select($where, $order, $limit, $fields);
     }
 }

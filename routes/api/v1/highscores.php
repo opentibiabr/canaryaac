@@ -7,7 +7,7 @@ $obRouter->get('/api/v1/highscores', [
     'middlewares' => [
         'api'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Api\Highscores::getHighscores($request), 'application/json');
     }
 ]);

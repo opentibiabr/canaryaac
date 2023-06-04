@@ -10,16 +10,16 @@
 namespace App\Controller\Pages;
 
 use App\Model\Entity\Creatures as EntityCreatures;
-use \App\Utils\View;
+use App\Utils\View;
 use App\Model\Functions\Server;
 
-class BoostableBosses extends Base{
-
+class BoostableBosses extends Base
+{
     public static function getBosses()
     {
         $arrayCreatures = [];
         $dbCreatures = EntityCreatures::getBoss();
-        while($creature = $dbCreatures->fetchObject()){
+        while($creature = $dbCreatures->fetchObject()) {
             $arrayCreatures[] = [
                 'tag' => $creature->tag,
                 'name' => $creature->name,

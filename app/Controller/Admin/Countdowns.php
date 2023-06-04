@@ -15,7 +15,6 @@ use App\Utils\View;
 
 class Countdowns extends Base
 {
-
     public static function insertCountdown($request)
     {
         $postFiles = $request->getPostFiles();
@@ -54,7 +53,8 @@ class Countdowns extends Base
             'date_end' => strtotime($final_date_end),
             'themebox' => $upload->getUrl(),
         ]);
-        $status = SweetAlert::Types('Success!', $upload->getBaseName(), 'success', 'btn btn-success');;
+
+        $status = SweetAlert::Types('Success!', $upload->getBaseName(), 'success', 'btn btn-success');
         return self::viewCountdowns($request, $status);
     }
 
@@ -94,5 +94,4 @@ class Countdowns extends Base
         ]);
         return parent::getPanel('Countdowns', $content, 'countdowns');
     }
-
 }

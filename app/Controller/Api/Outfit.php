@@ -12,12 +12,12 @@ namespace App\Controller\Api;
 use App\Model\Functions\Player;
 use Exception;
 
-class Outfit extends Api{
-
+class Outfit extends Api
+{
     public static function getOutfitUrl($request)
     {
         $queryParams = $request->getQueryParams();
-        if(empty($queryParams['looktype'])){
+        if (empty($queryParams['looktype'])) {
             throw new Exception('Nenhuma guild foi encontrada.', 404);
         }
         $looktype = $queryParams['looktype'];
@@ -37,5 +37,4 @@ class Outfit extends Api{
     {
         return self::getOutfitUrl($request);
     }
-    
 }

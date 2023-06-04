@@ -15,8 +15,8 @@ use App\Model\Entity\Worlds;
 use App\Model\Functions\Player;
 use App\Model\Functions\Server;
 
-class Players extends Base{
-
+class Players extends Base
+{
     public static function updatePlayer($request, $id)
     {
         $postVars = $request->getPostVars();
@@ -31,7 +31,7 @@ class Players extends Base{
             $filter_char_shielding = filter_var($postVars['char_shielding'], FILTER_SANITIZE_NUMBER_INT);
             $filter_char_fishing = filter_var($postVars['char_fishing'], FILTER_SANITIZE_NUMBER_INT);
 
-            EntityPlayer::updatePlayer('id = "'.$id.'"', [
+            EntityPlayer::updatePlayer('id = "' . $id . '"', [
                 'maglevel' => $filter_char_magic,
                 'skill_fist' => $filter_char_fist,
                 'skill_club' => $filter_char_club,
@@ -66,7 +66,7 @@ class Players extends Base{
             $filter_char_world = filter_var($postVars['char_world'], FILTER_SANITIZE_NUMBER_INT);
             $filter_char_town = filter_var($postVars['char_town'], FILTER_SANITIZE_NUMBER_INT);
 
-            EntityPlayer::updatePlayer('id = "'.$id.'"', [
+            EntityPlayer::updatePlayer('id = "' . $id . '"', [
                 'name' => $filter_char_name,
                 'health' => $filter_char_health,
                 'healthmax' => $filter_char_healthmax,
@@ -90,12 +90,12 @@ class Players extends Base{
     public static function getAllPlayers()
     {
         $select = EntityPlayer::getPlayer();
-        while($obAllPlayers = $select->fetchObject()){
+        while ($obAllPlayers = $select->fetchObject()) {
             $allPlayers[] = [
                 'id' => $obAllPlayers->id,
                 'account_id' => $obAllPlayers->account_id,
                 'name' => $obAllPlayers->name,
-                'level' => (int)$obAllPlayers->level,
+                'level' => (int) $obAllPlayers->level,
                 'vocation' => Player::convertVocation($obAllPlayers->vocation),
                 'group' => Player::convertGroup($obAllPlayers->group_id),
                 'online' => Player::isOnline($obAllPlayers->id),
@@ -120,7 +120,7 @@ class Players extends Base{
             ];
         }
 
-        $character = EntityPlayer::getPlayer('id = "'.$id.'"', null, '1')->fetchObject();
+        $character = EntityPlayer::getPlayer('id = "' . $id . '"', null, '1')->fetchObject();
         $content = View::render('admin/modules/players/view', [
             'status' => $status,
             'worlds' => Server::getWorlds(),
@@ -157,7 +157,7 @@ class Players extends Base{
             'outfit' => Player::getOutfit($character->id),
             'online' => Player::isOnline($character->id)
         ]);
-        return parent::getPanel('Player #'.$id, $content, 'players');
+        return parent::getPanel('Player #' . $id, $content, 'players');
     }
 
     public static function getPlayers($request)

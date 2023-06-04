@@ -14,8 +14,8 @@ use Twig\Loader\FilesystemLoader;
 use App\Utils\ViewFunctions;
 use App\Utils\ViewFilters;
 
-class View{
-
+class View
+{
     private static $vars = [];
 
     public static function init($vars = [])
@@ -33,14 +33,14 @@ class View{
             __DIR__.'/../../resources/view/admin/alert',
             __DIR__.'/../../resources/view/themeboxes/',
         ]);
-        if($_ENV['DEV_MODE'] == true){
+        if($_ENV['DEV_MODE'] == true) {
             $twig = new Environment($loader, [
                 'debug' => true,
                 'charset' => 'utf-8',
                 'cache' => false,
                 'autoescape' => 'html',
             ]);
-        }else{
+        } else {
             $twig = new Environment($loader, [
                 'debug' => false,
                 'charset' => 'utf-8',
@@ -48,11 +48,11 @@ class View{
             ]);
         }
 
-        $ViewFunctions = new ViewFunctions;
+        $ViewFunctions = new ViewFunctions();
         $twig->addFunction($ViewFunctions->addStyleCode());
         $twig->addFunction($ViewFunctions->addStyleCss());
 
-        $ViewFilters = new ViewFilters;
+        $ViewFilters = new ViewFilters();
         $twig->addFilter($ViewFilters->addFilters());
 
         return $twig;
@@ -61,7 +61,7 @@ class View{
     public static function render($view, $vars = [])
     {
         $vars = array_merge(self::$vars, $vars);
-        
+
         $array = explode('/', $view);
         $view_file = end($array);
         $remove_file = array_pop($array);
@@ -70,5 +70,4 @@ class View{
         $contentView = self::getContentView($view_path);
         return $contentView->render($view_file.'.html.twig', $vars);
     }
-
 }

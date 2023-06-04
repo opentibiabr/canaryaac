@@ -127,10 +127,10 @@ class GifCreator
             }
 
             if (substr($this->frameSources[$i], 0, 6) != 'GIF87a' && substr(
-                    $this->frameSources[$i],
-                    0,
-                    6
-                ) != 'GIF89a') {
+                $this->frameSources[$i],
+                0,
+                6
+            ) != 'GIF89a') {
                 throw new \Exception($this->version . ': ' . $i . ' ' . $this->errors['ERR01']);
             }
 
@@ -213,8 +213,8 @@ class GifCreator
         $Locals_rgb = substr($this->frameSources[$i], 13, 3 * (2 << (ord($this->frameSources[$i] [10]) & 0x07)));
 
         $Locals_ext = "!\xF9\x04" . chr(($this->dis << 2) + 0) . chr(($d >> 0) & 0xFF) . chr(
-                ($d >> 8) & 0xFF
-            ) . "\x0\x0";
+            ($d >> 8) & 0xFF
+        ) . "\x0\x0";
 
         if ($this->colour > -1 && ord($this->frameSources[$i] [10]) & 0x80) {
             for ($j = 0; $j < (2 << (ord($this->frameSources[$i] [10]) & 0x07)); $j++) {
@@ -223,8 +223,8 @@ class GifCreator
                     ord($Locals_rgb [3 * $j + 2]) == (($this->colour >> 0) & 0xFF)
                 ) {
                     $Locals_ext = "!\xF9\x04" . chr(($this->dis << 2) + 1) . chr(($d >> 0) & 0xFF) . chr(
-                            ($d >> 8) & 0xFF
-                        ) . chr($j) . "\x0";
+                        ($d >> 8) & 0xFF
+                    ) . chr($j) . "\x0";
                     break;
                 }
             }

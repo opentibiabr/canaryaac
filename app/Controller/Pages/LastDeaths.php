@@ -9,15 +9,15 @@
 
 namespace App\Controller\Pages;
 
-use \App\Utils\View;
+use App\Utils\View;
 use App\Controller\Pages\Base;
 use App\DatabaseManager\Pagination;
 use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Functions\Server;
 
-class LastDeaths extends Base{
-
-    public static function getLastDeaths($request,&$obPagination)
+class LastDeaths extends Base
+{
+    public static function getLastDeaths($request, &$obPagination)
     {
         $queryParams = $request->getQueryParams();
         $currentPage = $queryParams['page'] ?? 1;
@@ -26,7 +26,7 @@ class LastDeaths extends Base{
         $obPagination = new Pagination($totalAmount, $currentPage, 10);
         $select_deaths = EntityPlayer::getDeaths(null, 'time DESC', $obPagination->getLimit());
 
-        while($obDeaths = $select_deaths->fetchObject(EntityPlayer::class)){
+        while($obDeaths = $select_deaths->fetchObject(EntityPlayer::class)) {
 
             $countDeaths = (int)EntityPlayer::getDeaths(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
 
@@ -34,17 +34,17 @@ class LastDeaths extends Base{
 
             $lasthit = ($obDeaths->is_player) ? $obDeaths->killed_by : $obDeaths->killed_by;
             $description = '<a href="'.URL.'/community/characters/'.$select_player_death->name.'">' . $select_player_death->name . '</a> died at level <b>' . $obDeaths->level . '</b> by ' . $lasthit;
-            if($obDeaths->unjustified){
+            if($obDeaths->unjustified) {
                 $description .= ' <span style="color: red; font-style: italic;">(unjustified)</span>';
             }
             $mostdamage = ($obDeaths->mostdamage_by !== $obDeaths->killed_by) ? true : false;
-            if($mostdamage){
+            if($mostdamage) {
                 $mostdamage = ($obDeaths->mostdamage_is_player) ? $obDeaths->mostdamage_by : $obDeaths->mostdamage_by;
                 $description .=  ' and by ' . $mostdamage;
-                if($obDeaths->mostdamage_unjustified){
+                if($obDeaths->mostdamage_unjustified) {
                     $description .=  ' <span style="color: red; font-style: italic;">(unjustified)</span>';
                 }
-            }else{
+            } else {
                 $description .=  " <b>(soloed)</b>";
             }
             $arrayDeaths[] = [
@@ -65,5 +65,4 @@ class LastDeaths extends Base{
         ]);
         return parent::getBase('Last Deaths', $content, $currentPage = 'lastdeaths');
     }
-
 }

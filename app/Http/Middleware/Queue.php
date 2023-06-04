@@ -9,13 +9,12 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use App\Http\Request;
 use App\Http\Response;
 use Exception;
 
-class Queue{
-
+class Queue
+{
     /**
      * middleware mapping
      *
@@ -29,7 +28,7 @@ class Queue{
      * @var array
      */
     private static $default = [];
-    
+
     /**
      * Queue of middlewares to be executed
      *
@@ -80,7 +79,8 @@ class Queue{
      *
      * @param array $default
      */
-    public static function setDefault($default){
+    public static function setDefault($default)
+    {
         self::$default = $default;
     }
 
@@ -93,24 +93,25 @@ class Queue{
     public function next($request)
     {
         // Checks if the queue is empty
-        if(empty($this->middlewares)) return call_user_func_array($this->controller, $this->controllerArgs);
+        if(empty($this->middlewares)) {
+            return call_user_func_array($this->controller, $this->controllerArgs);
+        }
 
         // Middleware
         $middleware = array_shift($this->middlewares);
 
         // Check the mapping
-        if(!isset(self::$map[$middleware])){
+        if(!isset(self::$map[$middleware])) {
             throw new Exception('Problemas ao processar o middleware da requisição.', 500);
         }
 
         // Next
         $queue = $this;
-        $next = function($request) use($queue){
+        $next = function ($request) use ($queue) {
             return $queue->next($request);
         };
 
         // Run the middleware
-        return (new self::$map[$middleware])->handle($request, $next);
+        return (new self::$map[$middleware]())->handle($request, $next);
     }
-
 }

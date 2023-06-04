@@ -9,15 +9,14 @@
 
 namespace App\Controller\Pages\Support;
 
-use \App\Utils\View;
+use App\Utils\View;
 use App\Controller\Pages\Base;
 
-class Rules extends Base{
-
+class Rules extends Base
+{
     public static function viewRules($request)
     {
         $content = View::render('pages/support/rules', []);
         return parent::getBase('Rules', $content, $currentPage = 'rules');
     }
-
 }

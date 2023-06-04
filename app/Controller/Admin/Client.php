@@ -9,17 +9,12 @@
 
 namespace App\Controller\Admin;
 
-use App\Model\Entity\Polls as EntityPolls;
-use App\Model\Functions\Polls as FunctionsPolls;
 use App\Controller\Admin\SweetAlert;
-use App\Model\Entity\ServerConfig as EntityServerConfig;
 use App\Model\Functions\ClientEditor;
-use RuntimeException;
 use App\Utils\View;
 
 class Client extends Base
 {
-
     public static function editClient($request)
     {
         $postVars = $request->getPostVars();
@@ -37,7 +32,7 @@ class Client extends Base
         $exeEditor->setRsa($postVars['client_rsa']);
         foreach ($exeEditor->getServices() as $key => $value) {
             if (isset($postVars[$key])) {
-                $exeEditor->setService($key, (string)$postVars[$key]);
+                $exeEditor->setService($key, (string) $postVars[$key]);
             }
         }
         if (empty($postFiles['client_exe']['tmp_name'])) {

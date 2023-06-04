@@ -16,7 +16,6 @@ use FilesystemIterator;
 
 class Outfit
 {
-
     public static function generateCache($request)
     {
         $outfitImagesPath = OUTFITS_FOLDER;
@@ -25,26 +24,24 @@ class Outfit
 
         $outfits = [];
         $i = 0;
-        foreach ($iterator as $file)
-        {
-            if ($file->isFile())
-            {
+        foreach ($iterator as $file) {
+            if ($file->isFile()) {
                 $filePath = trim($file->getPath(), '.');
                 $filePath = trim($filePath, '/');
                 $outfitIdData = explode('/', $filePath);
                 $outfitId = $outfitIdData[4];
                 $outfits[$outfitId]['files'][] = $filePath . '/' . $file->getFilename();
-                if(isset($outfits[$outfitId]['framesNumber']))
+                if(isset($outfits[$outfitId]['framesNumber'])) {
                     $outfits[$outfitId]['framesNumber'] = max($outfits[$outfitId]['framesNumber'], (int) substr($file->getFilename(), 0, 1));
-                else
+                } else {
                     $outfits[$outfitId]['framesNumber'] = (int) substr($file->getFilename(), 0, 1);
+                }
             }
         }
 
         // CODE TO CHECK WHAT VALUES OF 'framesNumber' ARE POSSIBLE FOR YOUR OUTFITS
         $frameNumbers = [0,0,0,0,0,0,0,0,0,0];
-        foreach($outfits as $outfitId => $outfit)
-        {
+        foreach($outfits as $outfitId => $outfit) {
             if (!file_put_contents($outfitImagesPath . '/' . $outfitId . '/outfit.data.txt', serialize($outfit))) {
                 exit('PHP cannot write to: "' . $outfitImagesPath . '/' . $outfitId . '/outfit.data.txt", check directory access rights');
             }
@@ -114,8 +111,8 @@ class Outfit
 
         $moveAnimFrames = FunctionsOutfit\Animated::getOutfitFramesNumber();
 
-// rotate player, BIG IMAGES, 20-80 KB per outfit!
-//for($direction = 1; $direction <= 4; $direction++)
+        // rotate player, BIG IMAGES, 20-80 KB per outfit!
+        //for($direction = 1; $direction <= 4; $direction++)
         for ($moveAnimFrame = 1; $moveAnimFrame <= $moveAnimFrames; ++$moveAnimFrame) {
             $frames[] = FunctionsOutfit\Animated::instance()->outfit(
                 $id,
@@ -136,5 +133,4 @@ class Outfit
         header('Content-type: image/gif');
         echo $gifBinary;
     }
-
 }

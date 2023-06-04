@@ -29,95 +29,95 @@ include __DIR__.'/pages/guilds.php';
 include __DIR__.'/pages/outfit.php';
 
 $obRouter->get('', [
-    function(){
+    function () {
         return new Response(200, Lastnews::getLastnews());
     }
 ]);
 $obRouter->get('/latestnews', [
-    function(){
+    function () {
         return new Response(200, Lastnews::getLastnews());
     }
 ]);
 $obRouter->get('/newsarchive', [
-    function($request){
+    function ($request) {
         return new Response(200, Newsarchive::viewNewsArchive($request));
     }
 ]);
 $obRouter->post('/newsarchive', [
-    function($request){
+    function ($request) {
         return new Response(200, Newsarchive::viewNewsArchive($request));
     }
 ]);
 $obRouter->get('/newsarchive/{id}/view', [
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Newsarchive::viewNewsArchiveById($request, $id));
     }
 ]);
 $obRouter->get('/eventcalendar', [
-    function($request){
+    function ($request) {
         return new Response(200, EventCalendar::viewEventCalendar($request));
     }
 ]);
 $obRouter->get('/downloads', [
-    function(){
+    function () {
         return new Response(200, Downloads::viewDownloads());
     }
 ]);
 
 $obRouter->get('/library/creatures', [
-    function(){
+    function () {
         return new Response(200, Creatures::viewCreatures());
     }
 ]);
 $obRouter->get('/library/boostablebosses', [
-    function(){
+    function () {
         return new Response(200, BoostableBosses::viewBoostableBosses());
     }
 ]);
 $obRouter->get('/library/achievements', [
-    function(){
+    function () {
         return new Response(200, Achievements::viewAchievements());
     }
 ]);
 $obRouter->get('/library/experiencetable', [
-    function(){
+    function () {
         return new Response(200, ExperienceTable::viewExperienceTable());
     }
 ]);
 
 $obRouter->get('/community/characters', [
-    function($request){
+    function ($request) {
         return new Response(200, Characters::getCharacters($request));
     }
 ]);
 $obRouter->post('/community/characters', [
-    function($request){
+    function ($request) {
         return new Response(200, Characters::getCharacters($request));
     }
 ]);
 $obRouter->get('/community/characters/{name}', [
-    function($request, $name){
+    function ($request, $name) {
         return new Response(200, Characters::getCharacters($request, $name));
     }
 ]);
 
 $obRouter->get('/community/worlds', [
-    function($request){
+    function ($request) {
         return new Response(200, Worlds::getWorlds($request));
     }
 ]);
 $obRouter->get('/community/highscores', [
-    function($request){
+    function ($request) {
         return new Response(200, Highscores::getHighscores($request));
     }
 ]);
 $obRouter->get('/community/lastdeaths', [
-    function($request){
+    function ($request) {
         return new Response(200, LastDeaths::viewLastDeaths($request));
     }
 ]);
 $obRouter->get('/community/polls', [
-    function($request){
+    function ($request) {
         return new Response(200, Polls::viewPolls($request));
     }
 ]);
@@ -125,7 +125,7 @@ $obRouter->get('/community/polls/{id}/view', [
     'middlewares' => [
         'required-login'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Polls::viewPollById($request, $id));
     }
 ]);
@@ -133,17 +133,17 @@ $obRouter->post('/community/polls/{id}/view', [
     'middlewares' => [
         'required-login'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Polls::insertAnswer($request, $id));
     }
 ]);
 $obRouter->get('/community/houses', [
-    function($request){
+    function ($request) {
         return new Response(200, Houses::getHouses($request));
     }
 ]);
 $obRouter->get('/community/houses/{house_id}/view', [
-    function($request, $house_id){
+    function ($request, $house_id) {
         return new Response(200, Houses::viewHouse($request, $house_id));
     }
 ]);
@@ -151,7 +151,7 @@ $obRouter->get('/community/houses/{house_id}/bid', [
     'middlewares' => [
         'required-login'
     ],
-    function($request, $house_id){
+    function ($request, $house_id) {
         return new Response(200, Houses::viewBid($request, $house_id));
     }
 ]);
@@ -159,43 +159,43 @@ $obRouter->post('/community/houses/{house_id}/bid', [
     'middlewares' => [
         'required-login'
     ],
-    function($request, $house_id){
+    function ($request, $house_id) {
         return new Response(200, Houses::insertBid($request, $house_id));
     }
 ]);
 
 $obRouter->get('/guildwars/active', [
-    function($request){
+    function ($request) {
         return new Response(200, GuildsWars::viewActiveWars($request));
     }
 ]);
 $obRouter->get('/guildwars/pending', [
-    function($request){
+    function ($request) {
         return new Response(200, GuildsWars::viewPendingWars($request));
     }
 ]);
 $obRouter->get('/guildwars/surrender', [
-    function($request){
+    function ($request) {
         return new Response(200, GuildsWars::viewSurrenderWars($request));
     }
 ]);
 $obRouter->get('/guildwars/ended', [
-    function($request){
+    function ($request) {
         return new Response(200, GuildsWars::viewEndedWars($request));
     }
 ]);
 $obRouter->get('/support/rules', [
-    function($request){
+    function ($request) {
         return new Response(200, Support\Rules::viewRules($request));
     }
 ]);
 $obRouter->get('/support/team', [
-    function($request){
+    function ($request) {
         return new Response(200, Support\Team::viewTeam($request));
     }
 ]);
 $obRouter->get('/signature/{id}', [
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Signature::generate($request, $id));
     }
 ]);

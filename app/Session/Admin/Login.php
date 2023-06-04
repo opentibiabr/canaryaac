@@ -9,11 +9,11 @@
 
 namespace App\Session\Admin;
 
-class Login{
-
+class Login
+{
     public static function init()
     {
-        if(session_status() != PHP_SESSION_ACTIVE){
+        if(session_status() != PHP_SESSION_ACTIVE) {
             session_start([
                 'name' => 'CanaryAAC'
             ]);

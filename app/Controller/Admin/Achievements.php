@@ -15,7 +15,6 @@ use App\Utils\View;
 
 class Achievements extends Base
 {
-
     public static function importAchievements($request)
     {
         $postVars = $request->getPostVars();
@@ -40,7 +39,7 @@ class Achievements extends Base
             return self::viewAchievements($request, $status);
         }
 
-        if(!filter_var($postVars['achievements_grade'], FILTER_VALIDATE_INT)) {
+        if (!filter_var($postVars['achievements_grade'], FILTER_VALIDATE_INT)) {
             $status = Alert::getError('Grade inválida.');
             return self::viewAchievements($request, $status);
         }
@@ -49,11 +48,11 @@ class Achievements extends Base
             return self::viewAchievements($request, $status);
         }
 
-        if(!filter_var($postVars['achievements_points'], FILTER_VALIDATE_INT)) {
+        if (!filter_var($postVars['achievements_points'], FILTER_VALIDATE_INT)) {
             $status = Alert::getError('Points inválido.');
             return self::viewAchievements($request, $status);
         }
-        if(!filter_var($postVars['achievements_storage'], FILTER_VALIDATE_INT)) {
+        if (!filter_var($postVars['achievements_storage'], FILTER_VALIDATE_INT)) {
             $status = Alert::getError('Storage inválida.');
             return self::viewAchievements($request, $status);
         }
@@ -91,5 +90,4 @@ class Achievements extends Base
         ]);
         return parent::getPanel('Achievements', $content, 'achievements');
     }
-
 }

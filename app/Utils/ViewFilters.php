@@ -12,10 +12,11 @@ namespace App\Utils;
 use App\Model\Functions\Website;
 use Twig\TwigFilter;
 
-class ViewFilters{
+class ViewFilters
+{
     public static function addFilters()
     {
-        $filter = new TwigFilter('exp', function($exp){
+        $filter = new TwigFilter('exp', function ($exp) {
             return number_format($exp, '2', '.', '');
         });
 

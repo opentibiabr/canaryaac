@@ -63,7 +63,7 @@ class ThemeBox
     {
         $websiteInfo = EntityServerConfig::getInfoWebsite()->fetchObject();
         date_default_timezone_set($websiteInfo->timezone);
-        
+
         $countdown = EntityCountdowns::getCountdowns(null, 'date_end DESC', 1)->fetchObject();
         if (empty($countdown)) {
             return '';
@@ -77,5 +77,4 @@ class ThemeBox
         }
         return $arrayCountdown ?? '';
     }
-
 }

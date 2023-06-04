@@ -15,7 +15,6 @@ use App\Utils\View;
 
 class Upload extends Base
 {
-
     public static function upload($request)
     {
         $postVars = $request->getPostFiles();
@@ -51,7 +50,6 @@ class Upload extends Base
                 if ($value->getExtension() != 'png') {
                     $status = SweetAlert::Types('Error!', 'Invalid file extension.', 'error', 'btn btn-danger');
                     return self::viewUpload($request, $status);
-                    exit;
                 }
                 $success = $value->upload('upload', false);
                 if ($success) {

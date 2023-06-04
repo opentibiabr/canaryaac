@@ -13,8 +13,8 @@ use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
 
-class FunMailer{
-
+class FunMailer
+{
     public static function connectMail()
     {
         $smtp = $_ENV['MAIL_SMTP'];
@@ -37,5 +37,4 @@ class FunMailer{
 
         $mailer->send($email);
     }
-
 }

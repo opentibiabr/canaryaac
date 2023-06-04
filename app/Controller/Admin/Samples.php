@@ -15,15 +15,14 @@ use App\Model\Functions\Player;
 
 class Samples extends Base
 {
-
     public static function editSample($request, $id)
     {
         $postVars = $request->getPostVars();
-        if(empty($id)){
+        if (empty($id)) {
             return self::viewSamples($request);
         }
-        if(isset($postVars['btn_delete'])){
-            ServerConfig::deletePlayerSample('id = "'.$id.'"');
+        if (isset($postVars['btn_delete'])) {
+            ServerConfig::deletePlayerSample('id = "' . $id . '"');
             $status = Alert::getSuccess('Deletado com sucesso.');
             return self::viewSamples($request, $status);
         }
@@ -48,7 +47,7 @@ class Samples extends Base
         $filter_posy = filter_var($postVars['editsampler_positiony'], FILTER_SANITIZE_NUMBER_INT);
         $filter_posz = filter_var($postVars['editsampler_positionz'], FILTER_SANITIZE_NUMBER_INT);
 
-        ServerConfig::updatePlayerSample('id = "'.$id.'"', [
+        ServerConfig::updatePlayerSample('id = "' . $id . '"', [
             'vocation' => $filter_vocation,
             'level' => $filter_level,
             'experience' => $filter_experience,
@@ -138,10 +137,10 @@ class Samples extends Base
 
     public static function viewEditSample($request, $id, $status = null)
     {
-        if(empty($id)){
+        if (empty($id)) {
             return self::viewSamples($request);
         }
-        $sample = ServerConfig::getPlayerSamples('id = "'.$id.'"')->fetchObject();
+        $sample = ServerConfig::getPlayerSamples('id = "' . $id . '"')->fetchObject();
         $selected_sample = [
             'id' => $sample->id,
             'vocation' => $sample->vocation,
@@ -176,7 +175,7 @@ class Samples extends Base
     public static function getSamples()
     {
         $select_samples = ServerConfig::getPlayerSamples();
-        while($sample = $select_samples->fetchObject()){
+        while ($sample = $select_samples->fetchObject()) {
             $players[] = [
                 'id' => $sample->id,
                 'vocation_id' => $sample->vocation,
@@ -198,5 +197,4 @@ class Samples extends Base
         ]);
         return parent::getPanel('Samples', $content, 'samples');
     }
-
 }

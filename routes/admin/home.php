@@ -28,7 +28,7 @@ $obRouter->get('/admin', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Home::getHome($request));
     }
 ]);
@@ -37,7 +37,7 @@ $obRouter->get('/admin/home', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Home::getHome($request));
     }
 ]);
@@ -47,7 +47,7 @@ $obRouter->get('/admin/settings', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Settings::viewSettings($request));
     }
 ]);
@@ -56,7 +56,7 @@ $obRouter->post('/admin/settings', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Settings::insertWorld($request));
     }
 ]);
@@ -66,7 +66,7 @@ $obRouter->get('/admin/upload', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Upload::viewUpload($request));
     }
 ]);
@@ -75,7 +75,7 @@ $obRouter->post('/admin/upload', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Upload::upload($request));
     }
 ]);
@@ -85,7 +85,7 @@ $obRouter->get('/admin/publications', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Publications::viewPublications($request));
     }
 ]);
@@ -94,7 +94,7 @@ $obRouter->get('/admin/publications/news', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Publications::viewPublishNews($request));
     }
 ]);
@@ -103,7 +103,7 @@ $obRouter->post('/admin/publications/news', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Publications::insertNews($request));
     }
 ]);
@@ -112,7 +112,7 @@ $obRouter->get('/admin/publications/newsticker', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Publications::viewPublishNewsticker($request));
     }
 ]);
@@ -121,7 +121,7 @@ $obRouter->post('/admin/publications/newsticker', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Publications::insertNewsticker($request));
     }
 ]);
@@ -130,7 +130,7 @@ $obRouter->get('/admin/publications/featuredarticle', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Publications::viewPublishFeaturedArticle($request));
     }
 ]);
@@ -139,7 +139,7 @@ $obRouter->post('/admin/publications/featuredarticle', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Publications::insertFeaturedArticle($request));
     }
 ]);
@@ -149,7 +149,7 @@ $obRouter->get('/admin/donates', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Donates::viewDonates($request));
     }
 ]);
@@ -158,7 +158,7 @@ $obRouter->post('/admin/donates', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Donates::updateDonates($request));
     }
 ]);
@@ -167,7 +167,7 @@ $obRouter->get('/admin/donates/{reference}/view', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $reference){
+    function ($request, $reference) {
         return new Response(200, Donates::viewPaymentByReference($request, $reference));
     }
 ]);
@@ -178,7 +178,7 @@ $obRouter->get('/admin/samples', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Samples::viewSamples($request));
     }
 ]);
@@ -187,7 +187,7 @@ $obRouter->post('/admin/samples', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Samples::createSample($request));
     }
 ]);
@@ -196,7 +196,7 @@ $obRouter->get('/admin/samples/{id}/edit', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Samples::viewEditSample($request, $id));
     }
 ]);
@@ -205,7 +205,7 @@ $obRouter->post('/admin/samples/{id}/edit', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Samples::editSample($request, $id));
     }
 ]);
@@ -214,7 +214,7 @@ $obRouter->get('/admin/countdowns', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Countdowns::viewCountdowns($request));
     }
 ]);
@@ -223,7 +223,7 @@ $obRouter->post('/admin/countdowns', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Countdowns::insertCountdown($request));
     }
 ]);
@@ -232,7 +232,7 @@ $obRouter->get('/admin/client', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Client::viewCreateClient($request));
     }
 ]);
@@ -241,7 +241,7 @@ $obRouter->post('/admin/client', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Client::editClient($request));
     }
 ]);
@@ -250,7 +250,7 @@ $obRouter->get('/admin/worlds', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Worlds::viewWorlds($request));
     }
 ]);
@@ -259,7 +259,7 @@ $obRouter->post('/admin/worlds', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Worlds::insertWorld($request));
     }
 ]);
@@ -268,7 +268,7 @@ $obRouter->get('/admin/worlds/{id}/edit', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Worlds::viewUpdateWorld($request, $id));
     }
 ]);
@@ -277,7 +277,7 @@ $obRouter->post('/admin/worlds/{id}/edit', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Worlds::updateWorld($request, $id));
     }
 ]);
@@ -286,7 +286,7 @@ $obRouter->get('/admin/worlds/{id}/delete', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Worlds::deleteWorld($request, $id));
     }
 ]);
@@ -295,7 +295,7 @@ $obRouter->get('/admin/polls', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Polls::viewPolls($request));
     }
 ]);
@@ -304,7 +304,7 @@ $obRouter->get('/admin/polls/new', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Polls::viewInsertNewPoll($request));
     }
 ]);
@@ -313,7 +313,7 @@ $obRouter->post('/admin/polls/new', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Polls::insertNewPoll($request));
     }
 ]);
@@ -322,7 +322,7 @@ $obRouter->get('/admin/polls/{id}/view', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Polls::viewPollById($request, $id));
     }
 ]);
@@ -331,7 +331,7 @@ $obRouter->get('/admin/polls/{id}/delete', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Polls::deletePoll($request, $id));
     }
 ]);
@@ -340,7 +340,7 @@ $obRouter->get('/admin/bans', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Bans::getBans($request));
     }
 ]);
@@ -350,7 +350,7 @@ $obRouter->get('/admin/achievements', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Achievements::viewAchievements($request));
     }
 ]);
@@ -359,7 +359,7 @@ $obRouter->post('/admin/achievements', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Achievements::importAchievements($request));
     }
 ]);
@@ -369,7 +369,7 @@ $obRouter->get('/admin/compendium', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Compendium::viewCompendium($request));
     }
 ]);
@@ -378,7 +378,7 @@ $obRouter->get('/admin/compendium/{id}/view', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Compendium::viewPublishCompendium($request, $id));
     }
 ]);
@@ -387,7 +387,7 @@ $obRouter->post('/admin/compendium/{id}/view', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Compendium::updateCompendium($request, $id));
     }
 ]);
@@ -396,7 +396,7 @@ $obRouter->get('/admin/compendium/new', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Compendium::viewCompendiumPublish($request));
     }
 ]);
@@ -405,7 +405,7 @@ $obRouter->post('/admin/compendium/new', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Compendium::insertCompendium($request));
     }
 ]);
@@ -416,7 +416,7 @@ $obRouter->get('/admin/groups', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Groups::viewGroups($request));
     }
 ]);
@@ -425,7 +425,7 @@ $obRouter->post('/admin/groups/import', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Groups::getGroupsXml($request));
     }
 ]);
@@ -434,7 +434,7 @@ $obRouter->post('/admin/groups/delete', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Groups::deleteGroups($request));
     }
 ]);
@@ -444,7 +444,7 @@ $obRouter->get('/admin/items', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Items::viewItems($request));
     }
 ]);
@@ -453,7 +453,7 @@ $obRouter->post('/admin/items/import', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Items::importItems($request));
     }
 ]);
@@ -463,7 +463,7 @@ $obRouter->get('/admin/houses', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Houses::getHouses($request));
     }
 ]);
@@ -472,7 +472,7 @@ $obRouter->post('/admin/houses/import', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Houses::getHousesXml($request));
     }
 ]);
@@ -481,7 +481,7 @@ $obRouter->post('/admin/houses/delete', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Houses::deleteHouses($request));
     }
 ]);
@@ -491,7 +491,7 @@ $obRouter->get('/admin/guilds', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Guilds::viewGuilds($request));
     }
 ]);
@@ -500,7 +500,7 @@ $obRouter->get('/admin/guilds/{id}', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Guilds::viewEditGuild($request, $id));
     }
 ]);
@@ -509,7 +509,7 @@ $obRouter->post('/admin/guilds/{id}', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Guilds::viewEditGuild($request, $id));
     }
 ]);
@@ -519,7 +519,7 @@ $obRouter->get('/admin/creatures', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Creatures::viewCreatures($request));
     }
 ]);
@@ -528,7 +528,7 @@ $obRouter->post('/admin/creatures', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Creatures::insertCreature($request));
     }
 ]);
@@ -537,7 +537,7 @@ $obRouter->post('/admin/creatures/delete', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Creatures::insertCreature($request));
     }
 ]);
@@ -547,7 +547,7 @@ $obRouter->get('/admin/players', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Players::getPlayers($request));
     }
 ]);
@@ -556,7 +556,7 @@ $obRouter->get('/admin/players/{id}/view', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Players::viewPlayer($request, $id));
     }
 ]);
@@ -565,7 +565,7 @@ $obRouter->post('/admin/players/{id}/view', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Players::updatePlayer($request, $id));
     }
 ]);
@@ -575,7 +575,7 @@ $obRouter->get('/admin/accounts', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request){
+    function ($request) {
         return new Response(200, Accounts::getAccounts($request));
     }
 ]);
@@ -584,7 +584,7 @@ $obRouter->get('/admin/accounts/{id}/view', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Accounts::viewAccount($request, $id));
     }
 ]);
@@ -593,7 +593,7 @@ $obRouter->post('/admin/accounts/{id}/view', [
         'required-admin-login',
         'role-permission'
     ],
-    function($request, $id){
+    function ($request, $id) {
         return new Response(200, Accounts::updateAccount($request, $id));
     }
 ]);

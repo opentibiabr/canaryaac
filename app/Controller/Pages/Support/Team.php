@@ -9,13 +9,13 @@
 
 namespace App\Controller\Pages\Support;
 
-use \App\Utils\View;
+use App\Utils\View;
 use App\Controller\Pages\Base;
 use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Functions\Player as FunctionsPlayer;
 
-class Team extends Base{
-
+class Team extends Base
+{
     public static function getTeam()
     {
         $select_players = EntityPlayer::getPlayer('group_id >= "2"');
@@ -34,5 +34,4 @@ class Team extends Base{
         ]);
         return parent::getBase('Team', $content, $currentPage = 'team');
     }
-
 }

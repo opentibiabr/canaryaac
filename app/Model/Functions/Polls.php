@@ -15,7 +15,6 @@ use App\Session\Admin\Login as SessionPlayerLogin;
 
 class Polls
 {
-
     public static function getCurrentPolls()
     {
         $websiteInfo = EntityServerConfig::getInfoWebsite()->fetchObject();
@@ -163,5 +162,4 @@ class Polls
             return true;
         }
     }
-
 }

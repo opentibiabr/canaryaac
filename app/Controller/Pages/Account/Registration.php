@@ -9,19 +9,19 @@
 
 namespace App\Controller\Pages\Account;
 
-use \App\Utils\View;
+use App\Utils\View;
 use App\Controller\Pages\Base;
 use App\Model\Entity\Account as EntityAccount;
 use App\Session\Admin\Login as SessionAdminLogin;
 
-class Registration extends Base{
-
+class Registration extends Base
+{
     public static function generateKey()
     {
         $caracteres = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E','F','G','H','I','J','K','L','M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
         $key = '';
         $max = count($caracteres)-1;
-        for($i = 0; $i < 16; $i++){
+        for($i = 0; $i < 16; $i++) {
             $key .= (!($i % 4) && $i ? '-' : '').$caracteres[rand(0, $max)];
         }
         return $key;
@@ -64,7 +64,7 @@ class Registration extends Base{
         $convertPassword = sha1($filterPassword);
 
         $filter_street = filter_var($street, FILTER_SANITIZE_SPECIAL_CHARS);
-        
+
         $filter_additional = filter_var($additional, FILTER_SANITIZE_SPECIAL_CHARS);
         $filter_zip = filter_var($zip, FILTER_SANITIZE_SPECIAL_CHARS);
         $filter_city = filter_var($city, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -78,28 +78,28 @@ class Registration extends Base{
         $filter_housenr = filter_var($housenr, FILTER_SANITIZE_SPECIAL_CHARS);
 
 
-        
-        if(empty($filter_firstname)){
+
+        if(empty($filter_firstname)) {
             return self::getRegistration($request, 'You need to set a firstname.');
         }
-        
-        if(empty($filter_lastname)){
+
+        if(empty($filter_lastname)) {
             return self::getRegistration($request, 'You need to set a lastname.');
         }
 
-        
-        if(!filter_var($filter_housenr, FILTER_VALIDATE_INT)){
+
+        if(!filter_var($filter_housenr, FILTER_VALIDATE_INT)) {
             return self::getRegistration($request, 'You need to set a lastname.');
         }
 
-        
-        if(self::brazilianPhoneParser($filter_mobilenumber) == false){
+
+        if(self::brazilianPhoneParser($filter_mobilenumber) == false) {
             return self::getRegistration($request, 'Invalid phone.');
         }
-        
+
 
         $accountLogged = EntityAccount::getAccount('id = "'.$LoggedId.'"')->fetchObject();
-        if($accountLogged->password != $convertPassword){
+        if($accountLogged->password != $convertPassword) {
             return self::getRegistration($request, 'Error');
         }
 
@@ -132,10 +132,10 @@ class Registration extends Base{
         ];
 
         $selectRegister = EntityAccount::getAccountRegistration('account_id = "'.$LoggedId.'"')->fetchObject();
-        if($selectRegister == true){
+        if($selectRegister == true) {
             $update = EntityAccount::updateRegister('account_id = "'.$LoggedId.'"', $UpdateRegistration);
             return self::getRegistration($request, 'Updated successfully.');
-        }else{
+        } else {
             $insert = EntityAccount::insertRegister($InsertRegistration);
         }
 
@@ -149,10 +149,10 @@ class Registration extends Base{
 
     public static function getAccRegister()
     {
-        if(SessionAdminLogin::isLogged() == true){
+        if(SessionAdminLogin::isLogged() == true) {
             $LoggedId = SessionAdminLogin::idLogged();
             $selectRegister = EntityAccount::getAccountRegistration('account_id = "'.$LoggedId.'"')->fetchObject();
-            if($selectRegister == true){
+            if($selectRegister == true) {
                 $account = [
                     'status' => true,
                     'firstname' => $selectRegister->firstname,
@@ -166,7 +166,7 @@ class Registration extends Base{
                     'state' => $selectRegister->state,
                     'mobile' => $selectRegister->mobile,
                 ];
-            }else{
+            } else {
                 $account = [
                     'status' => false,
                 ];
@@ -183,5 +183,4 @@ class Registration extends Base{
         ]);
         return parent::getBase('Account Registration', $content, 'account');
     }
-
 }

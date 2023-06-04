@@ -12,13 +12,13 @@ namespace App\Controller\Api;
 use App\Model\Entity\Guilds as EntityGuild;
 use Exception;
 
-class Guilds extends Api{
-
+class Guilds extends Api
+{
     public static function getGuildsList($request)
     {
         $guilds = [];
         $select = EntityGuild::getGuilds();
-        while($obGuilds = $select->fetchObject(EntityGuild::class)){
+        while ($obGuilds = $select->fetchObject(EntityGuild::class)) {
             $guilds[] = [
                 'id' => $obGuilds->id,
                 'level' => $obGuilds->level,
@@ -32,7 +32,7 @@ class Guilds extends Api{
             ];
         }
 
-        if($obGuilds == false){
+        if ($obGuilds == false) {
             throw new Exception('Nenhuma guild foi encontrada.', 404);
         }
 
@@ -43,5 +43,4 @@ class Guilds extends Api{
     {
         return self::getGuildsList($request);
     }
-    
 }

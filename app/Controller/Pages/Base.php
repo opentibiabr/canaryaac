@@ -9,13 +9,14 @@
 
 namespace App\Controller\Pages;
 
-use \App\Utils\View;
+use App\Utils\View;
 use App\Session\Admin\Login as SessionPlayerLogin;
 use App\Model\Entity\ServerConfig as EntityServerConfig;
 use App\Model\Functions\Server as FunctionsServer;
 use App\Model\Functions\ThemeBox as FunctionsThemeBox;
 
-class Base{
+class Base
+{
     public static function getPagination($request, $obPagination)
     {
         $pages = $obPagination->getPages();
@@ -25,7 +26,7 @@ class Base{
         $url = $request->getRouter()->getCurrentUrl();
         $queryParams = $request->getQueryParams();
 
-        foreach($pages as $page){
+        foreach($pages as $page) {
             $queryParams['page'] = $page['page'];
             $link = $url.'?'.http_build_query($queryParams);
             $links .= View::render('pagination/link', [
@@ -42,9 +43,9 @@ class Base{
 
     public static function getLogged()
     {
-        if(SessionPlayerLogin::isLogged() == true){
+        if(SessionPlayerLogin::isLogged() == true) {
             $code = 'true';
-        }else{
+        } else {
             $code = 'false';
         }
         return $code;
@@ -236,10 +237,10 @@ class Base{
                 'category' => 'shop',
             ],
         ];
-        foreach($menu as $key => $value){
-            if($key == $currentPage){
+        foreach($menu as $key => $value) {
+            if($key == $currentPage) {
                 $current = 1;
-            }else{
+            } else {
                 $current = 0;
             }
             $format[] = [

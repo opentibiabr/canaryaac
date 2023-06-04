@@ -14,16 +14,16 @@ use MercadoPago\SDK;
 use App\Model\Entity\Payments as EntityPayments;
 use App\Model\Entity\Account as EntityAccount;
 
-class NotifyMercadoPago {
-
+class NotifyMercadoPago
+{
     public static function ReturnMercadoPago()
     {
-        if(isset($_POST['type'])){
+        if(isset($_POST['type'])) {
             SDK::setAccessToken($_ENV['MERCADOPAGO_TOKEN']);
-            if($_POST['type'] == 'payment'){
+            if($_POST['type'] == 'payment') {
                 $payment = Payment::find_by_id($_POST['data']['id']);
                 self::updatePayment($payment);
-            }else{
+            } else {
                 $payment = null;
             }
         }
@@ -31,9 +31,9 @@ class NotifyMercadoPago {
 
     public static function updatePayment($payment)
     {
-        if($payment->order_status == 'paid'){
+        if($payment->order_status == 'paid') {
 
-            if($payment->cancelled == 'false'){
+            if($payment->cancelled == 'false') {
 
                 $dbPayment = EntityPayments::getPayment('preference = "'.$payment->preference_id.'"')->fetchObject();
                 $dbAccount = EntityAccount::getAccount('id = "'.$dbPayment->account_id.'"')->fetchObject();
@@ -50,5 +50,4 @@ class NotifyMercadoPago {
 
         }
     }
-
 }

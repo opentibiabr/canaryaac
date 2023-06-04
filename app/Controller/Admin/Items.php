@@ -13,20 +13,20 @@ use App\Model\Entity\Items as EntityItems;
 use App\Utils\View;
 use DOMDocument;
 
-class Items extends Base{
-
+class Items extends Base
+{
     public static function importItems($request)
     {
         $items_path = $_ENV['SERVER_PATH'] . 'data/items/items.xml';
-        if(file_exists($items_path)) {
+        if (file_exists($items_path)) {
             $items = new DOMDocument();
             $items->load($items_path);
         }
-        if(!$items){
+        if (!$items) {
             echo 'Error: cannot load <b>items.xml</b>!';
             return;
         }
-        foreach($items->getElementsByTagName('item') as $item){
+        foreach ($items->getElementsByTagName('item') as $item) {
             if ($item->getAttribute('fromid')) {
                 for ($id = $item->getAttribute('fromid'); $id <= $item->getAttribute('toid'); $id++) {
                     self::importItemAttribute($request, $id, $item);
@@ -46,22 +46,21 @@ class Items extends Base{
         $shootType = '';
         $maxhitchance = '';
         $range = '';
-        foreach( $item->getElementsByTagName('attribute') as $attribute)
-        {
-            if ($attribute->getAttribute('key') == 'description'){
+        foreach ($item->getElementsByTagName('attribute') as $attribute) {
+            if ($attribute->getAttribute('key') == 'description') {
                 $item_description = $attribute->getAttribute('value');
                 continue;
             }
-            if ($attribute->getAttribute('key') == 'weight'){
+            if ($attribute->getAttribute('key') == 'weight') {
                 $item_weight = $attribute->getAttribute('value');
                 continue;
             }
             if ($attribute->getAttribute('key') == 'weaponType') {
                 $type = $attribute->getAttribute('value');
-                
+
                 if ($type == 'axe' || $type == 'club' || $type == 'sword') {
-                    foreach( $item->getElementsByTagName('attribute') as $_attribute) {
-                        if($_attribute->getAttribute('key') == 'attack') {
+                    foreach ($item->getElementsByTagName('attribute') as $_attribute) {
+                        if ($_attribute->getAttribute('key') == 'attack') {
                             $level = $_attribute->getAttribute('value');
                             break;
                         }
@@ -84,8 +83,8 @@ class Items extends Base{
                     }
                 }
                 if ($type == 'shield') {
-                    foreach( $item->getElementsByTagName('attribute') as $_attribute) {
-                        if($_attribute->getAttribute('key') == 'defense') {
+                    foreach ($item->getElementsByTagName('attribute') as $_attribute) {
+                        if ($_attribute->getAttribute('key') == 'defense') {
                             $level = $_attribute->getAttribute('value');
                             break;
                         }
@@ -96,16 +95,15 @@ class Items extends Base{
             if ($attribute->getAttribute('key') == 'slotType' && empty($type)) {
                 $type = $attribute->getAttribute('value');
                 if ($type == 'head' || $type == 'body' || $type == 'legs' || $type == 'feet') {
-                    foreach( $item->getElementsByTagName('attribute') as $_attribute) {
-                        if($_attribute->getAttribute('key') == 'armor') {
+                    foreach ($item->getElementsByTagName('attribute') as $_attribute) {
+                        if ($_attribute->getAttribute('key') == 'armor') {
                             $level = $_attribute->getAttribute('value');
                             break;
                         }
                     }
-                }
-                else if ($type == 'backpack') {
-                    foreach( $item->getElementsByTagName('attribute') as $_attribute) {
-                        if($_attribute->getAttribute('key') == 'containerSize') {
+                } elseif ($type == 'backpack') {
+                    foreach ($item->getElementsByTagName('attribute') as $_attribute) {
+                        if ($_attribute->getAttribute('key') == 'containerSize') {
                             $level = $_attribute->getAttribute('value');
                             break;
                         }
@@ -145,10 +143,9 @@ class Items extends Base{
             'status' => $errorMessage,
             'items_path' => $items_path,
             'itemGroup' => self::getItems(),
-            'total_items' => (int)EntityItems::getItems(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
+            'total_items' => (int) EntityItems::getItems(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
         ]);
 
         return parent::getPanel('Items', $content, 'items');
     }
-
 }

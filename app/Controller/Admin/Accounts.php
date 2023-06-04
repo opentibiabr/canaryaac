@@ -15,8 +15,8 @@ use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Entity\Account as EntityAccount;
 use App\Model\Functions\Player;
 
-class Accounts extends Base{
-
+class Accounts extends Base
+{
     public static function updateAccount($request, $id)
     {
         $postVars = $request->getPostVars();
@@ -67,14 +67,14 @@ class Accounts extends Base{
         }
 
         if (empty($postVars['account_password'])) {
-            EntityAccount::updateAccount('id = "'.$filter_account_id.'"', [
+            EntityAccount::updateAccount('id = "' . $filter_account_id . '"', [
                 'email' => $filter_account_email,
                 'page_access' => $filter_account_access,
                 'premdays' => $filter_account_premdays,
                 'coins' => $filter_account_coins,
             ]);
         } else {
-            EntityAccount::updateAccount('id = "'.$filter_account_id.'"', [
+            EntityAccount::updateAccount('id = "' . $filter_account_id . '"', [
                 'email' => $filter_account_email,
                 'password' => $convert_password,
                 'page_access' => $filter_account_access,
@@ -89,7 +89,7 @@ class Accounts extends Base{
     public static function getAllAccounts()
     {
         $select = EntityPlayer::getAccount();
-        while($obAccounts = $select->fetchObject()){
+        while ($obAccounts = $select->fetchObject()) {
             $allAccounts[] = [
                 'id' => $obAccounts->id,
                 'email' => $obAccounts->email,
@@ -105,7 +105,7 @@ class Accounts extends Base{
 
     public static function getAccountById($account_id)
     {
-        $select_account = EntityPlayer::getAccount('id = "'.$account_id.'"')->fetchObject();
+        $select_account = EntityPlayer::getAccount('id = "' . $account_id . '"')->fetchObject();
         return [
             'email' => $select_account->email,
             'page_access' => $select_account->page_access,
@@ -123,7 +123,7 @@ class Accounts extends Base{
             'account' => self::getAccountById($id),
             'characters' => Player::getAllCharacters($id),
         ]);
-        return parent::getPanel('Account #'.$id, $content, 'accounts');
+        return parent::getPanel('Account #' . $id, $content, 'accounts');
     }
 
     public static function getAccounts($request)
@@ -138,22 +138,19 @@ class Accounts extends Base{
     {
         $queryParams = $request->getQueryParams();
 
-        if(!isset($queryParams['status'])) return '';
+        if (!isset($queryParams['status'])) {
+            return '';
+        }
 
         switch ($queryParams['status']) {
             case 'created':
                 return Alert::getSuccess('Account criada com sucesso!');
-                break;
             case 'updated':
                 return Alert::getSuccess('Account atualizada com sucesso!');
-                break;
             case 'deleted':
                 return Alert::getSuccess('Account excluída com sucesso!');
-                break;
             case 'duplicated':
                 return Alert::getError('O email digitado já está sendo utilizado.');
-                break;
         }
     }
-
 }

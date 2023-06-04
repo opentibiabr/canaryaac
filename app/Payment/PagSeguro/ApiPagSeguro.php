@@ -18,8 +18,8 @@ use PagSeguro\Services\Transactions\Search\Reference;
 use PagSeguro\Services\Transactions\Search\Abandoned;
 use PagSeguro\Helpers\Xhr;
 
-class ApiPagSeguro{
-
+class ApiPagSeguro
+{
     public static function createPayment($products = [], $email = null)
     {
         $email = $_ENV['PAGSEGURO_EMAIL'];
@@ -28,7 +28,7 @@ class ApiPagSeguro{
         Library::initialize();
         Library::cmsVersion()->setName("CanaryAAC")->setRelease("1.0.0");
         Library::moduleVersion()->setName("CanaryAAC")->setRelease("1.0.0");
-        
+
         Configure::setEnvironment('sandbox');
         Configure::setAccountCredentials($email, $token);
 
@@ -104,7 +104,7 @@ class ApiPagSeguro{
         Library::initialize();
         Library::cmsVersion()->setName("CanaryAAC")->setRelease("1.0.0");
         Library::moduleVersion()->setName("CanaryAAC")->setRelease("1.0.0");
-        
+
         if (Xhr::hasPost()) {
             $response = Notification::check(Configure::getApplicationCredentials());
         }
@@ -148,5 +148,4 @@ class ApiPagSeguro{
         $response = Abandoned::search(Configure::getAccountCredentials(), $options);
         return $response;
     }
-
 }

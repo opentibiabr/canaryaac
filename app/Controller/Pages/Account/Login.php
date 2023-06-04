@@ -18,8 +18,8 @@ use App\Controller\Admin\Alert;
 use App\Model\Entity\Account;
 use PragmaRX\Google2FA\Google2FA;
 
-class Login extends Base{
-
+class Login extends Base
+{
     /**
      * Method responsible for returning the login page rendering
      *
@@ -52,18 +52,18 @@ class Login extends Base{
         $pass = $postVars['loginpassword'] ?? '';
 
         $filter_email = filter_var($email, FILTER_VALIDATE_EMAIL);
-        if($filter_email == false){
+        if($filter_email == false) {
             return self::getLogin($request, 'true');
         }
 
         // Verify email
         $obAccount = EntityLogin::getLoginbyEmail($email);
-        if(!$obAccount instanceof EntityLogin){
+        if(!$obAccount instanceof EntityLogin) {
             return self::getLogin($request, 'true');
         }
 
         // Password verify by sha1
-        if($obAccount->password !== sha1($pass)){
+        if($obAccount->password !== sha1($pass)) {
             return self::getLogin($request, 'true');
         }
 
@@ -80,7 +80,7 @@ class Login extends Base{
                 }
             }
         }
-        
+
         SessionAdminLogin::login($obAccount);
         $request->getRouter()->redirect('/account');
     }
@@ -91,5 +91,4 @@ class Login extends Base{
         $content = View::render('pages/account/logout', []);
         return parent::getBase('Logout Successful', $content, 'account');
     }
-
 }

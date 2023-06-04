@@ -11,8 +11,8 @@ namespace App\Model\Functions;
 
 use App\Model\Entity\Achievements as EntityAchievements;
 
-class Achievements{
-
+class Achievements
+{
     public static function getAllAchievements()
     {
         $select_achievements = EntityAchievements::getAchievements();
@@ -70,9 +70,10 @@ class Achievements{
             $base_storage = 300000 + $achievements->storage;
 
             $select_playerStorage = Player::getPlayerStorage($player_id, $base_storage, 1);
-            if ($select_playerStorage == true) {}
+            if ($select_playerStorage == true) {
+            }
 
-            
+
 
             if ($achievements->secret == 1) {
                 $achievements_secret = 'True';
@@ -92,5 +93,4 @@ class Achievements{
         }
         return $arrayAchievements;
     }
-
 }

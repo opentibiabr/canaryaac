@@ -15,10 +15,10 @@ use App\Model\Functions\Polls as FunctionsPolls;
 use App\Session\Admin\Login as SessionPlayerLogin;
 use App\Model\Entity\ServerConfig as EntityServerConfig;
 
-use \App\Utils\View;
+use App\Utils\View;
 
-class Polls extends Base{
-
+class Polls extends Base
+{
     public static function insertAnswer($request, $id)
     {
         $websiteInfo = EntityServerConfig::getInfoWebsite()->fetchObject();

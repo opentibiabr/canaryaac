@@ -9,16 +9,16 @@
 
 namespace App\Controller\Pages;
 
-use \App\Utils\View;
-use \App\Model\Entity\Highscores as EntityHighscores;
+use App\Utils\View;
+use App\Model\Entity\Highscores as EntityHighscores;
 use App\Model\Functions\Player;
 use App\DatabaseManager\Pagination;
 
-class Highscores extends Base{
-
+class Highscores extends Base
+{
     public static function convertCategory($category)
     {
-        switch($category){
+        switch($category) {
             case 0:
                 $input_category = 'skill_axe';
                 break;
@@ -50,46 +50,46 @@ class Highscores extends Base{
         return $input_category;
     }
 
-    public static function getPlayers($request,&$obPagination)
+    public static function getPlayers($request, &$obPagination)
     {
         $player = [];
         $queryParams = $request->getQueryParams();
 
         $input_profession = filter_var($queryParams['profession'] ?? null, FILTER_SANITIZE_NUMBER_INT);
-        if($input_profession > 5){
+        if($input_profession > 5) {
             $input_profession = 5;
         }
-        if(empty($input_profession)){
+        if(empty($input_profession)) {
             $input_profession = 5;
         }
 
         $input_category = filter_var($queryParams['category'] ?? null, FILTER_SANITIZE_NUMBER_INT);
-        if($input_category > 8){
+        if($input_category > 8) {
             $input_category = 3;
         }
-        if(empty($input_category)){
+        if(empty($input_category)) {
             $input_category = 3;
         }
         $input_category = self::convertCategory($input_category);
-        
-        
 
-        if($input_profession == 5){
+
+
+        if($input_profession == 5) {
             $totaAmount = EntityHighscores::getHighscoresEntity('group_id <= "3"', null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
-        }else{
+        } else {
             $totaAmount = EntityHighscores::getHighscoresEntity('vocation = "'.$input_profession.'" AND group_id <= "3"', null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
         }
 
         $currentPage = $queryParams['page'] ?? 1;
         $obPagination = new Pagination($totaAmount, $currentPage, 50);
 
-        if($input_profession == 5){
+        if($input_profession == 5) {
             $results = EntityHighscores::getHighscoresEntity('group_id <= "3"', $input_category . ' DESC', $obPagination->getLimit());
-        }else{
+        } else {
             $results = EntityHighscores::getHighscoresEntity('vocation = "'.$input_profession.'" AND group_id <= "3"', $input_category . ' DESC', $obPagination->getLimit());
         }
-        
-        while($obRank = $results->fetchObject(EntityHighscores::class)){
+
+        while($obRank = $results->fetchObject(EntityHighscores::class)) {
             $player[] = [
                 'name' => $obRank->name,
                 'vocation' => Player::convertVocation($obRank->vocation),

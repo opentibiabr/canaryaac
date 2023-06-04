@@ -9,7 +9,8 @@
 
 namespace App\Model\Functions;
 
-class Website{
+class Website
+{
     public static function getStyleCode($i)
     {
         return is_int($i / 2) ? '#D4C0A1' : '#F1E0C6';
@@ -22,7 +23,7 @@ class Website{
 
     public static function filterArray($array, $filter)
     {
-        usort($array, function($a, $b) use ($filter){
+        usort($array, function ($a, $b) use ($filter) {
             return $a[$filter] > $b[$filter];
         });
         return $array;

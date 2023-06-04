@@ -15,8 +15,8 @@ use App\Http\Request;
 use App\Session\Admin\Login as SessionAdminLogin;
 use App\Controller\Admin\Alert;
 
-class Login extends Base{
-
+class Login extends Base
+{
     /**
      * Method responsible for returning the login page rendering
      *
@@ -52,17 +52,17 @@ class Login extends Base{
         $obAccount = EntityLogin::getLoginbyEmail($email);
 
         // Verify email
-        if(!$obAccount instanceof EntityLogin){
+        if (!$obAccount instanceof EntityLogin) {
             return self::getLogin($request, 'Email ou password inválidos.');
         }
 
         // Password verify by sha1
-        if($obAccount->password !== sha1($pass)){
+        if ($obAccount->password !== sha1($pass)) {
             return self::getLogin($request, 'Email ou password inválidos.');
         }
 
         // Verify account access
-        if(!($obAccount->page_access > 0)){
+        if (!($obAccount->page_access > 0)) {
             return self::getLogin($request, 'Você não tem acesso.');
         }
 
@@ -72,7 +72,7 @@ class Login extends Base{
             return self::getLogin($request, 'Email ou password inválidos.');
         }
         */
-        
+
         SessionAdminLogin::login($obAccount);
 
         $request->getRouter()->redirect('/admin');
@@ -84,5 +84,4 @@ class Login extends Base{
 
         $request->getRouter()->redirect('/admin/login');
     }
-
 }

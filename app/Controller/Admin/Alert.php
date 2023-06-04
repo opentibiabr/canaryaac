@@ -11,8 +11,8 @@ namespace App\Controller\Admin;
 
 use App\Utils\View;
 
-class Alert{
-
+class Alert
+{
     /**
      * Method responsible for returning an error alert
      *
@@ -40,5 +40,4 @@ class Alert{
             'message' => $message
         ]);
     }
-
 }

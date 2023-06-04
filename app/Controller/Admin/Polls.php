@@ -17,7 +17,6 @@ use App\Utils\View;
 
 class Polls extends Base
 {
-
     public static function deletePoll($request, $id)
     {
         if (empty($id)) {
@@ -27,14 +26,14 @@ class Polls extends Base
             $request->getRouter()->redirect('/admin/polls');
         }
 
-        $select_poll = EntityPolls::getPolls('id = "'.$id.'"')->fetchObject();
+        $select_poll = EntityPolls::getPolls('id = "' . $id . '"')->fetchObject();
         if (empty($select_poll)) {
             $request->getRouter()->redirect('/admin/polls');
         }
 
-        EntityPolls::deletePoll('id = "'.$id.'"');
-        EntityPolls::deletePollQuestions('poll_id = "'.$id.'"');
-        EntityPolls::deletePollAnswer('poll_id = "'.$id.'"');
+        EntityPolls::deletePoll('id = "' . $id . '"');
+        EntityPolls::deletePollQuestions('poll_id = "' . $id . '"');
+        EntityPolls::deletePollAnswer('poll_id = "' . $id . '"');
         $request->getRouter()->redirect('/admin/polls');
     }
 
@@ -52,7 +51,7 @@ class Polls extends Base
             $status = SweetAlert::Types('Error!', '', 'danger', 'btn btn-danger');
             return self::viewInsertNewPoll($request, $status);
         }
-        if(empty($postVars['questions'])) {
+        if (empty($postVars['questions'])) {
             $status = SweetAlert::Types('Error!', '', 'danger', 'btn btn-danger');
             return self::viewInsertNewPoll($request, $status);
         }
@@ -94,7 +93,7 @@ class Polls extends Base
         $websiteInfo = EntityServerConfig::getInfoWebsite()->fetchObject();
         date_default_timezone_set($websiteInfo->timezone);
 
-        $select_Polls = EntityPolls::getPolls('id = "'.$poll_id.'"')->fetchObject();
+        $select_Polls = EntityPolls::getPolls('id = "' . $poll_id . '"')->fetchObject();
         if (empty($select_Polls)) {
             $request->getRouter()->redirect('/admin/polls');
         }

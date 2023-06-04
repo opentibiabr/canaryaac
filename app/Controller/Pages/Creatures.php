@@ -10,16 +10,16 @@
 namespace App\Controller\Pages;
 
 use App\Model\Entity\Creatures as EntityCreatures;
-use \App\Utils\View;
+use App\Utils\View;
 use App\Model\Functions\Server;
 
-class Creatures extends Base{
-
+class Creatures extends Base
+{
     public static function getCreatures()
     {
         $arrayCreatures = [];
         $dbCreatures = EntityCreatures::getCreatures();
-        while($creature = $dbCreatures->fetchObject()){
+        while($creature = $dbCreatures->fetchObject()) {
             $arrayCreatures[] = [
                 'tag' => $creature->tag,
                 'name' => $creature->name,
@@ -37,5 +37,4 @@ class Creatures extends Base{
         ]);
         return parent::getBase('Creatures', $content, 'creatures');
     }
-
 }

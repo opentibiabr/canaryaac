@@ -12,13 +12,13 @@ namespace App\Controller\Pages;
 use App\Model\Entity\News as EntityNews;
 use App\Model\Entity\ServerConfig as EntityServerConfig;
 use App\Model\Functions\News as FunctionsNews;
-use \App\Utils\View;
+use App\Utils\View;
 
-class Newsarchive extends Base{
-
+class Newsarchive extends Base
+{
     public static function viewNewsArchiveById($request, $id)
     {
-        if (!filter_var($id, FILTER_VALIDATE_INT)){
+        if (!filter_var($id, FILTER_VALIDATE_INT)) {
             $request->getRouter()->redirect('/newsarchive');
         }
         $news = EntityNews::getNews('id = "'.$id.'"')->fetchObject();
@@ -177,5 +177,4 @@ class Newsarchive extends Base{
         ]);
         return parent::getBase('Newsarchive', $content, 'newsarchive');
     }
-    
 }

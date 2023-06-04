@@ -14,79 +14,57 @@ use App\Model\Entity\Player;
 
 class News
 {
-
     public static function convertCategoryImage($category_id)
     {
-        switch($category_id)
-        {
+        switch($category_id) {
             case 0:
                 return URL . '/resources/images/global/content/newsicon_cipsoft_small.gif';
-                exit;
             case 1:
                 return URL . '/resources/images/global/content/newsicon_cipsoft_small.gif';
-                exit;
             case 2:
                 return URL . '/resources/images/global/content/newsicon_community_small.gif';
-                exit;
             case 3:
                 return URL . '/resources/images/global/content/newsicon_development_small.gif';
-                exit;
             case 4:
                 return URL . '/resources/images/global/content/newsicon_support_small.gif';
-                exit;
             case 5:
                 return URL . '/resources/images/global/content/newsicon_technical_small.gif';
-                exit;
             default:
                 return URL . '/resources/images/global/content/newsicon_cipsoft_small.gif';
-                exit;
         }
     }
 
     public static function convertCategoryBigImage($category_id)
     {
-        switch($category_id)
-        {
+        switch($category_id) {
             case 0:
                 return URL . '/resources/images/global/content/newsicon_cipsoft_big.gif';
-                exit;
             case 1:
                 return URL . '/resources/images/global/content/newsicon_cipsoft_big.gif';
-                exit;
             case 2:
                 return URL . '/resources/images/global/content/newsicon_community_big.gif';
-                exit;
             case 3:
                 return URL . '/resources/images/global/content/newsicon_development_big.gif';
-                exit;
             case 4:
                 return URL . '/resources/images/global/content/newsicon_support_big.gif';
-                exit;
             case 5:
                 return URL . '/resources/images/global/content/newsicon_technical_big.gif';
-                exit;
             default:
                 return URL . '/resources/images/global/content/newsicon_cipsoft_big.gif';
-                exit;
         }
     }
 
     public static function convertTypeName($type_id)
     {
-        switch ($type_id)
-        {
+        switch ($type_id) {
             case 0:
                 return 'None';
-                exit;
             case 1:
                 return 'News';
-                exit;
             case 2:
                 return 'Featured Article';
-                exit;
             case 3:
                 return 'News Ticker';
-                exit;
             default:
                 return 'None';
         }
@@ -94,29 +72,21 @@ class News
 
     public static function convertCategoryName($category_id)
     {
-        switch($category_id)
-        {
+        switch($category_id) {
             case 0:
                 return 'Cipsoft';
-                exit;
             case 1:
                 return 'Cipsoft';
-                exit;
             case 2:
                 return 'Community';
-                exit;
             case 3:
                 return 'Development';
-                exit;
             case 4:
                 return 'Support';
-                exit;
             case 5:
                 return 'Technical Issues';
-                exit;
             default:
                 return 'Cipsoft';
-                exit;
         }
     }
 
@@ -130,7 +100,7 @@ class News
     {
         $selectNewsTicker = EntityNews::getNews('type = "2"');
         $newsarticle = [];
-        while($NewsTicker = $selectNewsTicker->fetchObject()){
+        while($NewsTicker = $selectNewsTicker->fetchObject()) {
             $newsarticle[] = [
                 'id' => $NewsTicker->id,
                 'title' => $NewsTicker->title,
@@ -155,7 +125,7 @@ class News
     {
         $selectFeaturedArticle = EntityNews::getNews('type = "3"');
         $featuredarticle = [];
-        while($FeaturedArticle = $selectFeaturedArticle->fetchObject()){
+        while($FeaturedArticle = $selectFeaturedArticle->fetchObject()) {
             $featuredarticle[] = [
                 'id' => $FeaturedArticle->id,
                 'title' => $FeaturedArticle->title,
@@ -180,7 +150,7 @@ class News
     {
         $selectForum = EntityNews::getNews('type = "1"');
         $news = [];
-        while($ForumNews = $selectForum->fetchObject()){
+        while($ForumNews = $selectForum->fetchObject()) {
             $news[] = [
                 'id' => $ForumNews->id,
                 'title' => $ForumNews->title,
@@ -200,5 +170,4 @@ class News
         }
         return $news;
     }
-
 }

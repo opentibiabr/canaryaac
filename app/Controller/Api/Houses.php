@@ -10,16 +10,16 @@
 namespace App\Controller\Api;
 
 use App\Model\Entity\Houses as EntityHouses;
-use App\Model\Entity\Towns;
+use App\Model\Entity\Worlds;
 use App\Model\Functions\Player;
 use Exception;
 
-class Houses extends Api{
-
+class Houses extends Api
+{
     public static function getTowns()
     {
-        $selectTowns = Towns::getTowns();
-        while($obTowns = $selectTowns->fetchObject()){
+        $selectTowns = Worlds::getTowns();
+        while($obTowns = $selectTowns->fetchObject()) {
             $towns[] = [
                 'town_id' => $obTowns->town_id,
                 'name' => $obTowns->name
@@ -37,26 +37,26 @@ class Houses extends Api{
         $page_Order = $queryParams['order'] ?? 'name';
         $page_Details = $queryParams['page'] ?? '';
 
-        if(isset($queryParams['town'])){
+        if(isset($queryParams['town'])) {
             $query_Town = 'town_id = '.$queryParams['town'];
-        }else{
+        } else {
             $query_Town = '';
         }
 
-        if(isset($queryParams['order'])){
+        if(isset($queryParams['order'])) {
             $query_Order = $queryParams['order'];
-        }else{
+        } else {
             $query_Order = '';
         }
 
-        if($page_Type == 'houses'){
+        if($page_Type == 'houses') {
             $title_Type = 'Houses and Flats';
-        }elseif($page_Type == 'guildhalls'){
+        } elseif($page_Type == 'guildhalls') {
             $title_Type = 'Guildhalls';
         }
 
         $selectHouse = EntityHouses::getHouses('town_id = "'.$query_Town.'"', '"'.$query_Order.'"');
-        while($obHouse = $selectHouse->fetchObject()){
+        while($obHouse = $selectHouse->fetchObject()) {
             $house['houses'] = [
                 'owner' => $obHouse->owner,
                 'paid' => $obHouse->paid,
@@ -84,7 +84,7 @@ class Houses extends Api{
             'page' => $page_Details
         ];
 
-        if($obHouse == false){
+        if($obHouse == false) {
             throw new Exception('Nenhuma house foi encontrada.', 404);
         }
 
@@ -95,5 +95,4 @@ class Houses extends Api{
     {
         return self::getHouseList($request);
     }
-    
 }

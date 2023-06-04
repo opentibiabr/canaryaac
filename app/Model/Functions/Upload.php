@@ -71,7 +71,9 @@ class Upload
 
     private function getPossibleBasename($dir, $overwrite)
     {
-        if ($overwrite) return $this->getBasename();
+        if ($overwrite) {
+            return $this->getBasename();
+        }
         $basename = $this->getBasename();
         if (!file_exists($dir.'/'.$basename)) {
             return $basename;
@@ -82,7 +84,9 @@ class Upload
 
     public function upload($dir, $overwrite = true)
     {
-        if ($this->error != 0) return false;
+        if ($this->error != 0) {
+            return false;
+        }
         $dirob = __DIR__ . '/../../../resources/' . $dir;
         $path = __DIR__ . '/../../../resources/' . $dir . '/' . $this->getPossibleBasename($dirob, $overwrite);
         $url = URL . '/resources/' . $dir . '/' . $this->getPossibleBasename($dirob, $overwrite);

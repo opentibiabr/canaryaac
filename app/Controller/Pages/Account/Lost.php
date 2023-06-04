@@ -10,15 +10,15 @@
 namespace App\Controller\Pages\Account;
 
 use App\Controller\Pages\Base;
-use \App\Utils\View;
+use App\Utils\View;
 use App\Model\Entity\Account as EntityAccount;
 
-class Lost extends Base{
-
+class Lost extends Base
+{
     public static function viewRecoveryKey($request)
     {
         $postVars = $request->getPostVars();
-        if(empty($postVars['key1']) or empty($postVars['key2']) or empty($postVars['key3']) or empty($postVars['key4'])){
+        if(empty($postVars['key1']) or empty($postVars['key2']) or empty($postVars['key3']) or empty($postVars['key4'])) {
             $request->getRouter()->redirect('/account/lostaccount');
         }
         $filter_key1 = filter_var($postVars['key1'], FILTER_SANITIZE_SPECIAL_CHARS);
@@ -32,7 +32,7 @@ class Lost extends Base{
         }
         $filter_email = filter_var($postVars['email'], FILTER_SANITIZE_SPECIAL_CHARS);
         $account = EntityAccount::getAccount('email = "'.$filter_email.'"')->fetchObject();
-        if($account == false){
+        if($account == false) {
             $request->getRouter()->redirect('/account/lostaccount');
         }
 
@@ -50,7 +50,7 @@ class Lost extends Base{
         $new_password = sha1($filter_password);
 
         $account_recoverykey = EntityAccount::getAccountRegistration('account_id = "'.$account->id.'"')->fetchObject();
-        if($account_recoverykey->recovery == $recoverykey){
+        if($account_recoverykey->recovery == $recoverykey) {
             EntityAccount::updateAccount('email = "'.$filter_email.'"', [
                 'password' => $new_password
             ]);
@@ -64,15 +64,15 @@ class Lost extends Base{
         $postVars = $request->getPostVars();
         $email = $postVars['email'];
         $filter_email = filter_var($email, FILTER_SANITIZE_EMAIL);
-        if(!filter_var($filter_email, FILTER_VALIDATE_EMAIL)){
+        if(!filter_var($filter_email, FILTER_VALIDATE_EMAIL)) {
             return self::getLostAccount($request);
         }
 
         $account = EntityAccount::getAccount('email = "'.$filter_email.'"')->fetchObject();
-        if($account == false){
+        if($account == false) {
             return self::getLostAccount($request);
         }
-        
+
         $content = View::render('pages/account/lostaccount_first', [
             'email' => $account->email,
         ]);
@@ -85,5 +85,4 @@ class Lost extends Base{
         ]);
         return parent::getBase('Lost Account', $content, 'lostaccount');
     }
-
 }

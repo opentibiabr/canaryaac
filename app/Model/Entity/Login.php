@@ -11,8 +11,8 @@ namespace App\Model\Entity;
 
 use App\DatabaseManager\Database;
 
-class Login{
-    
+class Login
+{
     public $id;
 
     public $email;

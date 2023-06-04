@@ -9,11 +9,11 @@
 
 namespace App\Controller\Pages;
 
-use \App\Utils\View;
+use App\Utils\View;
 use App\Model\Entity\ServerConfig as EntityServerConfig;
 
-class Downloads extends Base{
-
+class Downloads extends Base
+{
     public static function viewDownloads()
     {
         $dbServer = EntityServerConfig::getInfoWebsite()->fetchObject();
@@ -22,5 +22,4 @@ class Downloads extends Base{
         ]);
         return parent::getBase('Downloads', $content, 'downloads');
     }
-
 }

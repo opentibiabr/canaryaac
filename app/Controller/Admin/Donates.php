@@ -15,15 +15,15 @@ use App\Model\Entity\Payments as EntityPayments;
 use App\Model\Entity\ServerConfig as EntityServerConfig;
 use App\Model\Functions\Payments as PaymentsFunctions;
 
-class Donates extends Base{
-
+class Donates extends Base
+{
     public static function getPaymentByReference($request, $reference)
     {
         if (empty($reference)) {
             return self::viewDonates($request);
         }
         $filter_reference = filter_var($reference, FILTER_SANITIZE_SPECIAL_CHARS);
-        $payment = EntityPayments::getPayment('reference = "'.$filter_reference.'"')->fetchObject();
+        $payment = EntityPayments::getPayment('reference = "' . $filter_reference . '"')->fetchObject();
         if (empty($payment)) {
             return self::viewDonates($request);
         }
@@ -39,7 +39,7 @@ class Donates extends Base{
             'status_badge' => PaymentsFunctions::convertStatus($payment->status),
             'date' => date('d/m/Y h:i:s', $payment->date),
         ];
-        $select_account = EntityAccount::getAccount('id = "'.$payment->account_id.'"')->fetchObject();
+        $select_account = EntityAccount::getAccount('id = "' . $payment->account_id . '"')->fetchObject();
         $arrayAccount = [
             'email' => $select_account->email,
         ];
@@ -72,40 +72,40 @@ class Donates extends Base{
             }
             $filter_coin_price = filter_var($postVars['coin_price'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-            if(empty($postVars['checkboxDonates'])){
+            if (empty($postVars['checkboxDonates'])) {
                 $filter_Donates = 0;
-            }else{
+            } else {
                 $filter_Donates = 1;
             }
-            if($filter_Donates > 1){
+            if ($filter_Donates > 1) {
                 $status = SweetAlert::Types('Error!', 'Something went wrong.', 'error', 'btn btn-danger');
                 return self::viewDonates($request, $status);
             }
 
-            if(empty($postVars['checkboxMercadoPago'])){
+            if (empty($postVars['checkboxMercadoPago'])) {
                 $filter_MercadoPago = 0;
-            }else{
+            } else {
                 $filter_MercadoPago = 1;
             }
-            if($filter_MercadoPago > 1){
+            if ($filter_MercadoPago > 1) {
                 $status = SweetAlert::Types('Error!', 'Something went wrong.', 'error', 'btn btn-danger');
                 return self::viewDonates($request, $status);
             }
-            if(empty($postVars['checkboxPayPal'])){
+            if (empty($postVars['checkboxPayPal'])) {
                 $filter_PayPal = 0;
-            }else{
+            } else {
                 $filter_PayPal = 1;
             }
-            if($filter_PayPal > 1){
+            if ($filter_PayPal > 1) {
                 $status = SweetAlert::Types('Error!', 'Something went wrong.', 'error', 'btn btn-danger');
                 return self::viewDonates($request, $status);
             }
-            if(empty($postVars['checkboxPagSeguro'])){
+            if (empty($postVars['checkboxPagSeguro'])) {
                 $filter_PagSeguro = 0;
-            }else{
+            } else {
                 $filter_PagSeguro = 1;
             }
-            if($filter_PagSeguro > 1){
+            if ($filter_PagSeguro > 1) {
                 $status = SweetAlert::Types('Error!', 'Something went wrong.', 'error', 'btn btn-danger');
                 return self::viewDonates($request, $status);
             }
@@ -200,5 +200,4 @@ class Donates extends Base{
         ]);
         return parent::getPanel('Donates', $content, 'donates');
     }
-
 }

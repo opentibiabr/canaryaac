@@ -12,7 +12,7 @@ namespace App\Controller\Pages;
 
 use App\Model\Entity\Forum as EntityForum;
 use App\Model\Functions\Calendar;
-use \App\Utils\View;
+use App\Utils\View;
 use App\Model\Functions\Server;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -20,7 +20,6 @@ use Carbon\CarbonPeriodImmutable;
 
 class EventCalendar extends Base
 {
-
     public static function viewEventCalendar($request)
     {
         $queryParams = $request->getQueryParams();

@@ -17,24 +17,23 @@ use App\Session\Admin\Login as SessionAdminLogin;
 
 class Publications extends Base
 {
-
     public static function insertNews($request)
     {
         $postVars = $request->getPostVars();
 
-        if (empty($postVars['news_title'])){
+        if (empty($postVars['news_title'])) {
             $status = Alert::getError('Adicione um titulo.');
             return self::viewPublishNews($request, $status);
         }
-        if (empty($postVars['news_category'])){
+        if (empty($postVars['news_category'])) {
             $status = Alert::getError('Selecione uma categoria.');
             return self::viewPublishNews($request, $status);
         }
-        if (empty($postVars['news_body'])){
+        if (empty($postVars['news_body'])) {
             $status = Alert::getError('Escreva o texto da publicação.');
             return self::viewPublishNews($request, $status);
         }
-        if (empty($postVars['news_player'])){
+        if (empty($postVars['news_player'])) {
             $status = Alert::getError('Selecione um player.');
             return self::viewPublishNews($request, $status);
         }
@@ -57,9 +56,9 @@ class Publications extends Base
     public static function viewPublishNews($request, $status = null)
     {
         $idLogged = SessionAdminLogin::idLogged();
-        $select_players = EntityPlayer::getPlayer('account_id = "'.$idLogged.'"');
+        $select_players = EntityPlayer::getPlayer('account_id = "' . $idLogged . '"');
 
-        while($player = $select_players->fetchObject()){
+        while ($player = $select_players->fetchObject()) {
             $players[] = [
                 'id' => $player->id,
                 'name' => $player->name,
@@ -76,19 +75,19 @@ class Publications extends Base
     {
         $postVars = $request->getPostVars();
 
-        if (empty($postVars['newsticker_title'])){
+        if (empty($postVars['newsticker_title'])) {
             $status = Alert::getError('Adicione um titulo.');
             return self::viewPublishNewsticker($request, $status);
         }
-        if (empty($postVars['newsticker_category'])){
+        if (empty($postVars['newsticker_category'])) {
             $status = Alert::getError('Selecione uma categoria.');
             return self::viewPublishNewsticker($request, $status);
         }
-        if (empty($postVars['newsticker_body'])){
+        if (empty($postVars['newsticker_body'])) {
             $status = Alert::getError('Escreva o texto da publicação.');
             return self::viewPublishNewsticker($request, $status);
         }
-        if (empty($postVars['newsticker_author'])){
+        if (empty($postVars['newsticker_author'])) {
             $status = Alert::getError('Selecione um player.');
             return self::viewPublishNewsticker($request, $status);
         }
@@ -111,9 +110,9 @@ class Publications extends Base
     public static function viewPublishNewsticker($request, $status = null)
     {
         $idLogged = SessionAdminLogin::idLogged();
-        $select_players = EntityPlayer::getPlayer('account_id = "'.$idLogged.'"');
+        $select_players = EntityPlayer::getPlayer('account_id = "' . $idLogged . '"');
 
-        while($player = $select_players->fetchObject()){
+        while ($player = $select_players->fetchObject()) {
             $players[] = [
                 'id' => $player->id,
                 'name' => $player->name,
@@ -130,19 +129,19 @@ class Publications extends Base
     {
         $postVars = $request->getPostVars();
 
-        if (empty($postVars['featuredarticle_title'])){
+        if (empty($postVars['featuredarticle_title'])) {
             $status = Alert::getError('Adicione um titulo.');
             return self::viewPublishFeaturedArticle($request, $status);
         }
-        if (empty($postVars['featuredarticle_category'])){
+        if (empty($postVars['featuredarticle_category'])) {
             $status = Alert::getError('Selecione uma categoria.');
             return self::viewPublishFeaturedArticle($request, $status);
         }
-        if (empty($postVars['featuredarticle_body'])){
+        if (empty($postVars['featuredarticle_body'])) {
             $status = Alert::getError('Escreva o texto da publicação.');
             return self::viewPublishFeaturedArticle($request, $status);
         }
-        if (empty($postVars['featuredarticle_author'])){
+        if (empty($postVars['featuredarticle_author'])) {
             $status = Alert::getError('Selecione um player.');
             return self::viewPublishFeaturedArticle($request, $status);
         }
@@ -165,9 +164,9 @@ class Publications extends Base
     public static function viewPublishFeaturedArticle($request, $status = null)
     {
         $idLogged = SessionAdminLogin::idLogged();
-        $select_players = EntityPlayer::getPlayer('account_id = "'.$idLogged.'"');
+        $select_players = EntityPlayer::getPlayer('account_id = "' . $idLogged . '"');
 
-        while($player = $select_players->fetchObject()){
+        while ($player = $select_players->fetchObject()) {
             $players[] = [
                 'id' => $player->id,
                 'name' => $player->name,
@@ -179,7 +178,7 @@ class Publications extends Base
         ]);
         return parent::getPanel('Publications', $content, 'publications');
     }
-    
+
     public static function viewPublications($request)
     {
         $content = View::render('admin/modules/publications/index', [

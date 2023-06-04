@@ -11,10 +11,10 @@ namespace App\Controller\Pages;
 
 use App\Model\Entity\Achievements as EntityAchievements;
 use App\Model\Functions\Achievements as FunctionsAchievements;
-use \App\Utils\View;
+use App\Utils\View;
 
-class Achievements extends Base{
-
+class Achievements extends Base
+{
     public static function viewAchievements()
     {
         $content = View::render('pages/library/achievements', [

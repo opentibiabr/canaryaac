@@ -10,63 +10,63 @@
 namespace App\Controller\Pages\Account;
 
 use App\Controller\Pages\Base;
-use \App\Utils\View;
+use App\Utils\View;
 use App\Model\Entity\Achievements as EntityAchievements;
 use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Functions\Player as FunctionsPlayer;
 use App\Model\Functions\Server;
 use App\Session\Admin\Login as SessionAdminLogin;
 
-class CharacterEdit extends Base{
-
+class CharacterEdit extends Base
+{
     public static function updateCharacter($request, $name)
     {
-        if(SessionAdminLogin::isLogged() == true){
+        if(SessionAdminLogin::isLogged() == true) {
             $AccountId = SessionAdminLogin::idLogged();
             $postVars = $request->getPostVars();
 
             $filter_name = filter_var($name, FILTER_SANITIZE_SPECIAL_CHARS);
             $filt = urldecode($filter_name);
             $select_player = EntityPlayer::getPlayer('name = "'.$filt.'"')->fetchObject();
-            if($select_player->deletion == 1){
+            if($select_player->deletion == 1) {
                 $request->getRouter()->redirect('/account');
             }
 
             $filter_account = filter_var($postVars['hide_account'], FILTER_SANITIZE_NUMBER_INT);
-            if(empty($filter_account)){
+            if(empty($filter_account)) {
                 $filter_account = 0;
             }
             $filter_outfit = filter_var($postVars['hide_outfit'], FILTER_SANITIZE_NUMBER_INT);
-            if(empty($filter_outfit)){
+            if(empty($filter_outfit)) {
                 $filter_outfit = 0;
             }
             $filter_inventory = filter_var($postVars['hide_inventory'], FILTER_SANITIZE_NUMBER_INT);
-            if(empty($filter_inventory)){
+            if(empty($filter_inventory)) {
                 $filter_inventory = 0;
             }
             $filter_health_mana = filter_var($postVars['hide_healthmana'], FILTER_SANITIZE_NUMBER_INT);
-            if(empty($filter_health_mana)){
+            if(empty($filter_health_mana)) {
                 $filter_health_mana = 0;
             }
             $filter_skills = filter_var($postVars['hide_skills'], FILTER_SANITIZE_NUMBER_INT);
-            if(empty($filter_skills)){
+            if(empty($filter_skills)) {
                 $filter_skills = 0;
             }
             $filter_bonus = filter_var($postVars['hide_bonus'], FILTER_SANITIZE_NUMBER_INT);
-            if(empty($filter_bonus)){
+            if(empty($filter_bonus)) {
                 $filter_bonus = 0;
             }
             $filter_comment = filter_var($postVars['comment'], FILTER_SANITIZE_SPECIAL_CHARS);
-            if(empty($filter_comment)){
+            if(empty($filter_comment)) {
                 $filter_comment = "";
             }
 
             $filter_hidden = filter_var($postVars['accountvisible'], FILTER_SANITIZE_NUMBER_INT);
-            if($filter_hidden > 1){
+            if($filter_hidden > 1) {
                 $request->getRouter()->redirect('/account');
             }
-            
-            if($select_player->account_id == $AccountId){
+
+            if($select_player->account_id == $AccountId) {
 
                 $arrayCharacterDisplay = [
                     'player_id' => $select_player->id,
@@ -104,17 +104,17 @@ class CharacterEdit extends Base{
 
     public static function getCharacterEdit($request, $name)
     {
-        if(SessionAdminLogin::isLogged() == true){
+        if(SessionAdminLogin::isLogged() == true) {
             $AccountId = SessionAdminLogin::idLogged();
             $filter_name = filter_var($name, FILTER_SANITIZE_SPECIAL_CHARS);
             $filt = urldecode($filter_name);
 
             $player = [];
             $select_player = EntityPlayer::getPlayer('name = "'.$filt.'"')->fetchObject();
-            if($select_player->deletion == 1){
+            if($select_player->deletion == 1) {
                 $request->getRouter()->redirect('/account');
             }
-            if($select_player->account_id == $AccountId){
+            if($select_player->account_id == $AccountId) {
                 $player = [
                     'name' => $select_player->name,
                     'sex' => FunctionsPlayer::convertSex($select_player->sex),
@@ -132,7 +132,7 @@ class CharacterEdit extends Base{
         $filter_name = filter_var($name, FILTER_SANITIZE_SPECIAL_CHARS);
         $filter_nameurl = urldecode($filter_name);
         $select_player = EntityPlayer::getPlayer('name = "'.$filter_nameurl.'"')->fetchObject();
-        if($select_player->deletion == 1){
+        if($select_player->deletion == 1) {
             $request->getRouter()->redirect('/account');
         }
 
@@ -145,7 +145,7 @@ class CharacterEdit extends Base{
         $filter_name = filter_var($name, FILTER_SANITIZE_SPECIAL_CHARS);
         $filter_nameurl = urldecode($filter_name);
         $select_player = EntityPlayer::getPlayer('name = "'.$filter_nameurl.'"')->fetchObject();
-        if($select_player->deletion == 1){
+        if($select_player->deletion == 1) {
             $request->getRouter()->redirect('/account');
         }
 
@@ -177,5 +177,4 @@ class CharacterEdit extends Base{
         ]);
         return parent::getBase('Account Management', $content, 'account');
     }
-
 }

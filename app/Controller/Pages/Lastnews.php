@@ -11,16 +11,16 @@ namespace App\Controller\Pages;
 
 use App\Model\Entity\News as EntityNews;
 use App\Model\Functions\News;
-use \App\Utils\View;
+use App\Utils\View;
 use App\Model\Functions\Server;
 
-class Lastnews extends Base{
-
+class Lastnews extends Base
+{
     public static function getNewsTicker()
     {
         $selectNewsTicker = EntityNews::getNews('type = "2"', 'id DESC', '5');
         $newsarticle = [];
-        while($NewsTicker = $selectNewsTicker->fetchObject()){
+        while($NewsTicker = $selectNewsTicker->fetchObject()) {
             $newsarticle[] = [
                 'title' => $NewsTicker->title,
                 'body' => $NewsTicker->body,
@@ -42,7 +42,7 @@ class Lastnews extends Base{
     {
         $selectFeaturedArticle = EntityNews::getNews('type = "3"', 'id DESC', '1');
         $featuredarticle = [];
-        while($FeaturedArticle = $selectFeaturedArticle->fetchObject()){
+        while($FeaturedArticle = $selectFeaturedArticle->fetchObject()) {
             $featuredarticle[] = [
                 'title' => $FeaturedArticle->title,
                 'body' => $FeaturedArticle->body,
@@ -63,7 +63,7 @@ class Lastnews extends Base{
     {
         $selectForum = EntityNews::getNews('type = "1"', 'id DESC', '5');
         $news = [];
-        while($ForumNews = $selectForum->fetchObject()){
+        while($ForumNews = $selectForum->fetchObject()) {
             $news[] = [
                 'title' => $ForumNews->title,
                 'body' => $ForumNews->body,

@@ -13,18 +13,18 @@ use MercadoPago\SDK;
 use MercadoPago\Preference;
 use MercadoPago\Item;
 
-class ApiMercadoPago {
-
+class ApiMercadoPago
+{
     public static function createPayment($products = [], $email = null)
     {
         $final_price = $products['item']['amount'] * $products['item']['quantity'];
         $mercadopago_status = 'sandbox';
 
-        if($mercadopago_status == 'sandbox'){
+        if($mercadopago_status == 'sandbox') {
             SDK::setAccessToken($_ENV['MERCADOPAGO_TOKEN']);
             SDK::setPublicKey($_ENV['MERCADOPAGO_TOKEN']);
         }
-        if($mercadopago_status == 'production'){
+        if($mercadopago_status == 'production') {
             SDK::setClientId($_ENV['MERCADOPAGO_CLIENTID']);
             SDK::setClientSecret($_ENV['MERCADOPAGO_SECRET']);
         }
@@ -35,7 +35,7 @@ class ApiMercadoPago {
         $item->description = $products['item']['title'];
         $item->quantity = $products['item']['quantity'];
         $item->currency_id = "BRL";
-        $item->unit_price = $products['item']['amount']; 
+        $item->unit_price = $products['item']['amount'];
 
         $preference->items = array($item);
         $preference->save();
@@ -45,7 +45,7 @@ class ApiMercadoPago {
             'status_detail' => $preference->status_detail,
             'id' => $preference->id
         );
-        
+
         return $response;
     }
 
@@ -54,11 +54,11 @@ class ApiMercadoPago {
         $final_price = $products['item']['amount'] * $products['item']['quantity'];
         $mercadopago_status = 'production';
 
-        if($mercadopago_status == 'sandbox'){
+        if($mercadopago_status == 'sandbox') {
             SDK::setAccessToken($_ENV['MERCADOPAGO_TOKEN']);
             SDK::setPublicKey($_ENV['MERCADOPAGO_TOKEN']);
         }
-        if($mercadopago_status == 'production'){
+        if($mercadopago_status == 'production') {
             SDK::setClientId($_ENV['MERCADOPAGO_CLIENTID']);
             SDK::setClientSecret($_ENV['MERCADOPAGO_SECRET']);
         }
@@ -69,17 +69,17 @@ class ApiMercadoPago {
         $item->description = $products['item']['title'];
         $item->quantity = $products['item']['quantity'];
         $item->currency_id = "BRL";
-        $item->unit_price = $products['item']['amount']; 
+        $item->unit_price = $products['item']['amount'];
 
         $preference->items = array($item);
         $preference->save();
-      
+
         return $preference->sandbox_init_point;
     }
 
-    public function testFindPreferenceById($preference_id){  
+    public function testFindPreferenceById($preference_id)
+    {
         $preference = Preference::find_by_id($preference_id);
         return $preference->id;
     }
-
 }

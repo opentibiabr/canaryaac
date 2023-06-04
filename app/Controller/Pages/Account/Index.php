@@ -9,7 +9,7 @@
 
 namespace App\Controller\Pages\Account;
 
-use \App\Utils\View;
+use App\Utils\View;
 use App\Controller\Pages\Base;
 use App\Model\Entity\Account;
 use App\Model\Entity\Player as EntityPlayer;
@@ -18,15 +18,14 @@ use App\Model\Entity\ServerConfig as EntityServerConfig;
 use App\Model\Functions\Player;
 use App\Session\Admin\Login as SessionAdminLogin;
 use App\Model\Entity\Bans as EntityBans;
-use DateTime;
 
-class Index extends Base{
-
+class Index extends Base
+{
     public static function getWorlds($world_id)
     {
         $arrayAllWorlds = [];
         $world = EntityWorlds::getWorlds('id = "'.$world_id.'"')->fetchObject();
-        if($world == true){
+        if($world == true) {
             $arrayAllWorlds = [
                 'id' => $world->id,
                 'name' => $world->name,
@@ -44,7 +43,7 @@ class Index extends Base{
     public static function getAccountLogged()
     {
         $logged = [];
-        if(SessionAdminLogin::isLogged() == true){
+        if(SessionAdminLogin::isLogged() == true) {
             $admin = SessionAdminLogin::idLogged();
 
             $account = EntityPlayer::getAccount('id = "'.$admin.'"')->fetchObject();
@@ -52,18 +51,18 @@ class Index extends Base{
             $playerNoMain = EntityPlayer::getPlayer('account_id = "'.$account->id.'" AND main = "0"');
 
             $accountRegistred = Account::getAccountRegistration('account_id = "'.$admin.'"')->fetchObject();
-            if(empty($accountRegistred)){
+            if(empty($accountRegistred)) {
                 $registered = false;
-            }else{
+            } else {
                 $registered = true;
             }
 
             $datePrem = date('d F Y H:i:s', strtotime('+'.$account->premdays.' days'));
 
             $select_account_banned = EntityBans::getAccountBans('account_id = "'.$admin.'"')->fetchObject();
-            if(empty($select_account_banned)){
+            if(empty($select_account_banned)) {
                 $account_banned = false;
-            }else{
+            } else {
                 $account_banned = true;
                 $ban_days_to_end = ($select_account_banned->expires_at - $select_account_banned->banned_at) / (60 * 60 * 24);
                 $arrayBan = [
@@ -74,7 +73,7 @@ class Index extends Base{
             }
 
             $players = [];
-            while($char = $playerNoMain->fetchObject()){
+            while($char = $playerNoMain->fetchObject()) {
                 $players[] = [
                         'id' => $char->id,
                         'name' => $char->name,

@@ -86,7 +86,7 @@ var unloadhelper = false;
 var menuItemName = '';
 
 function LoadMenu(){
-    var element = document.getElementById("submenu_" + activeSubmenuItem);
+    let element = document.getElementById("submenu_" + activeSubmenuItem);
     if (element) {
         element.style.color = "white";
     }

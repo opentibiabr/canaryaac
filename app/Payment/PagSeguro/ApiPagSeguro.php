@@ -26,8 +26,8 @@ class ApiPagSeguro{
         $token = $_ENV['PAGSEGURO_TOKEN'];
 
         Library::initialize();
-        Library::cmsVersion()->setName("CanaryAAC")->setRelease("1.0.0");
-        Library::moduleVersion()->setName("CanaryAAC")->setRelease("1.0.0");
+        Library::cmsVersion()->setName(SITE_NAME)->setRelease("1.0.0");
+        Library::moduleVersion()->setName(SITE_NAME)->setRelease("1.0.0");
         
         Configure::setEnvironment('sandbox');
         Configure::setAccountCredentials($email, $token);
@@ -48,7 +48,7 @@ class ApiPagSeguro{
         $payment->setReference($products['reference']);
 
         // Set your customer information.
-        $payment->setSender()->setName('CanaryAAC');
+        $payment->setSender()->setName(SITE_NAME);
         $payment->setSender()->setEmail($email);
 
         $payment->setRedirectUrl(URL.'/payment');
@@ -67,8 +67,8 @@ class ApiPagSeguro{
         $token = $_ENV['PAGSEGURO_TOKEN'];
 
         Library::initialize();
-        Library::cmsVersion()->setName("CanaryAAC")->setRelease("1.0.0");
-        Library::moduleVersion()->setName("CanaryAAC")->setRelease("1.0.0");
+        Library::cmsVersion()->setName(SITE_NAME)->setRelease("1.0.0");
+        Library::moduleVersion()->setName(SITE_NAME)->setRelease("1.0.0");
 
         Configure::setEnvironment('sandbox');
         Configure::setAccountCredentials($email, $token);
@@ -87,7 +87,7 @@ class ApiPagSeguro{
         $payment->setCurrency('BRL');
         $payment->setReference($products['reference']);
 
-        $payment->setSender()->setName('CanaryAAC');
+        $payment->setSender()->setName(SITE_NAME);
         $payment->setSender()->setEmail($email);
 
         $payment->setRedirectUrl(URL.'/payment');
@@ -102,8 +102,8 @@ class ApiPagSeguro{
     public static function notifyCheckPayment($order_code = null)
     {
         Library::initialize();
-        Library::cmsVersion()->setName("CanaryAAC")->setRelease("1.0.0");
-        Library::moduleVersion()->setName("CanaryAAC")->setRelease("1.0.0");
+        Library::cmsVersion()->setName(SITE_NAME)->setRelease("1.0.0");
+        Library::moduleVersion()->setName(SITE_NAME)->setRelease("1.0.0");
         
         if (Xhr::hasPost()) {
             $response = Notification::check(Configure::getApplicationCredentials());

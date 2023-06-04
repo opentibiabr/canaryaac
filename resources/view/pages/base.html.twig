@@ -42,7 +42,7 @@
 			      "name":[
 			        {
 			          "@language":"pt-br",
-			          "@value":"CanaryAAC"
+			          "@value":constant('SITE_NAME')
 			        }
 			      ],
 			      "description":[
@@ -530,7 +530,7 @@ var FB_ForceReload = 0;
 				{% include "info_bar.html.twig" %}
 				{% include "boosted_creature.html.twig" %}
 				{{ content|raw }}
-				<div id="Footer" class="main-footer">Copyright by CanaryAAC. All rights reserved.<br>Layout by CipSoft GmbH.</div>
+				<div id="Footer" class="main-footer">Copyright by {{ constant('SITE_NAME') }}. All rights reserved.<br>Layout by CipSoft GmbH.</div>
 			</div>
 			{# Themeboxes START #}
 			<div class="main-themboxes Themeboxes">

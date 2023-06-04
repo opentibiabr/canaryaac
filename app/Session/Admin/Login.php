@@ -15,7 +15,7 @@ class Login{
     {
         if(session_status() != PHP_SESSION_ACTIVE){
             session_start([
-                'name' => 'CanaryAAC'
+                'name' => SITE_NAME
             ]);
         }
     }

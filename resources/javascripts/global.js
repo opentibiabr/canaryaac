@@ -1,4 +1,4 @@
-var g_CapsLockIsEnabled = null;
+let g_CapsLockIsEnabled = null;
 if (typeof document.msCapsLockWarningOff !== 'undefined') { document.msCapsLockWarningOff = true; }
 
 function AddCapsLockEventListeners() {

@@ -12,6 +12,7 @@ function ActivateWebsiteFrame() {
         document.getElementById('DeactivationContainerThemebox').style.display = "none";
     }
 }
+
 function DeactivateWebsiteFrame() {
     if (document.getElementById('DeactivationContainer') != null) {
         document.getElementById('DeactivationContainer').style.display = "block";
@@ -20,18 +21,23 @@ function DeactivateWebsiteFrame() {
         document.getElementById('DeactivationContainerThemebox').style.display = "block";
     }
 }
+
 function MouseOverWebshopButton(source) {
     source.firstChild.style.visibility = "visible";
 }
+
 function MouseOutWebshopButton(source) {
     source.firstChild.style.visibility = "hidden";
 }
+
 function MouseOverMediumButton(source) {
     source.firstChild.style.visibility = "visible";
 }
+
 function MouseOutMediumButton(source) {
     source.firstChild.style.visibility = "hidden";
 }
+
 function CheckAll(form_name, checkbox_name) {
     var form = document.getElementById(form_name);
     if (form.ALL) {
@@ -41,19 +47,19 @@ function CheckAll(form_name, checkbox_name) {
         var e = form.elements[i];
         if (e.name != checkbox_name)
             continue;
-            e.checked = c;
+        e.checked = c;
     }
 }
-function LoadLoginBox()
-{
-    if(loginStatus == false) {
-    document.getElementById('MediumButtonText').style.backgroundImage = "url('" + JS_DIR_IMAGES + "global/buttons/mediumbutton_login.png')";
-    document.getElementById('LoginstatusText_1').style.backgroundImage = "url('" + JS_DIR_IMAGES + "global/loginbox/loginbox-font-create-account.gif')";
-    document.getElementById('LoginstatusText_2').style.backgroundImage = "url('" + JS_DIR_IMAGES + "global/loginbox/loginbox-font-create-account-over.gif')";
+
+function LoadLoginBox() {
+    if (loginStatus == false) {
+        document.getElementById('MediumButtonText').style.backgroundImage = "url('" + JS_DIR_IMAGES + "global/buttons/mediumbutton_login.png')";
+        document.getElementById('LoginstatusText_1').style.backgroundImage = "url('" + JS_DIR_IMAGES + "global/loginbox/loginbox-font-create-account.gif')";
+        document.getElementById('LoginstatusText_2').style.backgroundImage = "url('" + JS_DIR_IMAGES + "global/loginbox/loginbox-font-create-account-over.gif')";
     } else {
-    document.getElementById('MediumButtonText').style.backgroundImage = "url('" + JS_DIR_IMAGES + "global/buttons/mediumbutton_myaccount.png')";
-    document.getElementById('LoginstatusText_1').style.backgroundImage = "url('" + JS_DIR_IMAGES + "global/loginbox/loginbox-font-logout.gif')";
-    document.getElementById('LoginstatusText_2').style.backgroundImage = "url('" + JS_DIR_IMAGES + "global/loginbox/loginbox-font-logout-over.gif')";
+        document.getElementById('MediumButtonText').style.backgroundImage = "url('" + JS_DIR_IMAGES + "global/buttons/mediumbutton_myaccount.png')";
+        document.getElementById('LoginstatusText_1').style.backgroundImage = "url('" + JS_DIR_IMAGES + "global/loginbox/loginbox-font-logout.gif')";
+        document.getElementById('LoginstatusText_2').style.backgroundImage = "url('" + JS_DIR_IMAGES + "global/loginbox/loginbox-font-logout-over.gif')";
     }
 }
 
@@ -61,10 +67,12 @@ function MouseOverLoginBoxText(source) {
     source.lastChild.style.visibility = "visible";
     source.firstChild.style.visibility = "hidden";
 }
+
 function MouseOutLoginBoxText(source) {
     source.firstChild.style.visibility = "visible";
     source.lastChild.style.visibility = "hidden";
 }
+
 function LoginButtonAction() {
     if (loginStatus == "false") {
         window.location = JS_DIR_ACCOUNT + "/account";
@@ -72,6 +80,7 @@ function LoginButtonAction() {
         window.location = JS_DIR_ACCOUNT + "/account";
     }
 }
+
 function LoginstatusTextAction(source) {
     if (loginStatus == "false") {
         window.location = JS_DIR_ACCOUNT + "/createaccount";
@@ -85,130 +94,136 @@ menu[0] = new Object();
 var unloadhelper = false;
 var menuItemName = '';
 
-function LoadMenu(){
+function LoadMenu() {
     let element = document.getElementById("submenu_" + activeSubmenuItem);
     if (element) {
         element.style.color = "white";
     }
-    if(self.name.lastIndexOf("&")==-1){
-        self.name="news=1&library=0&community=0&account=0&wars=0&support=0&shop=0&";
+    if (self.name.lastIndexOf("&") == -1) {
+        self.name = "news=1&library=0&community=0&account=0&wars=0&support=0&shop=0&";
     }
     FillMenuArray();
-    if(window.matchMedia('(max-width: 768px)').matches){
-        var submenuItem=document.getElementById(activeSubmenuItem);
-        var ParentID=submenuItem.closest('[class="Level1Block"]').id;
-        for(menuItemName in menu[0]){
-            if(menuItemName==ParentID){
-                menu[0][menuItemName]=1;
-                $('.MobileMenuItems #'+ParentID+' .Level1Entry').addClass('Level1ItemOpen');
-            }else{
-                menu[0][menuItemName]=0;
+    if (window.matchMedia('(max-width: 768px)').matches) {
+        var submenuItem = document.getElementById(activeSubmenuItem);
+        var ParentID = submenuItem.closest('[class="Level1Block"]').id;
+        for (menuItemName in menu[0]) {
+            if (menuItemName == ParentID) {
+                menu[0][menuItemName] = 1;
+                $('.MobileMenuItems #' + ParentID + ' .Level1Entry').addClass('Level1ItemOpen');
+            } else {
+                menu[0][menuItemName] = 0;
             }
         }
     }
     InitializeMenu();
     $('#MobileMenu .Level2Block').removeClass('MobileMenuActiveItem');
-    $('#MobileMenu #'+activeSubmenuItem).addClass('MobileMenuActiveItem');
+    $('#MobileMenu #' + activeSubmenuItem).addClass('MobileMenuActiveItem');
 }
 
-function SaveMenu(){
-    if(unloadhelper==false){
+function SaveMenu() {
+    if (unloadhelper == false) {
         SaveMenuArray();
-        unloadhelper=true;
+        unloadhelper = true;
     }
 }
 
-function FillMenuArray(){
-    var MenuCount=0;
-    var mark1=0;
-    var mark2=0;
-    while(self.name.length>0){
+function FillMenuArray() {
+    var MenuCount = 0;
+    var mark1 = 0;
+    var mark2 = 0;
+    while (self.name.length > 0) {
         MenuCount++;
-        mark1=self.name.indexOf("=");
-        mark2=self.name.indexOf("&");
-        if(MenuCount>15||mark1<0||mark2<0){
+        mark1 = self.name.indexOf("=");
+        mark2 = self.name.indexOf("&");
+        if (MenuCount > 15 || mark1 < 0 || mark2 < 0) {
             break;
         }
-    menuItemName=self.name.substr(0,mark1);
-    menu[0][menuItemName]=self.name.substring(mark1+1,mark2);
-    self.name=self.name.substr(mark2+1,self.name.length);
+        menuItemName = self.name.substr(0, mark1);
+        menu[0][menuItemName] = self.name.substring(mark1 + 1, mark2);
+        self.name = self.name.substr(mark2 + 1, self.name.length);
     }
 }
 
-function InitializeMenu(){
-    for(menuItemName in menu[0]){
-        if(menu[0][menuItemName]=="0"){
+function InitializeMenu() {
+    for (menuItemName in menu[0]) {
+        if (menu[0][menuItemName] == "0") {
             document.getElementById(menuItemName + "_Submenu").style.visibility = "hidden";
             document.getElementById(menuItemName + "_Submenu").style.display = "none";
             document.getElementById(menuItemName + "_Lights").style.visibility = "visible";
             document.getElementById(menuItemName + "_Extend").style.backgroundImage = "url(" + JS_DIR_IMAGES + "global/general/plus.gif)";
-            $('#MobileMenu #'+menuItemName+' .Level2Block').hide();
-        }else{
+            $('#MobileMenu #' + menuItemName + ' .Level2Block').hide();
+        } else {
             document.getElementById(menuItemName + "_Submenu").style.visibility = "visible";
             document.getElementById(menuItemName + "_Submenu").style.display = "block";
             document.getElementById(menuItemName + "_Lights").style.visibility = "hidden";
             document.getElementById(menuItemName + "_Extend").style.backgroundImage = "url(" + JS_DIR_IMAGES + "global/general/minus.gif)";
-            $('#MobileMenu #'+menuItemName+' .Level2Block').show();
+            $('#MobileMenu #' + menuItemName + ' .Level2Block').show();
         }
     }
 }
 
-function SaveMenuArray(){
-    var stringSlices="";
-    var temp="";
-    for(menuItemName in menu[0]){
-        stringSlices=menuItemName+"="+menu[0][menuItemName]+"&";
-        temp=temp+stringSlices;
+function SaveMenuArray() {
+    var stringSlices = "";
+    var temp = "";
+    for (menuItemName in menu[0]) {
+        stringSlices = menuItemName + "=" + menu[0][menuItemName] + "&";
+        temp = temp + stringSlices;
     }
-self.name=temp;
+    self.name = temp;
 }
 
-function MenuItemAction(sourceId){
-    if(menu[0][sourceId]==1){
+function MenuItemAction(sourceId) {
+    if (menu[0][sourceId] == 1) {
         CloseMenuItem(sourceId);
-        $('.MobileMenuItems #'+sourceId+' .Level1Entry').removeClass('Level1ItemOpen');
-    }else{
+        $('.MobileMenuItems #' + sourceId + ' .Level1Entry').removeClass('Level1ItemOpen');
+    } else {
         OpenMenuItem(sourceId);
-        $('.MobileMenuItems #'+sourceId+' .Level1Entry').addClass('Level1ItemOpen');
+        $('.MobileMenuItems #' + sourceId + ' .Level1Entry').addClass('Level1ItemOpen');
     }
 }
 
-function OpenMenuItem(sourceId){
-    if(window.matchMedia('(max-width: 768px)').matches){
-        for(menuItemName in menu[0]){
+function OpenMenuItem(sourceId) {
+    if (window.matchMedia('(max-width: 768px)').matches) {
+        for (menuItemName in menu[0]) {
             CloseMenuItem(menuItemName);
         }
     }
-    menu[0][sourceId]=1;
-    document.getElementById(sourceId+"_Submenu").style.visibility="visible";
-    document.getElementById(sourceId+"_Submenu").style.display="block";
-    document.getElementById(sourceId+"_Lights").style.visibility="hidden";
-    document.getElementById(sourceId+"_Extend").style.backgroundImage="url("+JS_DIR_IMAGES+"global/general/minus.gif)";
-    $('#MobileMenu #'+sourceId+' .Level2Block').show();
+    menu[0][sourceId] = 1;
+    document.getElementById(sourceId + "_Submenu").style.visibility = "visible";
+    document.getElementById(sourceId + "_Submenu").style.display = "block";
+    document.getElementById(sourceId + "_Lights").style.visibility = "hidden";
+    document.getElementById(sourceId + "_Extend").style.backgroundImage = "url(" + JS_DIR_IMAGES + "global/general/minus.gif)";
+    $('#MobileMenu #' + sourceId + ' .Level2Block').show();
 }
 
-function CloseMenuItem(sourceId){
-    menu[0][sourceId]=0;document.getElementById(sourceId+"_Submenu").style.visibility="hidden";
-    document.getElementById(sourceId+"_Submenu").style.display="none";
-    document.getElementById(sourceId+"_Lights").style.visibility="visible";
-    document.getElementById(sourceId+"_Extend").style.backgroundImage="url("+JS_DIR_IMAGES+"global/general/plus.gif)";
-    $('#MobileMenu #'+sourceId+' .Level2Block').hide();
+function CloseMenuItem(sourceId) {
+    menu[0][sourceId] = 0;
+    document.getElementById(sourceId + "_Submenu").style.visibility = "hidden";
+    document.getElementById(sourceId + "_Submenu").style.display = "none";
+    document.getElementById(sourceId + "_Lights").style.visibility = "visible";
+    document.getElementById(sourceId + "_Extend").style.backgroundImage = "url(" + JS_DIR_IMAGES + "global/general/plus.gif)";
+    $('#MobileMenu #' + sourceId + ' .Level2Block').hide();
 }
-function MouseOverMenuItem(source){
-    source.firstChild.style.visibility="visible";
+
+function MouseOverMenuItem(source) {
+    source.firstChild.style.visibility = "visible";
 }
-function MouseOutMenuItem(source){
-    source.firstChild.style.visibility="hidden";
+
+function MouseOutMenuItem(source) {
+    source.firstChild.style.visibility = "hidden";
 }
-function MouseOverSubmenuItem(source){
-    source.style.backgroundColor="#14433F";
+
+function MouseOverSubmenuItem(source) {
+    source.style.backgroundColor = "#14433F";
 }
-function MouseOutSubmenuItem(source){
-    source.style.backgroundColor="#0D2E2B";
+
+function MouseOutSubmenuItem(source) {
+    source.style.backgroundColor = "#0D2E2B";
 }
 
 function PaymentStandBy(a_Source, a_Case) {
-    var m_Agree = false; if (a_Source == "setup" && a_Case != 1) {
+    var m_Agree = false;
+    if (a_Source == "setup" && a_Case != 1) {
         if (document.getElementById("CheckBoxAgreePayment").checked == true) {
             m_Agree = true;
         }
@@ -240,15 +255,19 @@ function NoteDownload(a_ClientType) {
 }
 
 function SetFormFocus() {
-    if (g_FormName.length > 0 && g_FieldName.length > 0) {
-        var l_SetFocus = true;
-        if (g_FormName == 'AccountLogin') {
-            if (document.getElementsByName('loginemail')[0].value.length > 0) {
-                l_SetFocus = false;
+    if (g_FormName && g_FieldName) {
+        var form = document.forms[g_FormName];
+        if (form) {
+            var field = form.elements[g_FieldName];
+            if (field) {
+                var l_SetFocus = true;
+                if (g_FormName == 'AccountLogin' && document.getElementsByName('loginemail')[0].value.length > 0) {
+                    l_SetFocus = false;
+                }
+                if (l_SetFocus == true) {
+                    field.focus();
+                }
             }
-        }
-        if (l_SetFocus == true) {
-            document.forms[g_FormName].elements[g_FieldName].focus();
         }
     }
 }
@@ -293,8 +312,10 @@ var PostParameters = new Object();
 
 function RedirectPOST(a_Target, a_ParameterArray) {
     $('<form />').hide().attr({ method: "post", id: "RedirectForm" }).attr({ action: decodeURIComponent(a_Target) }).append('<input type="submit" />').appendTo($("body"));
-    $.each(a_ParameterArray, function (key, value) { console.log(key + ": " + value);
-    $('#RedirectForm').append($('<input />').attr("type", "hidden").attr({ "name": key }).val(value)); });
+    $.each(a_ParameterArray, function(key, value) {
+        console.log(key + ": " + value);
+        $('#RedirectForm').append($('<input />').attr("type", "hidden").attr({ "name": key }).val(value));
+    });
     $('#RedirectForm').submit();
 }
 var g_CurrentScreenshot = 0;
@@ -304,12 +325,13 @@ var g_ScreenshotTexts = new Array();
 
 function SetScreenshot(a_Number) {
     g_CurrentScreenshot = a_Number;
-    $("#ScreenshotContainer").fadeTo("fast", 0, function () {
+    $("#ScreenshotContainer").fadeTo("fast", 0, function() {
         $('#ScreenshotImage').attr('src', g_Screenshots[g_CurrentScreenshot].src);
         $('.ScreenshotTextRow').text(g_ScreenshotTexts[g_CurrentScreenshot]);
-        $("#ScreenshotContainer").fadeTo("fast", 1, function () { });
+        $("#ScreenshotContainer").fadeTo("fast", 1, function() {});
     });
 }
+
 function ShowNextScreenshot() {
     g_CurrentScreenshot = (g_CurrentScreenshot + 1);
     if (g_CurrentScreenshot > g_NumberOfScreenshots) {
@@ -317,6 +339,7 @@ function ShowNextScreenshot() {
     }
     SetScreenshot(g_CurrentScreenshot);
 }
+
 function ShowPreviousScreenshot() {
     g_CurrentScreenshot = (g_CurrentScreenshot - 1);
     if (g_CurrentScreenshot < 1) {
@@ -324,13 +347,15 @@ function ShowPreviousScreenshot() {
     }
     SetScreenshot(g_CurrentScreenshot);
 }
+
 function ShowScreenshot(a_Number, a_NumberOfScreenshots) {
     g_NumberOfScreenshots = a_NumberOfScreenshots;
     g_CurrentScreenshot = a_Number;
-    $("#LightBox").fadeTo("fast", 1, function () { });
-    $("#LightBoxBackground").fadeTo("fast", 0.75, function () { });
+    $("#LightBox").fadeTo("fast", 1, function() {});
+    $("#LightBoxBackground").fadeTo("fast", 0.75, function() {});
     SetScreenshot(a_Number);
 }
+
 function PreloadScreenshots(a_NumberOfScreenshots) {
     for (i = 1; i <= a_NumberOfScreenshots; i++) {
         g_Screenshots[i] = new Image();
@@ -347,7 +372,7 @@ function ImageInNewWindow(a_ImageSource) {
     l_Content += '<img src="' + a_ImageSource + '" />';
     l_Content += '</body>';
     l_NewWindow.document.write(l_Content);
-    l_Image.onload = function () {
+    l_Image.onload = function() {
         l_BorderWidth = (l_NewWindow.outerWidth - l_NewWindow.innerWidth);
         l_BorderHeight = (l_NewWindow.outerHeight - l_NewWindow.innerHeight);
         var l_PixelSpace = 5;
@@ -356,5 +381,6 @@ function ImageInNewWindow(a_ImageSource) {
         l_NewWindow.resizeTo(l_WindowWidth, l_WindowHeight);
         l_NewWindow.focus();
     }
-    l_Image.src = a_ImageSource; return;
+    l_Image.src = a_ImageSource;
+    return;
 }

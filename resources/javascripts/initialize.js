@@ -222,7 +222,7 @@ function MouseOutSubmenuItem(source) {
 }
 
 function PaymentStandBy(a_Source, a_Case) {
-    var m_Agree = false;
+    let m_Agree = false;
     if (a_Source == "setup" && a_Case != 1) {
         if (document.getElementById("CheckBoxAgreePayment").checked == true) {
             m_Agree = true;
@@ -256,11 +256,11 @@ function NoteDownload(a_ClientType) {
 
 function SetFormFocus() {
     if (g_FormName && g_FieldName) {
-        var form = document.forms[g_FormName];
+        let form = document.forms[g_FormName];
         if (form) {
-            var field = form.elements[g_FieldName];
+            let field = form.elements[g_FieldName];
             if (field) {
-                var l_SetFocus = true;
+                let l_SetFocus = true;
                 if (g_FormName == 'AccountLogin' && document.getElementsByName('loginemail')[0].value.length > 0) {
                     l_SetFocus = false;
                 }
@@ -382,5 +382,4 @@ function ImageInNewWindow(a_ImageSource) {
         l_NewWindow.focus();
     }
     l_Image.src = a_ImageSource;
-    return;
 }

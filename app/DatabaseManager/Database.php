@@ -199,11 +199,9 @@ class Database
 
         // MONTA A QUERY
         $query = 'SELECT ' . $fieldString . ' FROM ' . $this->table . $whereString . $order . $limit;
-        $stmt = $this->connection->prepare($query);
 
         // EXECUTA A QUERY
-        $stmt->execute($values);
-        return $stmt;
+        return $this->execute($query, $values);
     }
 
     public function selectLike($where = null, $like = null, $order = null, $limit = null, $fields = '*')
@@ -216,12 +214,14 @@ class Database
         $wheres = [];
         $values = [];
         foreach ($where as $key => $value) {
-            if (strpos($key, 'LIKE') !== false) {
-                $wheres[] = $key . ' ?';
-                $values[] = "%{$value}%";
-            } else {
-                $wheres[] = $key . ' = ?';
-                $values[] = $value;
+            $wheres[] = $key . ' = ?';
+            $values[] = $value;
+        }
+
+        if ($like !== null) {
+            foreach ($like as $key => $value) {
+                $wheres[] = $key . ' LIKE ?';
+                $values[] = '%' . $value . '%';
             }
         }
 
@@ -248,49 +248,48 @@ class Database
 
 
     /**
-     * Método responsável por executar atualizações no banco de dados
-     * @param  string $where
-     * @param  array $values [ field => value ]
-     * @return boolean
-     */
-    public function update($where, $values)
-    {
-        // DADOS DA QUERY
-        $fields = array_keys($values);
-        $placeholders = array_fill(0, count($fields), '?');
-        $params = array_values($values);
+         * Método responsável por executar atualizações no banco de dados
+         * @param  string $where
+         * @param  array $values [ field => value ]
+         * @return boolean
+         */
+        public function update($where, $values)
+        {
+            // DADOS DA QUERY
+            $fields = array_keys($values);
+            $params = array_values($values);
 
-        // Tratar as condições WHERE
-        if (is_array($where)) {
-            $wheres = [];
-            foreach ($where as $key => $value) {
-                $split = explode(' ', $key);
-                if (count($split) == 2) {
-                    [$key, $operator] = $split;
-                    $wheres[] = $key . ' ' . $operator . ' ?';
-                } else {
-                    $wheres[] = $key . ' = ?';
+            // Tratar as condições WHERE
+            if (is_array($where)) {
+                $wheres = [];
+                foreach ($where as $key => $value) {
+                    $split = explode(' ', $key);
+                    if (count($split) == 2) {
+                        [$key, $operator] = $split;
+                        $wheres[] = $key . ' ' . $operator . ' ?';
+                    } else {
+                        $wheres[] = $key . ' = ?';
+                    }
+                    $params[] = $value;
                 }
-                $params[] = $value;
+
+                $whereString = implode(' AND ', $wheres);
+                if (strlen($whereString)) {
+                    $whereString = ' WHERE ' . $whereString;
+                }
+            } else {
+                $whereString = ' WHERE ' . $where;
             }
 
-            $whereString = implode(' AND ', $wheres);
-            if (strlen($whereString)) {
-                $whereString = ' WHERE ' . $whereString;
-            }
-        } else {
-            $whereString = ' WHERE ' . $where;
+            // MONTA A QUERY
+            $query = 'UPDATE ' . $this->table . ' SET ' . implode('=?, ', $fields) . '=?' . $whereString;
+
+            // EXECUTA A QUERY
+            $this->execute($query, $params);
+
+            // RETORNA SUCESSO
+            return true;
         }
-
-        // MONTA A QUERY
-        $query = 'UPDATE ' . $this->table . ' SET ' . implode('=?, ', $fields) . '=?' . $whereString;
-
-        // EXECUTA A QUERY
-        $this->execute($query, $params);
-
-        // RETORNA SUCESSO
-        return true;
-    }
 
     /**
      * Método responsável por excluir dados do banco
@@ -323,5 +322,4 @@ class Database
         // RETORNA SUCESSO
         return true;
     }
-
 }

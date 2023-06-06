@@ -67,7 +67,8 @@ class Characters extends Api{
         $queryParams = $request->getQueryParams();
 
         // pega informações do player (usando LIKE)
-        $results = EntityPlayer::getPlayerLike(['name LIKE' => $queryParams['name']]);
+        $results = EntityPlayer::getPlayerLike(null, ['name' => $queryParams['name']]);
+
 
         // trás informações do player
         $obPlayer = $results->fetchObject(EntityPlayer::class);

@@ -9,11 +9,22 @@ function AddCapsLockEventListeners() {
     $(document).keypress(function(e) { CheckPressedKey(e); })
 }
 
-function CheckForCapsLockItself(e) { e = e || event; if (e.keyCode == 20 && g_CapsLockIsEnabled !== null) { g_CapsLockIsEnabled = !g_CapsLockIsEnabled; } }
+function CheckForCapsLockItself(e) {
+    if (!e) {
+        console.error("Error: Event object is required");
+        return;
+    }
+    if (e.keyCode == 20 && g_CapsLockIsEnabled !== null) {
+        g_CapsLockIsEnabled = !g_CapsLockIsEnabled;
+    }
+}
 
 function CheckPressedKey(e) {
-    e = e || event;
-    var chr = GetChar(e);
+    if (!e) {
+        console.error("Error: Event object is required");
+        return;
+    }
+    let chr = GetChar(e);
     if (!chr) { return; }
     if (chr.toLowerCase() == chr.toUpperCase()) { return; }
     g_CapsLockIsEnabled = (chr.toLowerCase() == chr && e.shiftKey) || (chr.toUpperCase() == chr && !e.shiftKey);
@@ -27,9 +38,9 @@ function GetChar(e) {
 
 function ShowOrHideCapsLockWarning() {
     if (g_CapsLockIsEnabled) {
-        var l_PasswordFields = $('input[type=password]');
-        var l_Top = ($(':focus').offset().top + 18);
-        var l_Left = ($(':focus').offset().left + 18);
+        let l_PasswordFields = $('input[type=password]');
+        let l_Top = ($(':focus').offset().top + 18);
+        let l_Left = ($(':focus').offset().left + 18);
         $('#CapsLockWarning').css({ top: l_Top, left: l_Left });
         $('#CapsLockWarning').show();
     } else { $('#CapsLockWarning').hide(); }
@@ -177,7 +188,7 @@ function CheckForMobileAdjustments() {
     return;
 }
 $(document).ready(function() {
-    g_PasswordToolTipIsActive = 0;
+    let g_PasswordToolTipIsActive = 0;
     if ($('.PWStrengthContainer').length > 0) { g_PasswordToolTipIsActive = 1; }
     if ($('#password1').length > 0) {
         $("#password1").change(function() { CheckPasswordStrength($('#password1').val()); });
@@ -193,13 +204,15 @@ function CheckPasswordStrength(a_Password) {
         $('#password_errormessage .CanBeHiddenWhenToolTipIsOn').hide();
         $('.BoxInputText #password_errormessage').hide();
     }
-    l_Feedback = 'very weak';
-    l_CSSClass = 'PWStrengthIndicator';
-    l_Warning = '';
-    l_Suggestions = '';
-    l_Result = { 'score': 0, 'feedback': { 'warning': '', 'suggestions': Array(0) } };
-    l_RulesFullfilled = ValidatePassword(a_Password);
-    if (l_RulesFullfilled == true) { l_Result = zxcvbn(a_Password); }
+    let l_Feedback = '';
+    let l_CSSClass = 'PWStrengthIndicator';
+    let l_Warning = '';
+    let l_Suggestions = '';
+    let l_Result = { 'score': 0, 'feedback': { 'warning': '', 'suggestions': Array(0) } };
+    let l_RulesFullfilled = ValidatePassword(a_Password);
+    if (l_RulesFullfilled) {
+        l_Result = zxcvbn(a_Password);
+    }
     if (l_Result.score > 3) {
         l_Feedback = 'strong';
         l_CSSClass += ' PWStrengthLevel4';
@@ -226,15 +239,19 @@ function CheckPasswordStrength(a_Password) {
             $('.PWStrengthWarning').append('<div class="PWStrengthToolTipHeadline" >Warning</div>');
             $('.PWStrengthWarning').append('<div>' + l_Warning + '</div>');
         }
-        if (l_Result.feedback.suggestions.length > 0) { $('.PWStrengthSuggestions').append('<div class="PWStrengthToolTipHeadline" >Tip</div>'); for (var i = 0; i < l_Result.feedback.suggestions.length; i++) { $('.PWStrengthSuggestions').append('<div>' + l_Result.feedback.suggestions[i] + '</div>'); } }
+        if (l_Result.feedback.suggestions.length > 0) {
+            $('.PWStrengthSuggestions').append('<div class="PWStrengthToolTipHeadline" >Tip</div>');
+            for (let i = 0; i < l_Result.feedback.suggestions.length; i++) {
+                $('.PWStrengthSuggestions').append('<div>' + l_Result.feedback.suggestions[i] + '</div>');
+            }
+        }
     }
     if (l_RulesFullfilled == true) { $('.PWStrengthToolTip').hide(); }
-    return;
 }
 
 function ValidatePassword(a_Password) {
-    var l_ReturnValue = true;
-    var PWRules = [
+    let l_ReturnValue = true;
+    let PWRules = [
         [62, ((a_Password.length >= 30 || a_Password.length < 10) ? false : true)],
         [63, ((a_Password.match(/[^!-~]+/) !== null) ? false : true)],
         [65, ((a_Password.match(/^[A-Za-z]*$/) !== null) ? false : true)],
@@ -242,8 +259,8 @@ function ValidatePassword(a_Password) {
         [85, ((a_Password.match(/[A-Z]/) === null) ? false : true)],
         [86, ((a_Password.match(/[0-9]/) === null) ? false : true)]
     ];
-    for (var i = 0; i < PWRules.length; i++) {
-        if (PWRules[i][1] == true) {
+    for (let i = 0; i < PWRules.length; i++) {
+        if (PWRules[i][1]) {
             $('#PWRule' + PWRules[i][0]).removeClass('InputIndicatorNotOK');
             $('#PWRule' + PWRules[i][0]).addClass('InputIndicatorOK');
         } else {

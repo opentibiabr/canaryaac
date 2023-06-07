@@ -59,13 +59,12 @@ function CheckForCapsLock(e) {
         return;
     }
 
-    let chr = GetChar(e);
+    let chr = e.key;
     if (!chr) return;
 
-    if (chr.toLowerCase() == chr.toUpperCase()) return;
+    if (chr.toLowerCase() === chr.toUpperCase()) return;
 
-    let capsLockOn = e.getModifierState && e.getModifierState('CapsLock');
-    g_CapsLockIsEnabled = (chr.toLowerCase() == chr && capsLockOn) || (chr.toUpperCase() == chr && !capsLockOn);
+    g_CapsLockIsEnabled = (chr.toLowerCase() === chr && e.shiftKey) || (chr.toUpperCase() === chr && !e.shiftKey);
 }
 
 function GetChar(e) {

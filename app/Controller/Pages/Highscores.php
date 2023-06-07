@@ -75,18 +75,19 @@ class Highscores extends Base{
         
 
         if($input_profession == 5){
-            $totaAmount = EntityHighscores::getHighscoresEntity('group_id <= "3"', null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+            $totaAmount = EntityHighscores::getHighscoresEntity(['group_id' <= 3], null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
         }else{
-            $totaAmount = EntityHighscores::getHighscoresEntity('vocation = "'.$input_profession.'" AND group_id <= "3"', null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+            $totaAmount = EntityHighscores::getHighscoresEntity(['vocation' => $input_profession, 'group_id' <= 3], null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
+
         }
 
         $currentPage = $queryParams['page'] ?? 1;
         $obPagination = new Pagination($totaAmount, $currentPage, 50);
 
         if($input_profession == 5){
-            $results = EntityHighscores::getHighscoresEntity('group_id <= "3"', $input_category . ' DESC', $obPagination->getLimit());
+            $results = EntityHighscores::getHighscoresEntity(['group_id' <= 3], $input_category . ' DESC', $obPagination->getLimit());
         }else{
-            $results = EntityHighscores::getHighscoresEntity('vocation = "'.$input_profession.'" AND group_id <= "3"', $input_category . ' DESC', $obPagination->getLimit());
+            $results = EntityHighscores::getHighscoresEntity(['vocation' => $input_profession, 'group_id' <= 3], $input_category . ' DESC', $obPagination->getLimit());
         }
         
         while($obRank = $results->fetchObject(EntityHighscores::class)){

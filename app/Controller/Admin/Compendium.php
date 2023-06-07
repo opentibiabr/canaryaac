@@ -67,7 +67,7 @@ class Compendium extends Base
             return self::viewCompendium($request, $status);
         }
 
-        EntityCompendium::updateCompendium('id = "'.$id.'"', [
+        EntityCompendium::updateCompendium([ 'id' => $id], [
             'category' => $filter_category,
             'headline' => $postVars['compendium_headline'],
             'message' => $postVars['compendium_message'],
@@ -131,7 +131,7 @@ class Compendium extends Base
 
     public static function getCompendiumById($compendium_id)
     {
-        $compendium = EntityCompendium::getCompendium('id = "'.$compendium_id.'"')->fetchObject();
+        $compendium = EntityCompendium::getCompendium([ 'id' => $compendium_id])->fetchObject();
         $arrayCompendium = [
             'id' => $compendium->id,
             'category' => $compendium->category,

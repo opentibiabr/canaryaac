@@ -55,7 +55,7 @@ class Create extends Base{
             return self::getCreateAccount($request, 'This email address has an invalid format. Please enter a correct email address!');
         }
         $filter_acc_name = filter_var($account_name, FILTER_SANITIZE_SPECIAL_CHARS);
-        $verifyAccAccount = EntityPlayer::getAccount('name = "'.$account_name.'"')->fetchObject();
+        $verifyAccAccount = EntityPlayer::getAccount([ 'name' => $account_name])->fetchObject();
         if(!empty($verifyAccAccount)){
             return self::getCreateAccount($request, 'This Account name is already in use!');
         }
@@ -64,7 +64,7 @@ class Create extends Base{
             return self::getCreateAccount($request, 'This email address has an invalid format. Please enter a correct email address!');
         }
         $filter_email = filter_var($account_email, FILTER_SANITIZE_SPECIAL_CHARS);
-        $verifyAccountEmail = EntityPlayer::getAccount('email = "'.$filter_email.'"')->fetchObject();
+        $verifyAccountEmail = EntityPlayer::getAccount([ 'email' => $filter_email])->fetchObject();
         if(!empty($verifyAccountEmail)){
             return self::getCreateAccount($request, 'This email address is already used. Please enter another email address!');
         }
@@ -86,7 +86,7 @@ class Create extends Base{
         if($CountName > 29){
             return self::getCreateAccount($request, 'The name must be at least 29 characters long.');
         }
-        $verifyPlayerName = EntityPlayer::getPlayer('name = "'.$filter_name.'"')->fetchObject();
+        $verifyPlayerName = EntityPlayer::getPlayer([ 'name' => $filter_name])->fetchObject();
         if($verifyPlayerName == true){
             return self::getCreateAccount($request, 'This character name is already being used.');
         }
@@ -109,7 +109,7 @@ class Create extends Base{
                 return self::getCreateAccount($request, 'Choose a vocation for the character.');
             }
 
-            $verifyVocation = EntityCreateAccount::getPlayerSamples('vocation = "'.$filter_vocation.'"')->fetchObject();
+            $verifyVocation = EntityCreateAccount::getPlayerSamples([ 'vocation' => $filter_vocation])->fetchObject();
             if($verifyVocation == false){
                 return self::getCreateAccount($request, 'Please select your character vocation!');
             }
@@ -119,7 +119,7 @@ class Create extends Base{
 
         $filter_world = filter_var($character_world, FILTER_SANITIZE_SPECIAL_CHARS);
         $filter_world = str_replace('server_', '', $filter_world);
-        $selectWorlds = EntityWorlds::getWorlds('name = "'.$filter_world.'"')->fetchObject();
+        $selectWorlds = EntityWorlds::getWorlds([ 'name' => $filter_world])->fetchObject();
         if($selectWorlds == false){
             return self::getCreateAccount($request, 'Select a valid world.');
         }
@@ -139,7 +139,7 @@ class Create extends Base{
             'recruiter' => '0',
         ];
         $accountId = EntityCreateAccount::createAccount($account);
-        $playerSample = EntityCreateAccount::getPlayerSamples('vocation = "'.$filter_vocation.'"')->fetchObject();
+        $playerSample = EntityCreateAccount::getPlayerSamples([ 'vocation' => $filter_vocation])->fetchObject();
 
         $character = [
             'name' => $filter_name,

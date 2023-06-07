@@ -122,13 +122,13 @@ class News
 
     public static function getPlayerName($player_id)
     {
-        $select_player = Player::getPlayer('id = "'.$player_id.'"')->fetchObject();
+        $select_player = Player::getPlayer([ 'id' => $player_id])->fetchObject();
         return $select_player->name;
     }
 
     public static function getNewsTicker()
     {
-        $selectNewsTicker = EntityNews::getNews('type = "2"');
+        $selectNewsTicker = EntityNews::getNews([ 'type' => 2]);
         $newsarticle = [];
         while($NewsTicker = $selectNewsTicker->fetchObject()){
             $newsarticle[] = [
@@ -153,7 +153,7 @@ class News
 
     public static function getFeaturedArticle()
     {
-        $selectFeaturedArticle = EntityNews::getNews('type = "3"');
+        $selectFeaturedArticle = EntityNews::getNews([ 'type' => 3]);
         $featuredarticle = [];
         while($FeaturedArticle = $selectFeaturedArticle->fetchObject()){
             $featuredarticle[] = [
@@ -178,7 +178,7 @@ class News
 
     public static function getNews()
     {
-        $selectForum = EntityNews::getNews('type = "1"');
+        $selectForum = EntityNews::getNews([ 'type' => 1]);
         $news = [];
         while($ForumNews = $selectForum->fetchObject()){
             $news[] = [

@@ -23,7 +23,7 @@ class ApplyToThisGuild extends Base{
 	{
 		$decodeUrl = urldecode($guild_name);
 		$filterName = filter_var($decodeUrl, FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbGuild = EntityGuilds::getGuilds('name = "'.$filterName.'"')->fetchObject();
+		$dbGuild = EntityGuilds::getGuilds([ 'name' => $filterName])->fetchObject();
 		if($dbGuild == true){
 			$guild_id = $dbGuild->id;
 		}
@@ -42,7 +42,7 @@ class ApplyToThisGuild extends Base{
 			}
 			$input_character = filter_var($postVars['apply_name'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-			$dbPlayer = EntityPlayer::getPlayer('name = "'.$input_character.'" AND account_id = "'.$idLogged.'"')->fetchObject();
+			$dbPlayer = EntityPlayer::getPlayer([ 'name' => $input_character, 'account_id' => $idLogged])->fetchObject();
 			if(empty($dbPlayer)){
 				$status = 'This character does not belong to the logged in account.';
 				return self::viewApplyToThisGuild($request,$name,$status);
@@ -52,7 +52,7 @@ class ApplyToThisGuild extends Base{
 				return self::viewApplyToThisGuild($request,$name,$status);
 			}
 
-			$dbApplications = EntityGuilds::getApplications('player_id = "'.$dbPlayer->id.'"')->fetchObject();
+			$dbApplications = EntityGuilds::getApplications([ 'player_id' => $dbPlayer->id])->fetchObject();
 			if(!empty($dbApplications)){
 				$status = 'This character has already applied to a Guild.';
 				return self::viewApplyToThisGuild($request,$name,$status);
@@ -63,13 +63,13 @@ class ApplyToThisGuild extends Base{
 				return self::viewApplyToThisGuild($request,$name,$status);
 			}
 
-			$dbInvitations = EntityGuilds::getInvites('player_id = "'.$dbPlayer->id.'" AND guild_id = "'.$guild_id.'"')->fetchObject();
+			$dbInvitations = EntityGuilds::getInvites(['player_id' => $dbPlayer->id, 'guild_id' => $guild_id])->fetchObject();
 			if(!empty($dbInvitations)){
 				$status = 'This character is already invited to this Guild.';
 				return self::viewApplyToThisGuild($request,$name,$status);
 			}
 
-			$dbMember = EntityGuilds::getMembership('player_id = "'.$dbPlayer->id.'"')->fetchObject();
+			$dbMember = EntityGuilds::getMembership([ 'player_id' => $dbPlayer->id])->fetchObject();
 			if(!empty($dbMember)){
 				$status = 'This character is already in a Guild.';
 				return self::viewApplyToThisGuild($request,$name,$status);
@@ -98,7 +98,7 @@ class ApplyToThisGuild extends Base{
 			}
 
 			$player_id = $postVars['character_cancelapply'];
-			$dbApplications = EntityGuilds::getApplications('player_id = "'.$player_id.'" AND account_id = "'.$idLogged.'"');
+			$dbApplications = EntityGuilds::getApplications([ 'player_id' => $player_id, 'account_id' => $idLogged]);
 
 			if(empty($dbApplications)){
 				$status = 'Wrong character.';
@@ -118,9 +118,9 @@ class ApplyToThisGuild extends Base{
 		$dbPlayers = FunctionPlayer::getAllCharacters($idLogged);
 		$guild_id = self::convertGuildName($name);
 
-		$dbPlayersAccount = EntityPlayer::getPlayer('account_id = "'.$idLogged.'" AND deletion = "0"');
+		$dbPlayersAccount = EntityPlayer::getPlayer([ 'account_id' => $idLogged, 'deletion' => "0"]);
 		while($player = $dbPlayersAccount->fetchObject()){
-			$dbMember = EntityGuilds::getMembership('player_id = "'.$player->id.'"')->fetchObject();
+			$dbMember = EntityGuilds::getMembership([ 'player_id' => $player->id])->fetchObject();
 			if(empty($dbMember)){
 				$arrayMembers[] = [
 					'id' => $player->id,
@@ -129,10 +129,10 @@ class ApplyToThisGuild extends Base{
 			}
 		}
 
-		$dbApplications = EntityGuilds::getApplications('account_id = "'.$idLogged.'" AND guild_id = "'.$guild_id.'"');
+		$dbApplications = EntityGuilds::getApplications([ 'account_id' => $idLogged, 'guild_id' => $guild_id]);
 		while($application = $dbApplications->fetchObject()){
 
-			$player = EntityPlayer::getPlayer('id = "'.$application->player_id.'"')->fetchObject();
+			$player = EntityPlayer::getPlayer([ 'id' => $application->player_id])->fetchObject();
 
 			switch($application->status){
 				case 0:

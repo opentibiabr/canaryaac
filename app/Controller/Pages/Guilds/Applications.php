@@ -23,7 +23,7 @@ class Applications extends Base{
 	{
 		$decodeUrl = urldecode($guild_name);
 		$filterName = filter_var($decodeUrl, FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbGuild = EntityGuilds::getGuilds('name = "'.$filterName.'"')->fetchObject();
+		$dbGuild = EntityGuilds::getGuilds([ 'name' => $filterName])->fetchObject();
 		if($dbGuild == true){
 			$guild_id = $dbGuild->id;
 		}
@@ -47,7 +47,7 @@ class Applications extends Base{
 		$input_idplayer = filter_var($postVars['application_player'], FILTER_SANITIZE_NUMBER_INT);
 
 		if(isset($postVars['btn_accept'])){
-			$dbMembers = EntityGuilds::getMembership('player_id = "'.$input_idplayer.'"')->fetchObject();
+			$dbMembers = EntityGuilds::getMembership([ 'player_id' => $input_idplayer])->fetchObject();
 			if(!empty($dbMembers)){
 				$status = 'This character is a member of another Guild.';
 				return self::viewApplications($request,$name,$status);
@@ -57,7 +57,7 @@ class Applications extends Base{
 				'status' => 2,
 			]);
 			
-			$dbRanks = EntityGuilds::getRanks('guild_id = "'.$guild_id.'" AND level = 1')->fetchObject();
+			$dbRanks = EntityGuilds::getRanks([ 'guild_id' => $guild_id, 'level' => 1])->fetchObject();
 			
 			EntityGuilds::insertJoinMember([
 				'player_id' => $input_idplayer,
@@ -94,10 +94,10 @@ class Applications extends Base{
 			$request->getRouter()->redirect('/community/guilds/'.$name.'/view');
 		}
 
-		$dbApplications = EntityGuilds::getApplications('guild_id = "'.$guild_id.'"');
+		$dbApplications = EntityGuilds::getApplications([ 'guild_id' => $guild_id]);
 		while($application = $dbApplications->fetchObject()){
 
-			$dbPlayer = EntityPlayer::getPlayer('id = "'.$application->player_id.'"')->fetchObject();
+			$dbPlayer = EntityPlayer::getPlayer([ 'id' => $application->player_id])->fetchObject();
 
 			
 			switch($application->status){

@@ -21,7 +21,7 @@ class EditRanks extends Base{
 	{
 		$decodeUrl = urldecode($guild_name);
 		$filterName = filter_var($decodeUrl, FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbGuild = EntityGuilds::getGuilds('name = "'.$filterName.'"')->fetchObject();
+		$dbGuild = EntityGuilds::getGuilds([ 'name' => $filterName])->fetchObject();
 		if($dbGuild == true){
 			$guild_id = $dbGuild->id;
 		}
@@ -50,7 +50,7 @@ class EditRanks extends Base{
 		$filter_name = filter_var($postVars['rank_name'], FILTER_SANITIZE_SPECIAL_CHARS);
 		$filter_level = filter_var($postVars['rank_level'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-		$dbRanks = EntityGuilds::getRanks('id = "'.$filter_level.'" AND guild_id = "'.$guild_id.'"')->fetchObject();
+		$dbRanks = EntityGuilds::getRanks([ 'id' => $filter_level, 'guild_id' => $guild_id])->fetchObject();
 		if(empty($dbRanks)){
 			$status = 'Please select a valid rank.';
 			return self::viewEditRanks($request,$name,$status);

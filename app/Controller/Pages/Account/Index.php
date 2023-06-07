@@ -25,7 +25,7 @@ class Index extends Base{
     public static function getWorlds($world_id)
     {
         $arrayAllWorlds = [];
-        $world = EntityWorlds::getWorlds('id = "'.$world_id.'"')->fetchObject();
+        $world = EntityWorlds::getWorlds([ 'id' => $world_id])->fetchObject();
         if($world == true){
             $arrayAllWorlds = [
                 'id' => $world->id,
@@ -47,11 +47,11 @@ class Index extends Base{
         if(SessionAdminLogin::isLogged() == true){
             $admin = SessionAdminLogin::idLogged();
 
-            $account = EntityPlayer::getAccount('id = "'.$admin.'"')->fetchObject();
-            $playerMain = EntityPlayer::getPlayer('account_id = "'.$account->id.'" AND main = "1"')->fetchObject();
-            $playerNoMain = EntityPlayer::getPlayer('account_id = "'.$account->id.'" AND main = "0"');
+            $account = EntityPlayer::getAccount([ 'id' => $admin])->fetchObject();
+            $playerMain = EntityPlayer::getPlayer([ 'account_id' => $account->id, 'main' => "1"])->fetchObject();
+            $playerNoMain = EntityPlayer::getPlayer([ 'account_id' => $account->id, 'main' => "0"]);
 
-            $accountRegistred = Account::getAccountRegistration('account_id = "'.$admin.'"')->fetchObject();
+            $accountRegistred = Account::getAccountRegistration([ 'account_id' => $admin])->fetchObject();
             if(empty($accountRegistred)){
                 $registered = false;
             }else{
@@ -60,7 +60,7 @@ class Index extends Base{
 
             $datePrem = date('d F Y H:i:s', strtotime('+'.$account->premdays.' days'));
 
-            $select_account_banned = EntityBans::getAccountBans('account_id = "'.$admin.'"')->fetchObject();
+            $select_account_banned = EntityBans::getAccountBans([ 'account_id' => $admin])->fetchObject();
             if(empty($select_account_banned)){
                 $account_banned = false;
             }else{

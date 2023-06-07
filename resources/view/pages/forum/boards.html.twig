@@ -13,7 +13,7 @@
                 {% if islogged == false %}
 				<p class="ForumWelcome">You are <b>not</b> logged in.<br><a href="">Log in</a> to post on the forum.</p>
                 {% else %}
-                <p class="ForumWelcome">Welcome back to the CanaryAAC Forum!</p>
+                <p class="ForumWelcome">Welcome back to the {{ constant('SITE_NAME') }} Forum!</p>
                 {% endif %}
 				<div class="ForumBreadCrumbs">
 					<a href="{{URL}}/forum/communityboards">Community Boards</a> | <b>Auditorium</b>

@@ -47,7 +47,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
         public static function getAllCharacters($accountId)
         {
             $allPlayers = [];
-            $resultsAllPlayers = (new Database('players'))->select('account_id = "'.$accountId.'"');
+            $resultsAllPlayers = (new Database('players'))->select([ 'account_id' => $accountId]);
             while($obAllPlayers = $resultsAllPlayers->fetchObject()){
                 $allPlayers[] = [
                     'id' => $obAllPlayers->id,
@@ -69,8 +69,8 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
 
         public static function convertMarried($player_id)
         {
-            $resultsAllPlayers = (new Database('players'))->select('id = "'.$player_id.'"')->fetchObject();
-            $spouse = (new Database('players'))->select('id = "'.$resultsAllPlayers->marriage_spouse.'"')->fetchObject();
+            $resultsAllPlayers = (new Database('players'))->select([ 'id' => $player_id])->fetchObject();
+            $spouse = (new Database('players'))->select([ 'id' =>$resultsAllPlayers->marriage_spouse])->fetchObject();
             $married = [
                 'status' => $resultsAllPlayers->marriage_status,
                 'spouse' => $spouse->name ?? '',
@@ -80,7 +80,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
 
         public static function getAchievements($player_id, $storage)
         {
-            $results = (new Database('player_storage'))->select('player_id = "'.$player_id.'"');
+            $results = (new Database('player_storage'))->select([ 'player_id' => $player_id]);
             while($obAchievements = $results->fetchObject()){
                 if($obAchievements->key == $storage){
                     $achievements[] = [
@@ -95,7 +95,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
         public static function getAchievementPoints($player_id)
         {
             $points = 0;
-            $results = (new Database('player_storage'))->select('player_id = "'.$player_id.'"');
+            $results = (new Database('player_storage'))->select([ 'player_id' => $player_id]);
             while($obPoints = $results->fetchObject()){
                 if($obPoints->key > 30000){
                     $points++;
@@ -106,7 +106,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
 
         public static function convertWorld($world_id)
         {
-            $select_world = ServerConfig::getWorlds('id = "'.$world_id.'"')->fetchObject();
+            $select_world = ServerConfig::getWorlds([ 'id' => $world_id])->fetchObject();
             return $select_world->name ?? 'None';
             
         }
@@ -119,7 +119,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
 
         public static function getOutfit($player_id)
         {
-            $select = (new Database('players'))->select('id = "'.$player_id.'"');
+            $select = (new Database('players'))->select([ 'id' => $player_id]);
             while($obOutfit = $select->fetchObject()){
                 $outfit = [
                     'image_url' => self::getOutfitImage($obOutfit->looktype, $obOutfit->lookaddons, $obOutfit->lookbody, $obOutfit->lookfeet, $obOutfit->lookhead, $obOutfit->looklegs, $obOutfit->lookmountbody),
@@ -152,7 +152,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
 
             for ($i = 1; $i <= 10; $i++) {
                 $equipaments[$i] = [
-                    'url' => 'objects/'.$default_images[$i], // add 'objects/' to the URL
+                    'url' => 'objects/'.$default_images[$i],
                     'pid' => 0,
                     'sid' => 0,
                     'itemtype' => 0,
@@ -160,11 +160,11 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
                 ];
             }
 
-            $results = (new Database('player_items'))->select('player_id = "'.$player_id.'"');
+            $results = (new Database('player_items'))->select([ 'player_id' => $player_id]);
             while($obEquipaments = $results->fetchObject()){
                 if($obEquipaments->pid <= 10){
                     $equipaments[$obEquipaments->pid] = [
-                        'url' => 'items/'.$obEquipaments->itemtype.'.gif', // add 'items/' to the URL
+                        'url' => 'items/'.$obEquipaments->itemtype.'.gif',
                         'pid' => (int)$obEquipaments->pid,
                         'sid' => (int)$obEquipaments->sid,
                         'itemtype' => (int)$obEquipaments->itemtype,
@@ -186,7 +186,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
                 5 => 'black_skull.gif'
             ];
 
-            $select = EntityPlayer::getPlayer('id = "'.$player_id.'"', null, null, 'skull')->fetchObject();
+            $select = EntityPlayer::getPlayer([ 'id' => $player_id], null, null, ['skull'])->fetchObject();
             foreach($skulls as $key => $value){
                 if($select->skull == $key){
                     return $value;
@@ -196,7 +196,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
 
         public static function getSkullTime($player_id)
         {
-            $select = EntityPlayer::getPlayer('id = "'.$player_id.'"', null, null, 'skull, skulltime')->fetchObject();
+            $select = EntityPlayer::getPlayer([ 'id' => $player_id], null, null, ['skull, skulltime'])->fetchObject();
             if($select->skulltime > 0){
                 return false;
             }else{
@@ -206,7 +206,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
 
         public static function getDisplay($player_id)
         {
-            $select = EntityPlayer::getDisplay('player_id = "'.$player_id.'"')->fetchObject();
+            $select = EntityPlayer::getDisplay([ 'player_id' => $player_id])->fetchObject();
             if (empty($select)) {
                 return [];
             }
@@ -224,7 +224,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
 
         public static function getHouse($playerId)
         {
-            $results = (new Database('houses'))->select('owner = "'.$playerId.'"');
+            $results = (new Database('houses'))->select([ 'owner' => $playerId]);
             while($obHouses = $results->fetchObject()){
                 $houses[] = [
                     'id' => $obHouses->id,
@@ -248,7 +248,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
 
         public static function isOnline($player_id)
         {
-            $results = (new Database('players_online'))->select('player_id = "'.$player_id.'"');
+            $results = (new Database('players_online'))->select([ 'player_id' => $player_id]);
             if($results->fetchObject() == null){
                 return false;
             }else{
@@ -280,7 +280,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
          */
         public static function convertPremy($account_id)
         {
-            $select = (new Database('accounts'))->select('id = "'.$account_id.'"')->fetchObject();
+            $select = (new Database('accounts'))->select([ 'id' => $account_id])->fetchObject();
 
             if($select->premdays > 0){
                 $converted = 'Premium Account';
@@ -292,13 +292,13 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
 
         public static function getPremDays($account_id)
         {
-            $select = EntityPlayer::getAccount('id = "'.$account_id.'"')->fetchObject();
+            $select = EntityPlayer::getAccount([ 'id' => $account_id])->fetchObject();
             return date('d m Y', strlen($select->premdays));
         }
 
         public static function getCoins($account_id)
         {
-            $select = EntityPlayer::getAccount('id = "'.$account_id.'"', null, null, 'coins')->fetchObject();
+            $select = EntityPlayer::getAccount([ 'id' => $account_id], null, null, ['coins'])->fetchObject();
             return number_format($select->coins, 0, '.', '.');
         }
 
@@ -310,11 +310,11 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
          */
         public static function getGuildMember($player_id)
         {
-            $select_member = EntityPlayer::getGuildMember('player_id = "'.$player_id.'"')->fetchObject();
+            $select_member = EntityPlayer::getGuildMember([ 'player_id' => $player_id])->fetchObject();
             if (empty($select_member)) {
                 return null;
             }
-            $select_guild = Guilds::getGuilds('id = "'.$select_member->guild_id.'"')->fetchObject();
+            $select_guild = Guilds::getGuilds([ 'id' => $select_member->guild_id])->fetchObject();
             $rankdois = FunctionsGuilds::convertRankGuild($select_member->rank_id);
             $rankname = $rankdois['name'];
             $guilds = [
@@ -335,7 +335,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
          */
         public static function getGuildOwner($player_id)
         {
-            $select = (new Database('guilds'))->select('ownerid = "'.$player_id.'"');
+            $select = (new Database('guilds'))->select([ 'ownerid' => $player_id]);
             while($obGuilds = $select->fetchObject()){
                 $guilds[] = [
                     'level' => $obGuilds->level,
@@ -359,9 +359,9 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
          */
         public static function getDeaths($player_id)
         {
-            $select_deaths = EntityPlayer::getDeaths('player_id = "'.$player_id.'"', 'time DESC', 5);
+            $select_deaths = EntityPlayer::getDeaths([ 'player_id' => $player_id], 'time DESC', 5);
             while($obDeaths = $select_deaths->fetchObject()){
-                $countDeaths = (int)(new Database('player_deaths'))->select(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+                $countDeaths = (int)(new Database('player_deaths'))->select(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
 
                 $lasthit = ($obDeaths->is_player) ? $obDeaths->killed_by : $obDeaths->killed_by;
                 $description =  'Killed at level ' . $obDeaths->level . ' by ' . $lasthit;
@@ -388,10 +388,10 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
 
         public static function getFrags($player_id)
         {
-            $select_kills = EntityPlayer::getKills('player_id = "'.$player_id.'"', 'time DESC', 5);
+            $select_kills = EntityPlayer::getKills([ 'player_id' => $player_id], 'time DESC', 5);
             while($obKills = $select_kills->fetchObject()){
-                $player_name_fragged = EntityPlayer::getPlayer('id = "'.$obKills->target.'"')->fetchObject();
-                $player_deaths = EntityPlayer::getDeaths('killed_by = "'.$obKills->player_id.'"')->fetchObject();
+                $player_name_fragged = EntityPlayer::getPlayer([ 'id' => $obKills->target])->fetchObject();
+                $player_deaths = EntityPlayer::getDeaths([ 'killed_by' => $obKills->player_id])->fetchObject();
                 $description = 'Fragged <a href="' . URL . '/community/characters/' . $player_name_fragged->name . '">' . $player_name_fragged->name . '</a> at level ' . $player_deaths->level;
                 $frags = [
                     'time' => $obKills->time,
@@ -430,7 +430,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
          */
         public static function convertGroup($groupId)
         {
-            $select_group = Groups::getGroups('group_id = "'.$groupId.'"')->fetchObject();
+            $select_group = Groups::getGroups([ 'group_id' => $groupId])->fetchObject();
             return $select_group->name ?? 'None';
         }
 
@@ -442,13 +442,13 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
          */
         public static function convertTown($town_id)
         {
-            $towns = Houses::getTowns('id = "'.$town_id.'"')->fetchObject();
+            $towns = Houses::getTowns([ 'id' => $town_id])->fetchObject();
             return $towns->name ?? null;
         }
 
         public static function getPlayerStorage($player_id, $storage)
         {
-            $select_storage = EntityPlayer::getStorage('player_id = "'.$player_id.'"')->fetchObject();
+            $select_storage = EntityPlayer::getStorage([ 'player_id =' => $player_id])->fetchObject();
             if (empty($select_storage)) {
                 return 0;
             }
@@ -461,7 +461,7 @@ use App\Model\Functions\Guilds as FunctionsGuilds;
 
         public static function getPlayerStorageByValue($player_id, $storage, $value)
         {
-            $select_storage = EntityPlayer::getStorage('player_id = "'.$player_id.'" AND key = "'.$storage.'" AND value = "'.$value.'"')->fetchObject();
+            $select_storage = EntityPlayer::getStorage([ 'player_id =' => $player_id, 'key =' => $storage,  'value =' => $value])->fetchObject();
             if (empty($select_storage)) {
                 return false;
             } else {

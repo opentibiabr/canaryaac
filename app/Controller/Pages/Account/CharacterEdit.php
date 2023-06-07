@@ -27,7 +27,7 @@ class CharacterEdit extends Base{
 
             $filter_name = filter_var($name, FILTER_SANITIZE_SPECIAL_CHARS);
             $filt = urldecode($filter_name);
-            $select_player = EntityPlayer::getPlayer('name = "'.$filt.'"')->fetchObject();
+            $select_player = EntityPlayer::getPlayer([ 'name' => $filt])->fetchObject();
             if($select_player->deletion == 1){
                 $request->getRouter()->redirect('/account');
             }
@@ -79,7 +79,7 @@ class CharacterEdit extends Base{
                     'comment' => $filter_comment,
                 ];
 
-                $check_exists_display = EntityPlayer::getDisplay('player_id = "'.$select_player->id.'"')->fetchObject();
+                $check_exists_display = EntityPlayer::getDisplay([ 'player_id' => $select_player->id])->fetchObject();
                 if (empty($check_exists_display)) {
                     EntityPlayer::insertDisplay($arrayCharacterDisplay);
                     return self::viewCharacterEdit($request, $name, 'Updated successfully.');
@@ -110,7 +110,7 @@ class CharacterEdit extends Base{
             $filt = urldecode($filter_name);
 
             $player = [];
-            $select_player = EntityPlayer::getPlayer('name = "'.$filt.'"')->fetchObject();
+            $select_player = EntityPlayer::getPlayer([ 'name' => $filt])->fetchObject();
             if($select_player->deletion == 1){
                 $request->getRouter()->redirect('/account');
             }
@@ -131,7 +131,7 @@ class CharacterEdit extends Base{
     {
         $filter_name = filter_var($name, FILTER_SANITIZE_SPECIAL_CHARS);
         $filter_nameurl = urldecode($filter_name);
-        $select_player = EntityPlayer::getPlayer('name = "'.$filter_nameurl.'"')->fetchObject();
+        $select_player = EntityPlayer::getPlayer([ 'name' => $filter_nameurl])->fetchObject();
         if($select_player->deletion == 1){
             $request->getRouter()->redirect('/account');
         }
@@ -144,7 +144,7 @@ class CharacterEdit extends Base{
     {
         $filter_name = filter_var($name, FILTER_SANITIZE_SPECIAL_CHARS);
         $filter_nameurl = urldecode($filter_name);
-        $select_player = EntityPlayer::getPlayer('name = "'.$filter_nameurl.'"')->fetchObject();
+        $select_player = EntityPlayer::getPlayer([ 'name' => $filter_nameurl])->fetchObject();
         if($select_player->deletion == 1){
             $request->getRouter()->redirect('/account');
         }
@@ -172,7 +172,7 @@ class CharacterEdit extends Base{
         $content = View::render('pages/account/characteredit', [
             'player' => self::getCharacterEdit($request, $name),
             'achievements' => self::getAchievementsPlayer($request, $name),
-            'total_secretachievements' => (int)EntityAchievements::getAchievements('secret = "1"', null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
+            'total_secretachievements' => (int)EntityAchievements::getAchievements(['secret' => "1"], null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
             'status' => $status,
         ]);
         return parent::getBase('Account Management', $content, 'account');

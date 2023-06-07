@@ -22,7 +22,7 @@ class DisbandGuild extends Base{
 	{
 		$decodeUrl = urldecode($guild_name);
 		$filterName = filter_var($decodeUrl, FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbGuild = EntityGuilds::getGuilds('name = "'.$filterName.'"')->fetchObject();
+		$dbGuild = EntityGuilds::getGuilds([ 'name' => $filterName])->fetchObject();
 		if($dbGuild == true){
 			$guild_id = $dbGuild->id;
 		}
@@ -46,7 +46,7 @@ class DisbandGuild extends Base{
 		}
 
 		$filter_password = filter_var($postVars['password'], FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbAccount = EntityAccount::getAccount('id = "'.$idLogged.'" AND password = "'.$filter_password.'"');
+		$dbAccount = EntityAccount::getAccount([ 'id' => $idLogged, 'password' => $filter_password]);
 		if(!empty($dbAccount)){
 			$status = 'Something went wrong.';
 			self::viewDisbandGuild($request,$name,$status);

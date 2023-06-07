@@ -26,7 +26,7 @@ class Worlds extends Base{
         $currentWorld = $queryParams['world'] ?? '';
         $world = [];
 
-        $selectWorlds = EntityWorlds::getWorlds('name = "'.$currentWorld.'"');
+        $selectWorlds = EntityWorlds::getWorlds([ 'name' => $currentWorld]);
         while($obWorlds = $selectWorlds->fetchObject()){
             $world = [
                 'id' => $obWorlds->id,
@@ -44,13 +44,13 @@ class Worlds extends Base{
     {
         $queryParams = $request->getQueryParams();
         $currentPage = $queryParams['page'] ?? 1;
-        $totalAmount = EntityWorlds::getPlayersOnline(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+        $totalAmount = EntityWorlds::getPlayersOnline(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
 
         $obPagination = new Pagination($totalAmount, $currentPage, 50);
         $select_PlayersOnline = EntityWorlds::getPlayersOnline(null, null, $obPagination->getLimit());
 
         while($obOnline = $select_PlayersOnline->fetchObject(EntityWorlds::class)){
-            $playersInfo = EntityPlayer::getPlayer('id = "'.$obOnline->player_id.'"');
+            $playersInfo = EntityPlayer::getPlayer([ 'id' => $obOnline->player_id]);
             while($obPlayers = $playersInfo->fetchObject()){
                 $players[] = [
                     'name' => $obPlayers->name,

@@ -39,7 +39,7 @@ class ChangePassword extends Base{
             return self::viewChangePassword($request);
         }
         $AccountId = SessionAdminLogin::idLogged();
-        $account = EntityPlayer::getAccount('id = "'.$AccountId.'"')->fetchObject();
+        $account = EntityPlayer::getAccount([ 'id' => $AccountId])->fetchObject();
         if ($account->password != $convert_oldpassword) {
             return self::viewChangePassword($request, 'Invalid password.');
         }

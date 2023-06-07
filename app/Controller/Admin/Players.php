@@ -120,7 +120,7 @@ class Players extends Base{
             ];
         }
 
-        $character = EntityPlayer::getPlayer('id = "'.$id.'"', null, '1')->fetchObject();
+        $character = EntityPlayer::getPlayer([ 'id' => $id], null, '1')->fetchObject();
         $content = View::render('admin/modules/players/view', [
             'status' => $status,
             'worlds' => Server::getWorlds(),

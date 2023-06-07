@@ -104,7 +104,7 @@ class Settings extends Base{
         $content = View::render('admin/modules/settings/index', [
             'status' => $status,
             'sweetAlert' => $sweetAlert,
-            'title' => $dbServer->title,
+            'title' => "$dbServer->title",
             'download_link' => $dbServer->downloads,
             'player_voc' => $dbServer->player_voc,
             'player_max' => $dbServer->player_max,

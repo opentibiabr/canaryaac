@@ -25,7 +25,7 @@ class DeclareWar extends Base
 	{
 		$decodeUrl = urldecode($guild_name);
 		$filterName = filter_var($decodeUrl, FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbGuild = EntityGuilds::getGuilds('name = "'.$filterName.'"')->fetchObject();
+		$dbGuild = EntityGuilds::getGuilds([ 'name' => $filterName])->fetchObject();
 		if($dbGuild == true){
 			$guild_id = $dbGuild->id;
 		}
@@ -35,9 +35,9 @@ class DeclareWar extends Base
 	public static function verifyAccountGuild($guild_id)
 	{
 		$idLogged = SessionAdminLogin::idLogged();
-		$select_guild = EntityGuilds::getGuilds('id = "'.$guild_id.'"')->fetchObject();
-		$select_player = EntityPlayer::getPlayer('id = "'.$select_guild->ownerid.'"')->fetchObject();
-		$select_account = EntityAccount::getAccount('id = "'.$select_player->account_id.'"')->fetchObject();
+		$select_guild = EntityGuilds::getGuilds([ 'id' => $guild_id])->fetchObject();
+		$select_player = EntityPlayer::getPlayer([ 'id' => $select_guild->ownerid])->fetchObject();
+		$select_account = EntityAccount::getAccount([ 'id' => $select_player->account_id])->fetchObject();
 		if ($select_account->id != $idLogged) {
 			return false;
 		}
@@ -100,12 +100,12 @@ class DeclareWar extends Base
 
 	public static function currentGuildWar($guild_id)
 	{
-		$dbGuildWars = EntityGuilds::getWars('guild1 = "'.$guild_id.'" OR guild2 = "'.$guild_id.'"');
+		$dbGuildWars = EntityGuilds::getWars(['guild1' => $guild_id, 'guild2' => $guild_id], 'OR');
 		while ($war = $dbGuildWars->fetchObject()) {
 			$total_my_kills = 0;
 			$total_opponent_kills = 0;
 
-			$select_war_my_kills = EntityGuilds::getKills('warid = "'.$war->id.'" AND killerguild = "'.$war->guild1.'"');
+			$select_war_my_kills = EntityGuilds::getKills(['warid' => $war->id, 'killerguild' => $war->guild1]);
 			while ($war_kills = $select_war_my_kills->fetchObject()) {
 				$total_my_kills++;
 				$array[] = [
@@ -118,7 +118,7 @@ class DeclareWar extends Base
 				];
 			}
 
-			$select_war_opponent_kills = EntityGuilds::getKills('warid = "'.$war->id.'" AND targetguild = "'.$war->guild2.'"');
+			$select_war_opponent_kills = EntityGuilds::getKills(['warid' => $war->id, 'killerguild' => $war->guild2]);
 			while ($war_kills = $select_war_opponent_kills->fetchObject()) {
 				$total_opponent_kills++;
 				$array[] = [
@@ -154,12 +154,12 @@ class DeclareWar extends Base
 
 	public static function historyGuildWar($guild_id)
 	{
-		$dbGuildWars = EntityGuilds::getWars('guild1 = "'.$guild_id.'" OR guild2 = "'.$guild_id.'"');
+		$dbGuildWars = EntityGuilds::getWars(['guild1' => $guild_id, 'guild2' => $guild_id], 'OR');
 		while ($war = $dbGuildWars->fetchObject()) {
 			$total_my_kills = 0;
 			$total_opponent_kills = 0;
 
-			$select_war_my_kills = EntityGuilds::getKills('warid = "'.$war->id.'" AND killerguild = "'.$war->guild1.'"');
+			$select_war_my_kills = EntityGuilds::getKills(['warid' => $war->id, 'killerguild' => $war->guild1]);
 			while ($war_kills = $select_war_my_kills->fetchObject()) {
 				$total_my_kills++;
 				$array[] = [
@@ -172,7 +172,7 @@ class DeclareWar extends Base
 				];
 			}
 
-			$select_war_opponent_kills = EntityGuilds::getKills('warid = "'.$war->id.'" AND targetguild = "'.$war->guild2.'"');
+			$select_war_opponent_kills = EntityGuilds::getKills(['warid' => $war->id, 'killerguild' => $war->guild2]);
 			while ($war_kills = $select_war_opponent_kills->fetchObject()) {
 				$total_opponent_kills++;
 				$array[] = [
@@ -210,7 +210,7 @@ class DeclareWar extends Base
 	{
 		$filter_name = filter_var($name, FILTER_SANITIZE_SPECIAL_CHARS);
 		$guild_id = self::convertGuildName($filter_name);
-		$dbGuildWars = EntityGuilds::getWars('guild1 = "'.$guild_id.'" OR guild2 = "'.$guild_id.'"');
+		$dbGuildWars = EntityGuilds::getWars(['guild1' => $guild_id, 'guild2' => $guild_id], 'OR');
 		while($war = $dbGuildWars->fetchObject()){
 			if ($war->status == 2) {
 				if ($war->guild1 == $guild_id) {
@@ -263,7 +263,7 @@ class DeclareWar extends Base
 		$dbGuilds = EntityGuilds::getGuilds();
 
 		while($guild = $dbGuilds->fetchObject()){
-			$guild_war = EntityGuilds::getWars('guild1 = "'.$guild->id.'" OR guild2 = "'.$guild->id.'"')->fetchObject();
+			$guild_war = EntityGuilds::getWars(['guild1' => $guild->id, 'guild2' => $guild->id], 'OR')->fetchObject();
 			if (empty($guild_war)) {
 				$war_status = 0;
 			} else {
@@ -328,7 +328,7 @@ class DeclareWar extends Base
 		$filter_priceopponent = filter_var($postVars['price_opponent'], FILTER_SANITIZE_NUMBER_INT);
 		$filter_comment = filter_var($postVars['war_comment'] ?? null, FILTER_SANITIZE_SPECIAL_CHARS);
 
-		$dbGuilds = EntityGuilds::getGuilds('name = "'.$filter_opponent.'"')->fetchObject();
+		$dbGuilds = EntityGuilds::getGuilds([ 'name' => $filter_opponent])->fetchObject();
 		if(empty($dbGuilds)){
 			$status = 'Invalid opponent.';
 			return self::viewDeclareWar($request,$name,$status);
@@ -382,7 +382,7 @@ class DeclareWar extends Base
 			return self::viewDeclareWar($request,$name,$status);
 		}
 
-		$myGuild = EntityGuilds::getGuilds('id = "'.$guild_id.'"')->fetchObject();
+		$myGuild = EntityGuilds::getGuilds([ 'id' => $guild_id])->fetchObject();
 
 		EntityGuilds::insertWar([
 			'guild1' => $guild_id,

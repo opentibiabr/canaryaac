@@ -18,7 +18,7 @@ class Team extends Base{
 
     public static function getTeam()
     {
-        $select_players = EntityPlayer::getPlayer('group_id >= "2"');
+        $select_players = EntityPlayer::getPlayer(['group_id >=' => 2]);
         while ($player = $select_players->fetchObject()) {
             $arrayTeam[] = [
                 'name' => $player->name,

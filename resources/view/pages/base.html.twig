@@ -42,7 +42,7 @@
 			      "name":[
 			        {
 			          "@language":"pt-br",
-			          "@value":"CanaryAAC"
+			          "@value":constant('SITE_NAME')
 			        }
 			      ],
 			      "description":[
@@ -105,6 +105,7 @@ JS_ANNIVERSARY_THEMEBOX_STEP_3='{{ countdown.date_end }}';
 var FB_TryLogin = 0;
 var FB_ForceReload = 0;
 		</script>
+		<script src="{{JS_PATH}}/node_modules/zxcvbn/dist/zxcvbn.js"></script>
 		<script src="{{JS_PATH}}/global.js"></script>
 		<script src="{{JS_PATH}}/generic.js"></script>
 		<script src="{{JS_PATH}}/initialize.js"></script>
@@ -530,7 +531,7 @@ var FB_ForceReload = 0;
 				{% include "info_bar.html.twig" %}
 				{% include "boosted_creature.html.twig" %}
 				{{ content|raw }}
-				<div id="Footer" class="main-footer">Copyright by CanaryAAC. All rights reserved.<br>Layout by CipSoft GmbH.</div>
+				<div id="Footer" class="main-footer">Copyright by {{ constant('SITE_NAME') }}. All rights reserved.<br>Layout by CipSoft GmbH.</div>
 			</div>
 			{# Themeboxes START #}
 			<div class="main-themboxes Themeboxes">

@@ -18,7 +18,7 @@ class Lastnews extends Base{
 
     public static function getNewsTicker()
     {
-        $selectNewsTicker = EntityNews::getNews('type = "2"', 'id DESC', '5');
+        $selectNewsTicker = EntityNews::getNews([ 'type' => 2], 'id DESC', '5');
         $newsarticle = [];
         while($NewsTicker = $selectNewsTicker->fetchObject()){
             $newsarticle[] = [
@@ -40,7 +40,7 @@ class Lastnews extends Base{
 
     public static function getFeaturedArticle()
     {
-        $selectFeaturedArticle = EntityNews::getNews('type = "3"', 'id DESC', '1');
+        $selectFeaturedArticle = EntityNews::getNews([ 'type' => 3], 'id DESC', '1');
         $featuredarticle = [];
         while($FeaturedArticle = $selectFeaturedArticle->fetchObject()){
             $featuredarticle[] = [
@@ -61,7 +61,7 @@ class Lastnews extends Base{
 
     public static function getNews()
     {
-        $selectForum = EntityNews::getNews('type = "1"', 'id DESC', '5');
+        $selectForum = EntityNews::getNews([ 'type' => 1], 'id DESC', '5');
         $news = [];
         while($ForumNews = $selectForum->fetchObject()){
             $news[] = [

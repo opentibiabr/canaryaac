@@ -145,7 +145,7 @@ class Items extends Base{
             'status' => $errorMessage,
             'items_path' => $items_path,
             'itemGroup' => self::getItems(),
-            'total_items' => (int)EntityItems::getItems(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
+            'total_items' => (int)EntityItems::getItems(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
         ]);
 
         return parent::getPanel('Items', $content, 'items');

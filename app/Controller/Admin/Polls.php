@@ -27,14 +27,14 @@ class Polls extends Base
             $request->getRouter()->redirect('/admin/polls');
         }
 
-        $select_poll = EntityPolls::getPolls('id = "'.$id.'"')->fetchObject();
+        $select_poll = EntityPolls::getPolls([ 'id' => $id])->fetchObject();
         if (empty($select_poll)) {
             $request->getRouter()->redirect('/admin/polls');
         }
 
-        EntityPolls::deletePoll('id = "'.$id.'"');
-        EntityPolls::deletePollQuestions('poll_id = "'.$id.'"');
-        EntityPolls::deletePollAnswer('poll_id = "'.$id.'"');
+        EntityPolls::deletePoll([ 'id' => $id]);
+        EntityPolls::deletePollQuestions([ 'poll_id' => $id]);
+        EntityPolls::deletePollAnswer([ 'poll_id' => $id]);
         $request->getRouter()->redirect('/admin/polls');
     }
 
@@ -61,7 +61,7 @@ class Polls extends Base
             'title' => $postVars['poll_title'],
             'description' => $postVars['poll_description'],
             'date_start' => strtotime(date('Y-m-d')),
-            'date_end' => strtotime($postVars['poll_date_end']),
+            'date_end' => strtotime($postVars['poll_date_end'] . ' 23:59:59'),
         ]);
 
         foreach ($postVars['questions'] as $key => $value) {
@@ -94,7 +94,7 @@ class Polls extends Base
         $websiteInfo = EntityServerConfig::getInfoWebsite()->fetchObject();
         date_default_timezone_set($websiteInfo->timezone);
 
-        $select_Polls = EntityPolls::getPolls('id = "'.$poll_id.'"')->fetchObject();
+        $select_Polls = EntityPolls::getPolls([ 'id' => $poll_id])->fetchObject();
         if (empty($select_Polls)) {
             $request->getRouter()->redirect('/admin/polls');
         }

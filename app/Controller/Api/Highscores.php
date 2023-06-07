@@ -104,7 +104,7 @@ class Highscores extends Api{
         
         $player = [];
 
-        $totalAmount = EntityHighscores::getHighscoresEntity($profession, $category, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+        $totalAmount = EntityHighscores::getHighscoresEntity($profession, $category, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
         $currentPage = $queryParams['page'] ?? 1;
         $obPagination = new Pagination($totalAmount, $currentPage, 2);
 

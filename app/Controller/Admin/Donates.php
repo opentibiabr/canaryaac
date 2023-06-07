@@ -23,7 +23,7 @@ class Donates extends Base{
             return self::viewDonates($request);
         }
         $filter_reference = filter_var($reference, FILTER_SANITIZE_SPECIAL_CHARS);
-        $payment = EntityPayments::getPayment('reference = "'.$filter_reference.'"')->fetchObject();
+        $payment = EntityPayments::getPayment([ 'reference' => $filter_reference])->fetchObject();
         if (empty($payment)) {
             return self::viewDonates($request);
         }
@@ -39,7 +39,7 @@ class Donates extends Base{
             'status_badge' => PaymentsFunctions::convertStatus($payment->status),
             'date' => date('d/m/Y h:i:s', $payment->date),
         ];
-        $select_account = EntityAccount::getAccount('id = "'.$payment->account_id.'"')->fetchObject();
+        $select_account = EntityAccount::getAccount([ 'id' => $payment->account_id])->fetchObject();
         $arrayAccount = [
             'email' => $select_account->email,
         ];

@@ -12,13 +12,6 @@ namespace App\Model\Entity;
 use App\DatabaseManager\Database;
 
 class ServerConfig{
-    public $id = 1;
-
-    public $name = 'Canary AAC';
-
-    public $site = 'canaryaac.com';
-
-    public $description = 'A free and open-source Automatic Account Creator (AAC) written in PHP';
 
     public static function getInfoWebsite($where = null, $order = null, $limit = null, $fields = '*'){
         return (new Database('canary_website'))->select($where, $order, $limit, $fields);

@@ -35,8 +35,8 @@ class NotifyMercadoPago {
 
             if($payment->cancelled == 'false'){
 
-                $dbPayment = EntityPayments::getPayment('preference = "'.$payment->preference_id.'"')->fetchObject();
-                $dbAccount = EntityAccount::getAccount('id = "'.$dbPayment->account_id.'"')->fetchObject();
+                $dbPayment = EntityPayments::getPayment([ 'preference' => $payment->preference_id])->fetchObject();
+                $dbAccount = EntityAccount::getAccount([ 'id' => $dbPayment->account_id])->fetchObject();
                 $finalcoins = $dbAccount->coins + $dbPayment->total_coins;
 
                 EntityPayments::updatePayment('reference = "'.$payment->preference_id.'"', [

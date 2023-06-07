@@ -45,12 +45,12 @@ class Login{
 
     public static function getAccountbyId($id)
     {
-        return self::getAccounts('id = '.$id)->fetchObject(self::class);
+        return self::getAccounts([ 'id' => $id])->fetchObject(self::class);
     }
 
     public static function getLoginbyEmail($email)
     {
-        return self::getAccounts('email = "'.$email.'"')->fetchObject(self::class);
+        return self::getAccounts([ 'email' => $email])->fetchObject(self::class);
     }
 
     public static function getAccounts($where = null, $order = null, $limit = null, $fields = '*')

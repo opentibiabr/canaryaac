@@ -480,7 +480,7 @@ class Login extends Api{
                 $email = $postVars['email'] ?? '';
                 $password = $postVars['password'] ?? '';
                 $convertPass = sha1($password);
-                $account = EntityAccount::getAccount('email = "'.$email.'"')->fetchObject();
+                $account = EntityAccount::getAccount([ 'email' => $email])->fetchObject();
                 if(empty($account)){
                     return self::sendError('Email or password is not correct.', 3);
                 }
@@ -488,14 +488,14 @@ class Login extends Api{
                     return self::sendError('Email or password is not correct.', 3);
                 }
 
-                $authentication = EntityAccount::getAuthentication('account_id = "'.$account->id.'"')->fetchObject();
+                $authentication = EntityAccount::getAuthentication([ 'account_id' => $account->id])->fetchObject();
                 if (!empty($authentication) and $authentication->status == 1) {
                     if ($account->password == $convertPass) {
                         if (empty($postVars['token'])) {
                             return self::sendError('Two-factor token required for authentication.', 6);
                         }
                         $token = $postVars['token'];
-                        $authentication = EntityAccount::getAuthentication('account_id = "'.$account->id.'"')->fetchObject();
+                        $authentication = EntityAccount::getAuthentication([ 'account_id' => $account->id])->fetchObject();
                         $google2fa = new Google2FA();
                         $auth = $google2fa->verifyKey($authentication->secret, $token);
                         if ($auth != 1) {
@@ -504,10 +504,10 @@ class Login extends Api{
                     }
                 }
 
-                $account_banned = Bans::getAccountBans('account_id = "'.$account->id.'"')->fetchObject();
+                $account_banned = Bans::getAccountBans([ 'account_id' => $account->id])->fetchObject();
                 if (!empty($account_banned)) {
                     $expires_at = date('M d Y', $account_banned->expires_at);
-                    $banned_by = EntityPlayer::getPlayer('id = "'.$account_banned->banned_by.'"')->fetchObject();
+                    $banned_by = EntityPlayer::getPlayer([ 'id' => $account_banned->banned_by])->fetchObject();
                     return self::sendError('Your account has been banned until ' . $expires_at . ' by ' . $banned_by->name, 3);
                 }
                 
@@ -531,14 +531,14 @@ class Login extends Api{
                         'currenttournamentphase' => 2
                     ];
                 }
-                $characters = EntityPlayer::getPlayer('account_id = "'.$account->id.'"');
+                $characters = EntityPlayer::getPlayer([ 'account_id' => $account->id]);
                 while($character = $characters->fetchObject()){
                     if($character->main == 1){
                         $isMain = true;
                     }else{
                         $isMain = false;
                     }
-                    $display_character = EntityPlayer::getDisplay('player_id = "'.$character->id.'"')->fetchObject();
+                    $display_character = EntityPlayer::getDisplay([ 'player_id' => $character->id])->fetchObject();
                     if (empty($display_character)) {
                         $hidden = false;
                     } else {

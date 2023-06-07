@@ -141,7 +141,7 @@ class Samples extends Base
         if(empty($id)){
             return self::viewSamples($request);
         }
-        $sample = ServerConfig::getPlayerSamples('id = "'.$id.'"')->fetchObject();
+        $sample = ServerConfig::getPlayerSamples([ 'id' => $id])->fetchObject();
         $selected_sample = [
             'id' => $sample->id,
             'vocation' => $sample->vocation,

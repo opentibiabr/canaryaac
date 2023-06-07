@@ -55,7 +55,7 @@ class Houses extends Api{
             $title_Type = 'Guildhalls';
         }
 
-        $selectHouse = EntityHouses::getHouses('town_id = "'.$query_Town.'"', '"'.$query_Order.'"');
+        $selectHouse = EntityHouses::getHouses(['town_id' => $query_Town], $query_Order);
         while($obHouse = $selectHouse->fetchObject()){
             $house['houses'] = [
                 'owner' => $obHouse->owner,

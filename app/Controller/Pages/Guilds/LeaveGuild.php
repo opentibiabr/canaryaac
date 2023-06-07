@@ -22,7 +22,7 @@ class LeaveGuild extends Base{
 	{
 		$decodeUrl = urldecode($guild_name);
 		$filterName = filter_var($decodeUrl, FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbGuild = EntityGuilds::getGuilds('name = "'.$filterName.'"')->fetchObject();
+		$dbGuild = EntityGuilds::getGuilds([ 'name' => $filterName])->fetchObject();
 		if($dbGuild == true){
 			$guild_id = $dbGuild->id;
 		}
@@ -39,12 +39,12 @@ class LeaveGuild extends Base{
 			return self::viewLeaveGuild($request,$name,$status);
 		}
 		$input_character = filter_var($postVars['character_leave'], FILTER_SANITIZE_SPECIAL_CHARS);
-		$dbPlayer = EntityPlayer::getPlayer('account_id = "'.$idLogged.'" AND name = "'.$input_character.'"')->fetchObject();
+		$dbPlayer = EntityPlayer::getPlayer([ 'account_id' => $idLogged, 'name' => $input_character])->fetchObject();
 		if(empty($dbPlayer)){
 			$status = 'Invalid character.';
 			return self::viewLeaveGuild($request,$name,$status);
 		}
-		$dbMember = EntityGuilds::getMembership('player_id = "'.$dbPlayer->id.'" AND guild_id = "'.$guild_id.'"')->fetchObject();
+		$dbMember = EntityGuilds::getMembership([ 'player_id' => $dbPlayer->id, 'guild_id' => $guild_id])->fetchObject();
 		if(empty($dbMember)){
 			$status = 'Invalid character or belongs to another Guild.';
 			return self::viewLeaveGuild($request,$name,$status);
@@ -57,9 +57,9 @@ class LeaveGuild extends Base{
 	{
 		$idLogged = SessionAdminLogin::idLogged();
 		$guild_id = self::convertGuildName($name);
-		$dbPlayersAccount = EntityPlayer::getPlayer('account_id = "'.$idLogged.'"');
+		$dbPlayersAccount = EntityPlayer::getPlayer([ 'account_id' => $idLogged]);
 		while($player = $dbPlayersAccount->fetchObject()){
-			$dbMember = EntityGuilds::getMembership('player_id = "'.$player->id.'" AND guild_id = "'.$guild_id.'"');
+			$dbMember = EntityGuilds::getMembership([ 'player_id' => $player->id, 'guild_id' => $guild_id]);
 			while($members = $dbMember->fetchObject()){
 				$convertRank = FunctionGuilds::convertRankGuild($members->rank_id);
 				if($convertRank['rank_level'] != 3){

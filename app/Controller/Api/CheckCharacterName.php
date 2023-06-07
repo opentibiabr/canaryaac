@@ -21,7 +21,7 @@ class CheckCharacterName extends Api{
             throw new Exception('error', 404);
         }
         $filter_name = filter_var($postVars['name'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $select = EntityPlayer::getPlayer('name = "'.$filter_name.'"')->fetchObject();
+        $select = EntityPlayer::getPlayer([ 'name' => $filter_name])->fetchObject();
         if (empty($select)) {
             throw new Exception('success', 200);
         } else {

@@ -24,7 +24,7 @@ class Worlds extends Base{
             return self::viewWorlds($request, $status);
         }
         $filter_name = filter_var($postVars['world_name'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $dbWorld = EntityServerConfig::getWorlds('name = "'.$filter_name.'"')->fetchObject();
+        $dbWorld = EntityServerConfig::getWorlds([ 'name' => $filter_name])->fetchObject();
         if(!empty($dbWorld)){
             $status = Alert::getError('Já existe um mundo com este nome.');
             return self::viewWorlds($request, $status);
@@ -103,7 +103,7 @@ class Worlds extends Base{
             $status = Alert::getError('Erro world.');
             return self::viewWorlds($request, $status);
         }
-        $dbWorld = EntityServerConfig::getWorlds('id = "'.$id.'"')->fetchObject();
+        $dbWorld = EntityServerConfig::getWorlds([ 'id' => $id])->fetchObject();
         if(empty($dbWorld)){
             $status = Alert::getError('Nenhum world encontrado.');
             return self::viewWorlds($request, $status);

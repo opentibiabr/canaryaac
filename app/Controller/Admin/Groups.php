@@ -65,8 +65,8 @@ class Groups extends Base{
         $content = View::render('admin/modules/groups/index', [
             'status' => $errorMessage,
             'groups' => self::getAllGroups(),
-            'total_houses' => (int)EntityHouse::getHouses(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
-            'total_houses_rented' => (int)EntityHouse::getHouses('owner != 0', null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
+            'total_houses' => (int)EntityHouse::getHouses(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
+            'total_houses_rented' => (int)EntityHouse::getHouses(['owner' != 0], null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
         ]);
 
         return parent::getPanel('Groups', $content, 'groups');

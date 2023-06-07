@@ -121,8 +121,8 @@ class Creatures extends Base{
             'status' => $errorMessage,
             'creatures' => self::getAllCreatures(),
             'bosses' => self::getAllBosses(),
-            'total_creatures' => (int)EntityCreatures::getCreatures(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
-            'total_bosses' => (int)EntityCreatures::getBoss(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd,
+            'total_creatures' => (int)EntityCreatures::getCreatures(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
+            'total_bosses' => (int)EntityCreatures::getBoss(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd,
         ]);
 
         return parent::getPanel('Creatures', $content, 'creatures');

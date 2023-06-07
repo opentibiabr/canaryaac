@@ -23,7 +23,7 @@ class Manage extends Base{
     public static function getRegistration($account_id)
     {
         $registration = [];
-        $selectRegistration = EntityAccount::getAccountRegistration('account_id = "'.$account_id.'"')->fetchObject();
+        $selectRegistration = EntityAccount::getAccountRegistration([ 'account_id' => $account_id])->fetchObject();
         if($selectRegistration == true){
             $registration = [
                 'status' => true,
@@ -52,9 +52,9 @@ class Manage extends Base{
         $playerBadges = [
             'status' => false,
         ];
-        $selectPlayerBadges = EntityBadges::getPlayerBadges('account_id = "'.$account_id.'"', '', '5');
+        $selectPlayerBadges = EntityBadges::getPlayerBadges([ 'account_id' => $account_id], '', '5');
         while($badges = $selectPlayerBadges->fetchObject()){
-            $selectServerBadges = EntityBadges::getServerBadges('id = "'.$badges->badge_id.'"');
+            $selectServerBadges = EntityBadges::getServerBadges(['id' => $badges->badge_id]);
             while($badges = $selectServerBadges->fetchObject()){
                 $playerBadges[] = [
                     'status' => true,
@@ -74,9 +74,9 @@ class Manage extends Base{
         if(SessionAdminLogin::isLogged() == true){
             $admin = SessionAdminLogin::idLogged();
 
-            $account = EntityPlayer::getAccount('id = "'.$admin.'"')->fetchObject();
-            $playerMain = EntityPlayer::getPlayer('account_id = "'.$account->id.'" AND main = "1"')->fetchObject();
-            $playerNoMain = EntityPlayer::getPlayer('account_id = "'.$account->id.'" AND main = "0"');
+            $account = EntityPlayer::getAccount([ 'id' => $admin])->fetchObject();
+            $playerMain = EntityPlayer::getPlayer([ 'account_id' => $account->id, 'main' => "1"])->fetchObject();
+            $playerNoMain = EntityPlayer::getPlayer([ 'account_id' => $account->id, 'main' => "0"]);
 
             $datePrem = date('d F Y H:i', strtotime('+'.$account->premdays.' days'));
             $textPrem = Player::convertPremy($account->id);
@@ -87,7 +87,7 @@ class Manage extends Base{
             }
             $created = date('d F Y, H:i', strtotime($account->creation));
 
-            $playersInAccount = EntityPlayer::getPlayer('account_id = "'.$account->id.'"');
+            $playersInAccount = EntityPlayer::getPlayer([ 'account_id' => $account->id]);
             while($playersAccount = $playersInAccount->fetchObject()){
                 $players[] = [
                     'name' => $playersAccount->name,
@@ -95,7 +95,7 @@ class Manage extends Base{
                 ];
             }
 
-            $authentication = EntityAccount::getAuthentication('account_id = "'.$admin.'"')->fetchObject();
+            $authentication = EntityAccount::getAuthentication([ 'account_id' => $admin])->fetchObject();
             if(empty($authentication)){
                 $authentication = 0;
             }else{

@@ -1,5 +1,5 @@
 
-# CanaryAAC v0.0.1
+# CanaryAAC
 
 CanaryAAC is a free and open-source Automatic Account Creator (AAC) written in MVC-PHP. It supports only MySQL databases.
 

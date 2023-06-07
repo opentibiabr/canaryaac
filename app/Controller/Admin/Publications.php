@@ -57,7 +57,7 @@ class Publications extends Base
     public static function viewPublishNews($request, $status = null)
     {
         $idLogged = SessionAdminLogin::idLogged();
-        $select_players = EntityPlayer::getPlayer('account_id = "'.$idLogged.'"');
+        $select_players = EntityPlayer::getPlayer([ 'account_id' => $idLogged]);
 
         while($player = $select_players->fetchObject()){
             $players[] = [
@@ -111,7 +111,7 @@ class Publications extends Base
     public static function viewPublishNewsticker($request, $status = null)
     {
         $idLogged = SessionAdminLogin::idLogged();
-        $select_players = EntityPlayer::getPlayer('account_id = "'.$idLogged.'"');
+        $select_players = EntityPlayer::getPlayer([ 'account_id' => $idLogged]);
 
         while($player = $select_players->fetchObject()){
             $players[] = [
@@ -165,7 +165,7 @@ class Publications extends Base
     public static function viewPublishFeaturedArticle($request, $status = null)
     {
         $idLogged = SessionAdminLogin::idLogged();
-        $select_players = EntityPlayer::getPlayer('account_id = "'.$idLogged.'"');
+        $select_players = EntityPlayer::getPlayer([ 'account_id' => $idLogged]);
 
         while($player = $select_players->fetchObject()){
             $players[] = [

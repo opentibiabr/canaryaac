@@ -30,8 +30,8 @@ class NotifyPagSeguro {
                 $transaction_status = $transaction->getStatus()->getTypeFromValue();
                 
                 if ($transaction_status == 'PAID') {
-                    $dbPayment = EntityPayments::getPayment('preference = "'.$reference.'"')->fetchObject();
-                    $dbAccount = EntityAccount::getAccount('id = "'.$dbPayment->account_id.'"')->fetchObject();
+                    $dbPayment = EntityPayments::getPayment([ 'preference' => $reference])->fetchObject();
+                    $dbAccount = EntityAccount::getAccount([ 'id' => $dbPayment->account_id])->fetchObject();
                     $finalcoins = $dbAccount->coins + $dbPayment->total_coins;
 
                     EntityPayments::updatePayment('reference = "'.$reference.'"', [

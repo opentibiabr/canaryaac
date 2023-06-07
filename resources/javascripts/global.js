@@ -97,7 +97,6 @@ function resetPasswordFieldsColor() {
 function TogglePasswordLabelColor() {
     if (g_CapsLockIsEnabled) {
         $('.PasswordLabel').addClass('CapsLockText');
-        CapsLockWarning
     } else {
         $('.PasswordLabel').removeClass('CapsLockText');
     }

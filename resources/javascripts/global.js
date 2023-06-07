@@ -1,52 +1,128 @@
+// Definindo a variável fora do $(document).ready()
 let g_CapsLockIsEnabled = null;
-if (typeof document.msCapsLockWarningOff !== 'undefined') { document.msCapsLockWarningOff = true; }
 
-function AddCapsLockEventListeners() {
-    $('input[type=password]').keyup(function(e) { ShowOrHideCapsLockWarning(e); });
-    $('input[type=password]').focus(function(e) { ShowOrHideCapsLockWarning(e); });
-    $('input[type=password]').blur(function(e) { HideCapsLockWarning(); });
-    $(document).keydown(function(e) { CheckForCapsLockItself(e); })
-    $(document).keypress(function(e) { CheckPressedKey(e); })
-}
+$(document).ready(function() {
 
-function CheckForCapsLockItself(e) {
+    if (typeof document.msCapsLockWarningOff !== 'undefined') {
+        document.msCapsLockWarningOff = true;
+    }
+
+    $('input[type=password]').on({
+        'keyup': function(e) {
+            CheckForCapsLock(e);
+            //TogglePasswordFieldColor();
+            //TogglePasswordBackground(e);
+            //TogglePasswordLabelColor();
+            ShowOrHideCapsLockWarning();
+        },
+        'focus': function(e) {
+            CheckForCapsLock(e);
+            //TogglePasswordFieldColor();
+            //TogglePasswordLabelColor();
+            //TogglePasswordBackground(e);
+            //TogglePasswordLabelColor();
+            ShowOrHideCapsLockWarning();
+        },
+        'blur': function() {
+            //TogglePasswordLabelColor();
+        },
+        'click': function() {
+            //TogglePasswordFieldColor();
+        }
+    });
+
+    $(document).on({
+        'keydown keypress': function(e) {
+            CheckForCapsLock(e);
+            //TogglePasswordFieldColor();
+            //TogglePasswordLabelColor();
+            ShowOrHideCapsLockWarning();
+        },
+        'keydown': function(e) {
+            CheckForCapsLock(e);
+        },
+        'keypress': function(e) {
+            CheckForCapsLock(e);
+        },
+        'click': function(e) {
+            CheckForCapsLock(e);
+            //TogglePasswordFieldColor();
+            //TogglePasswordLabelColor();
+            ShowOrHideCapsLockWarning();
+        }
+    });
+});
+
+function CheckForCapsLock(e) {
     if (!e) {
         console.error("Error: Event object is required");
         return;
     }
-    if (e.keyCode == 20 && g_CapsLockIsEnabled !== null) {
-        g_CapsLockIsEnabled = !g_CapsLockIsEnabled;
-    }
-}
 
-function CheckPressedKey(e) {
-    if (!e) {
-        console.error("Error: Event object is required");
-        return;
-    }
     let chr = GetChar(e);
-    if (!chr) { return; }
-    if (chr.toLowerCase() == chr.toUpperCase()) { return; }
-    g_CapsLockIsEnabled = (chr.toLowerCase() == chr && e.shiftKey) || (chr.toUpperCase() == chr && !e.shiftKey);
+    if (!chr) return;
+
+    if (chr.toLowerCase() == chr.toUpperCase()) return;
+
+    let capsLockOn = e.getModifierState && e.getModifierState('CapsLock');
+    g_CapsLockIsEnabled = (chr.toLowerCase() == chr && capsLockOn) || (chr.toUpperCase() == chr && !capsLockOn);
 }
 
 function GetChar(e) {
-    if (e.which == null) { return String.fromCharCode(e.keyCode); }
-    if (e.which != 0 && e.charCode != 0) { return String.fromCharCode(e.which); }
+    if (e.which == null) {
+        return String.fromCharCode(e.keyCode);
+    }
+
+    if (e.which != 0 && e.charCode != 0) {
+        return String.fromCharCode(e.which);
+    }
+
     return null;
+}
+
+function TogglePasswordFieldColor() {
+    let passwordInputs = $('input[type=password]');
+    if (g_CapsLockIsEnabled) {
+        passwordInputs.not(':focus').addClass('CapsLockHighlight');
+    } else {
+        passwordInputs.removeClass('CapsLockHighlight');
+    }
+}
+
+function resetPasswordFieldsColor() {
+    let passwordInputs = $('input[type=password]');
+    passwordInputs.removeClass('CapsLockHighlight');
+}
+
+function TogglePasswordLabelColor() {
+    if (g_CapsLockIsEnabled) {
+        $('.PasswordLabel').addClass('CapsLockText');
+        CapsLockWarning
+    } else {
+        $('.PasswordLabel').removeClass('CapsLockText');
+    }
+}
+
+function TogglePasswordBackground(e) {
+    let passwordInput = $(e.target);
+    if (g_CapsLockIsEnabled) {
+        passwordInput.addClass('CapsLockEnabled');
+    } else {
+        passwordInput.removeClass('CapsLockEnabled');
+    }
 }
 
 function ShowOrHideCapsLockWarning() {
     if (g_CapsLockIsEnabled) {
-        let l_PasswordFields = $('input[type=password]');
-        let l_Top = ($(':focus').offset().top + 18);
-        let l_Left = ($(':focus').offset().left + 18);
+        let l_Top = ($('input[type=password]').offset().top + 0);
+        let l_Left = ($('input[type=password]').offset().left + 0);
         $('#CapsLockWarning').css({ top: l_Top, left: l_Left });
         $('#CapsLockWarning').show();
-    } else { $('#CapsLockWarning').hide(); }
+    } else {
+        $('#CapsLockWarning').hide();
+    }
 }
 
-function HideCapsLockWarning() { $('#CapsLockWarning').hide(); }
 
 $(document).ready(function() {
     CheckForMobileAdjustments();

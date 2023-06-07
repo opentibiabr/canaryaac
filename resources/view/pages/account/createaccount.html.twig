@@ -131,6 +131,14 @@
 		width: 12px;
 		background-repeat: no-repeat;
 	}
+
+	.CapsLockEnabled {
+		background-color: orange;
+	}
+
+	.CapsLockText {
+		background-color: orange;
+	}
 </style>
 
 <script type="text/javascript">
@@ -233,6 +241,7 @@ ServerList.push(new Array('{{ world.name }}', '{{ world.location_initial }}', '{
 																			<tr>
 																				<td class="LabelV150">
 																					<span id="password1_label">Password:</span>
+																					<div id="CapsLockWarning" style="display: none;" class="PasswordLabel">Caps Lock is enabled!</div>
 																				</td>
 																				<td>
 																					<div class="div_password">

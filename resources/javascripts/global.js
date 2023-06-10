@@ -111,13 +111,19 @@ function TogglePasswordBackground(e) {
 }
 
 function ShowOrHideCapsLockWarning() {
-    if (g_CapsLockIsEnabled) {
-        let l_Top = ($('input[type=password]').offset().top + 0);
-        let l_Left = ($('input[type=password]').offset().left + 0);
-        $('#CapsLockWarning').css({ top: l_Top, left: l_Left });
-        $('#CapsLockWarning').show();
-    } else {
-        $('#CapsLockWarning').hide();
+    let passwordInput = $('input[type=password]');
+    if (passwordInput.length > 0) {
+        if (g_CapsLockIsEnabled) {
+            let offset = passwordInput.offset();
+            if (offset) {
+                let l_Top = offset.top + 0;
+                let l_Left = offset.left + 0;
+                $('#CapsLockWarning').css({ top: l_Top, left: l_Left });
+                $('#CapsLockWarning').show();
+            }
+        } else {
+            $('#CapsLockWarning').hide();
+        }
     }
 }
 

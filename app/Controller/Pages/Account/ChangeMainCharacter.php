@@ -38,10 +38,10 @@ class ChangeMainCharacter extends Base
             return self::viewChangeMain();
         }
 
-        Player::updatePlayer('id = "'.$current_main->id.'"', [
+        Player::updatePlayer([ 'id' => $current_main->id], [
             'main' => '0',
         ]);
-        Player::updatePlayer('id = "'.$select_character->id.'"', [
+        Player::updatePlayer([ 'id' => $select_character->id], [
             'main' => '1',
         ]);
 

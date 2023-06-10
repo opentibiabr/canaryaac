@@ -40,7 +40,7 @@ class Groups extends Base{
     {
         $postVars = $request->getPostVars();
         $group_id = $postVars['groupid'];
-        EntityGroups::deleteGroup('id = "'.$group_id.'"');
+        EntityGroups::deleteGroup([ 'id' => $group_id]);
         
         $status = Alert::getSuccess('Group deletado com sucesso!') ?? null;
 

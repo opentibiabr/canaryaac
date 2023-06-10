@@ -44,7 +44,7 @@ class ChangeEmail extends Base{
             return self::viewChangeEmail($request);
         }
         if($account->password == $convert_password){
-            EntityAccount::updateAccount('id = "'.$account->id.'"', [
+            EntityAccount::updateAccount([ 'id' => $account->id], [
                 'email' => $filter_newemail,
             ]);
             $request->getRouter()->redirect('/account/logout');

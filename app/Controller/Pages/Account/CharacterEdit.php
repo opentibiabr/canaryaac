@@ -84,7 +84,7 @@ class CharacterEdit extends Base{
                     EntityPlayer::insertDisplay($arrayCharacterDisplay);
                     return self::viewCharacterEdit($request, $name, 'Updated successfully.');
                 } else {
-                    EntityPlayer::updateDisplay('player_id = "'.$select_player->id.'"', [
+                    EntityPlayer::updateDisplay([ 'player_id' => $select_player->id], [
                         'account' => $filter_account,
                         'outfit' => $filter_outfit,
                         'inventory' => $filter_inventory,

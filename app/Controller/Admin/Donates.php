@@ -110,7 +110,7 @@ class Donates extends Base{
                 return self::viewDonates($request, $status);
             }
 
-            EntityServerConfig::updateInfoWebsite('id = "1"', [
+            EntityServerConfig::updateInfoWebsite([ 'id' => "1"], [
                 'donates' => $filter_Donates,
                 'coin_price' => $filter_coin_price,
                 'mercadopago' => $filter_MercadoPago,
@@ -160,22 +160,22 @@ class Donates extends Base{
             }
             $filter_product_6 = filter_var($postVars['product_6'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-            EntityServerConfig::updateProducts('id = "1"', [
+            EntityServerConfig::updateProducts([ 'id' => "1"], [
                 'coins' => $filter_product_1
             ]);
-            EntityServerConfig::updateProducts('id = "2"', [
+            EntityServerConfig::updateProducts([ 'id' => "2"], [
                 'coins' => $filter_product_2
             ]);
-            EntityServerConfig::updateProducts('id = "3"', [
+            EntityServerConfig::updateProducts([ 'id' => "3"], [
                 'coins' => $filter_product_3
             ]);
-            EntityServerConfig::updateProducts('id = "4"', [
+            EntityServerConfig::updateProducts([ 'id' => "4"], [
                 'coins' => $filter_product_4
             ]);
-            EntityServerConfig::updateProducts('id = "5"', [
+            EntityServerConfig::updateProducts([ 'id' => "5"], [
                 'coins' => $filter_product_5
             ]);
-            EntityServerConfig::updateProducts('id = "6"', [
+            EntityServerConfig::updateProducts([ 'id' => "6"], [
                 'coins' => $filter_product_6
             ]);
             $status = SweetAlert::Types('Success!', 'Updated successfully.', 'success', 'btn btn-success');

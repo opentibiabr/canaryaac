@@ -31,7 +31,7 @@ class Players extends Base{
             $filter_char_shielding = filter_var($postVars['char_shielding'], FILTER_SANITIZE_NUMBER_INT);
             $filter_char_fishing = filter_var($postVars['char_fishing'], FILTER_SANITIZE_NUMBER_INT);
 
-            EntityPlayer::updatePlayer('id = "'.$id.'"', [
+            EntityPlayer::updatePlayer([ 'id' => $id], [
                 'maglevel' => $filter_char_magic,
                 'skill_fist' => $filter_char_fist,
                 'skill_club' => $filter_char_club,
@@ -66,7 +66,7 @@ class Players extends Base{
             $filter_char_world = filter_var($postVars['char_world'], FILTER_SANITIZE_NUMBER_INT);
             $filter_char_town = filter_var($postVars['char_town'], FILTER_SANITIZE_NUMBER_INT);
 
-            EntityPlayer::updatePlayer('id = "'.$id.'"', [
+            EntityPlayer::updatePlayer([ 'id' => $id], [
                 'name' => $filter_char_name,
                 'health' => $filter_char_health,
                 'healthmax' => $filter_char_healthmax,

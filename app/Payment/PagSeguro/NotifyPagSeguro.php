@@ -34,10 +34,10 @@ class NotifyPagSeguro {
                     $dbAccount = EntityAccount::getAccount([ 'id' => $dbPayment->account_id])->fetchObject();
                     $finalcoins = $dbAccount->coins + $dbPayment->total_coins;
 
-                    EntityPayments::updatePayment('reference = "'.$reference.'"', [
+                    EntityPayments::updatePayment([ 'reference' => $reference], [
                         'status' => 4,
                     ]);
-                    EntityAccount::updateAccount('id = "'.$dbPayment->account_id.'"', [
+                    EntityAccount::updateAccount([ 'id' => $dbPayment->account_id], [
                         'coins' => $finalcoins,
                     ]);
                 }

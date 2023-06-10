@@ -56,7 +56,7 @@ class EditRanks extends Base{
 			return self::viewEditRanks($request,$name,$status);
 		}
 
-		EntityGuilds::updateRank('id = "'.$filter_level.'" AND guild_id = "'.$guild_id.'"', [
+		EntityGuilds::updateRank([ 'id' => $filter_level, 'guild_id' => $guild_id], [
 			'name' => $filter_name,
 		]);
 		$status = 'Updated successfully.';

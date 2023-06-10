@@ -62,7 +62,7 @@ class Compendium extends Base
         }
 
         if (isset($postVars['compendium_delete'])) {
-            EntityCompendium::deleteCompendium('id = "'.$id.'"');
+            EntityCompendium::deleteCompendium([ 'id' => $id]);
             $status = Alert::getSuccess('Deletado com sucesso.');
             return self::viewCompendium($request, $status);
         }

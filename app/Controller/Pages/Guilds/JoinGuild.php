@@ -59,7 +59,8 @@ class JoinGuild extends Base{
 			return self::viewJoinGuild($request,$name,$status);
 		}
 
-		EntityGuilds::deleteInvite('player_id = "'.$dbPlayer->id.'" AND guild_id = "'.$guild_id.'"');
+		EntityGuilds::deleteInvite([ 'player_id' => $dbPlayer->id, 'guild_id' => $guild_id]);
+
 			
 		$dbRanks = EntityGuilds::getRanks([ 'guild_id' => $guild_id, 'level' => 1])->fetchObject();
 		

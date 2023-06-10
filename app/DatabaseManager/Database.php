@@ -278,6 +278,7 @@ class Database
                     $whereString = ' WHERE ' . $whereString;
                 }
             } else {
+                // For backward compatibility, if $where is a string
                 $whereString = ' WHERE ' . $where;
             }
 

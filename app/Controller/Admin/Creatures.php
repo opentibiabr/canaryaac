@@ -61,12 +61,12 @@ class Creatures extends Base{
             return self::viewCreatures($request, $status);
         }
         if($creature_type == 'creature'){
-            EntityCreatures::deleteCreature('id = "'.$creature_id.'"');
+            EntityCreatures::deleteCreature([ 'id' => $creature_id]);
             $status = Alert::getSuccess('Creature deletada com sucesso!') ?? null;
             return self::viewCreatures($request, $status);
         }
         if($creature_type == 'boss'){
-            EntityCreatures::deleteBoss('id = "'.$creature_id.'"');
+            EntityCreatures::deleteBoss([ 'id' => $creature_id]);
             $status = Alert::getSuccess('Boss deletado com sucesso!') ?? null;
             return self::viewCreatures($request, $status);
         }

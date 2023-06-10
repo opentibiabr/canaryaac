@@ -53,7 +53,7 @@ class Applications extends Base{
 				return self::viewApplications($request,$name,$status);
 			}
 
-			EntityGuilds::updateApplication('player_id = "'.$input_idplayer.'" AND guild_id = "'.$guild_id.'"', [
+			EntityGuilds::updateApplication([ 'player_id' => $input_idplayer, 'guild_id' => $guild_id], [
 				'status' => 2,
 			]);
 			
@@ -76,7 +76,7 @@ class Applications extends Base{
 				return self::viewApplications($request,$name,$status);
 			}
 			$input_idplayer = filter_var($postVars['application_player'], FILTER_SANITIZE_NUMBER_INT);
-			EntityGuilds::updateApplication('player_id = "'.$input_idplayer.'" AND guild_id = "'.$guild_id.'"', [
+			EntityGuilds::updateApplication([ 'player_id' => $input_idplayer, 'guild_id' => $guild_id], [
 				'status' => 1,
 			]);
 			$status = 'Updated successfully.';

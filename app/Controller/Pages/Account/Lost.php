@@ -51,7 +51,7 @@ class Lost extends Base{
 
         $account_recoverykey = EntityAccount::getAccountRegistration(['account_id' => $account->id])->fetchObject();
         if($account_recoverykey->recovery == $recoverykey){
-            EntityAccount::updateAccount('email = "'.$filter_email.'"', [
+            EntityAccount::updateAccount([ 'email' => $filter_email], [
                 'password' => $new_password
             ]);
             $request->getRouter()->redirect('/account/login');

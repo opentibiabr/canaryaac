@@ -71,7 +71,7 @@ class ResignLeadership extends Base{
 			self::viewResignLeadership($request,$name,$status);
 		}
 
-		EntityGuilds::updateGuild('guild_id = "'.$guild_id.'"', [
+		EntityGuilds::updateGuild([ 'guild_id' => $guild_id], [
 			'ownerid' => $dbPlayer->id,
 		]);
 		$status = 'Updated successfully.';

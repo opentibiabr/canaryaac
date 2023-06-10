@@ -44,7 +44,7 @@ class ChangePassword extends Base{
             return self::viewChangePassword($request, 'Invalid password.');
         }
         if($account->password == $convert_oldpassword){
-            EntityAccount::updateAccount('id = "'.$account->id.'"', [
+            EntityAccount::updateAccount([ 'id' => $AccountId], [
                 'password' => $convert_newpassword,
             ]);
             $request->getRouter()->redirect('/account/logout');

@@ -100,7 +100,7 @@ class DeclareWar extends Base
 
 	public static function currentGuildWar($guild_id)
 	{
-		$dbGuildWars = EntityGuilds::getWars(['guild1' => $guild_id, 'guild2' => $guild_id], 'OR');
+		$dbGuildWars = EntityGuilds::getWars(['guild1' => $guild_id, 'guild2' => $guild_id]);
 		while ($war = $dbGuildWars->fetchObject()) {
 			$total_my_kills = 0;
 			$total_opponent_kills = 0;
@@ -154,7 +154,7 @@ class DeclareWar extends Base
 
 	public static function historyGuildWar($guild_id)
 	{
-		$dbGuildWars = EntityGuilds::getWars(['guild1' => $guild_id, 'guild2' => $guild_id], 'OR');
+		$dbGuildWars = EntityGuilds::getWars(['guild1' => $guild_id, 'guild2' => $guild_id]);
 		while ($war = $dbGuildWars->fetchObject()) {
 			$total_my_kills = 0;
 			$total_opponent_kills = 0;
@@ -210,7 +210,7 @@ class DeclareWar extends Base
 	{
 		$filter_name = filter_var($name, FILTER_SANITIZE_SPECIAL_CHARS);
 		$guild_id = self::convertGuildName($filter_name);
-		$dbGuildWars = EntityGuilds::getWars(['guild1' => $guild_id, 'guild2' => $guild_id], 'OR');
+		$dbGuildWars = EntityGuilds::getWars(['guild1' => $guild_id, 'guild2' => $guild_id]);
 		while($war = $dbGuildWars->fetchObject()){
 			if ($war->status == 2) {
 				if ($war->guild1 == $guild_id) {
@@ -263,7 +263,7 @@ class DeclareWar extends Base
 		$dbGuilds = EntityGuilds::getGuilds();
 
 		while($guild = $dbGuilds->fetchObject()){
-			$guild_war = EntityGuilds::getWars(['guild1' => $guild->id, 'guild2' => $guild->id], 'OR')->fetchObject();
+			$guild_war = EntityGuilds::getWars(['guild1' => $guild->id, 'guild2' => $guild->id])->fetchObject();
 			if (empty($guild_war)) {
 				$war_status = 0;
 			} else {

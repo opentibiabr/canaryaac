@@ -33,10 +33,10 @@ class NotifyPayPal {
             $dbAccount = EntityAccount::getAccount([ 'id' => $dbPayment->account_id])->fetchObject();
             $finalcoins = $dbAccount->coins + $dbPayment->total_coins;
 
-            EntityPayments::updatePayment('reference = "'.$payment->preference_id.'"', [
+            EntityPayments::updatePayment([ 'reference' => $payment->preference_id], [
                 'status' => 4,
             ]);
-            EntityAccount::updateAccount('id = "'.$dbPayment->account_id.'"', [
+            EntityAccount::updateAccount([ 'id' => $dbPayment->account_id], [
                 'coins' => $finalcoins,
             ]);
         }

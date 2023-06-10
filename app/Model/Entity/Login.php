@@ -31,7 +31,7 @@ class Login{
 
     public function updateAccount()
     {
-        return (new Database('accounts'))->update('id = "'.$this->id.'"', [
+        return (new Database('accounts'))->update([ 'id' => $this->id], [
             'account' => $this->id,
             'email' => $this->email,
             'password' => $this->password
@@ -40,7 +40,7 @@ class Login{
 
     public function deleteAccount()
     {
-        return (new Database('accounts'))->delete('id = "'.$this->id.'"');
+        return (new Database('accounts'))->delete([ 'id' => $this->id]);
     }
 
     public static function getAccountbyId($id)

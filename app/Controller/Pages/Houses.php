@@ -186,14 +186,14 @@ class Houses extends Base{
         }
 
         if($_ENV['MULTI_WORLD'] == 'true'){
-            EntityHouses::updateHouse('house_id = "'.$select_house->house_id.'"', [
+            EntityHouses::updateHouse([ 'house_id' => $select_house->house_id], [
                 'last_bid' => $filter_bid_limit,
                 'bid' => $filter_bid_limit,
                 'bid_end' => $date_bid_end,
                 'highest_bidder' => $select_player->id
             ]);
         } else {
-            EntityHouses::updateHouse('id = "'.$select_house->house_id.'"', [
+            EntityHouses::updateHouse([ 'id' => $select_house->house_id], [
                 'last_bid' => $filter_bid_limit,
                 'bid' => $filter_bid_limit,
                 'bid_end' => $date_bid_end,

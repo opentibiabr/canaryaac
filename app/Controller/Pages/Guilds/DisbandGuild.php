@@ -52,7 +52,7 @@ class DisbandGuild extends Base{
 			self::viewDisbandGuild($request,$name,$status);
 		}
 
-		EntityGuilds::deleteGuild('id = "'.$guild_id.'"');
+		EntityGuilds::deleteGuild([ 'id' => $guild_id]);
 		$request->getRouter()->redirect('/community/guilds');
 	}
 

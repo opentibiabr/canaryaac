@@ -57,7 +57,7 @@ class DeclareWar extends Base
 			$request->getRouter()->redirect('/community/guilds/'.$name.'/guildwars');
 		}
 		if ($verifyAccount == true) {
-			EntityGuilds::updateWar('id = "'.$filter_war_id.'"', [
+			EntityGuilds::updateWar([ 'id' => $filter_war_id], [
 				'status' => 1,
 			]);
 			$request->getRouter()->redirect('/community/guilds/'.$name.'/guildwars');
@@ -75,7 +75,7 @@ class DeclareWar extends Base
 			$request->getRouter()->redirect('/community/guilds/'.$name.'/guildwars');
 		}
 		if ($verifyAccount == true) {
-			EntityGuilds::updateWar('id = "'.$filter_war_id.'"', [
+			EntityGuilds::updateWar([ 'id' => $filter_war_id], [
 				'status' => 0,
 			]);
 			$request->getRouter()->redirect('/community/guilds/'.$name.'/guildwars');
@@ -93,7 +93,7 @@ class DeclareWar extends Base
 			$request->getRouter()->redirect('/community/guilds/'.$name.'/guildwars');
 		}
 		if ($verifyAccount == true) {
-			EntityGuilds::deleteWar('id = "'.$filter_war_id.'"');
+			EntityGuilds::deleteWar([ 'id' => $filter_war_id]);
 			$request->getRouter()->redirect('/community/guilds/'.$name.'/guildwars');
 		}
 	}

@@ -88,7 +88,7 @@ class InviteCharacter extends Base{
 				$status_cancelinvite = 'This character is not invited.';
 				return self::viewInviteCharacter($request,$name,null,$status_cancelinvite);
 			}
-			EntityGuilds::deleteInvite('player_id = "'.$dbPlayer->id.'" AND guild_id = "'.$guild_id.'"');
+			EntityGuilds::deleteInvite([ 'player_id' => $dbPlayer->id, 'guild_id' => $guild_id]);
 			$status_cancelinvite = 'Successfully deleted.';
 			return self::viewInviteCharacter($request,$name,null,$status_cancelinvite);
 		}

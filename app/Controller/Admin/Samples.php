@@ -23,7 +23,7 @@ class Samples extends Base
             return self::viewSamples($request);
         }
         if(isset($postVars['btn_delete'])){
-            ServerConfig::deletePlayerSample('id = "'.$id.'"');
+            ServerConfig::deletePlayerSample([ 'id' => $id]);
             $status = Alert::getSuccess('Deletado com sucesso.');
             return self::viewSamples($request, $status);
         }
@@ -48,7 +48,7 @@ class Samples extends Base
         $filter_posy = filter_var($postVars['editsampler_positiony'], FILTER_SANITIZE_NUMBER_INT);
         $filter_posz = filter_var($postVars['editsampler_positionz'], FILTER_SANITIZE_NUMBER_INT);
 
-        ServerConfig::updatePlayerSample('id = "'.$id.'"', [
+        ServerConfig::updatePlayerSample([ 'id' => $id], [
             'vocation' => $filter_vocation,
             'level' => $filter_level,
             'experience' => $filter_experience,

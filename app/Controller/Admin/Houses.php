@@ -65,7 +65,7 @@ class Houses extends Base{
     {
         $postVars = $request->getPostVars();
         $house_id = $postVars['houseid'];
-        EntityHouse::deleteHouse('id = "'.$house_id.'"');
+        EntityHouse::deleteHouse([ 'id' => $house_id]);
         
         $status = Alert::getSuccess('House deletada com sucesso!') ?? null;
 

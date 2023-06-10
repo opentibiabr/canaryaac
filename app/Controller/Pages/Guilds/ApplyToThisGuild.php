@@ -105,7 +105,8 @@ class ApplyToThisGuild extends Base{
 				return self::viewApplyToThisGuild($request,$name,$status);
 			}
 			
-			EntityGuilds::deleteMyApplication('player_id = "'.$player_id.'" AND account_id = "'.$idLogged.'"');
+			EntityGuilds::deleteMyApplication([ 'player_id' => $player_id, 'account_id' => $idLogged]);
+
 			$status = 'Application successfully canceled.';
 			return self::viewApplyToThisGuild($request,$name,$status);
 		}

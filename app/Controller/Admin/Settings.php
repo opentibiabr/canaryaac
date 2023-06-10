@@ -82,7 +82,7 @@ class Settings extends Base{
             }
             $filter_timezone = filter_var($postVars['website_timezone'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-            EntityServerConfig::updateInfoWebsite('id = 1', [
+            EntityServerConfig::updateInfoWebsite([ 'id' => 1], [
                 'title' => $filter_title,
                 'downloads' => $filter_download,
                 'player_voc' => $filter_vocation,

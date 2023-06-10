@@ -52,7 +52,7 @@ class Polls extends Base{
             'question_id' => $postVars['poll_question'],
             'date' => strtotime(date('Y-m-d')),
         ]);
-        EntityPolls::updatePollQuestions('id = "'.$postVars['poll_question'].'"', [
+        EntityPolls::updatePollQuestions([ 'id' => $postVars['poll_question']], [
             'votes' => $total_votes
         ]);
         $content = View::render('pages/polls/submitted', [

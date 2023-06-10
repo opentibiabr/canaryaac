@@ -133,7 +133,7 @@ class Registration extends Base{
 
         $selectRegister = EntityAccount::getAccountRegistration([ 'account_id' => $LoggedId])->fetchObject();
         if($selectRegister == true){
-            $update = EntityAccount::updateRegister('account_id = "'.$LoggedId.'"', $UpdateRegistration);
+            $update = EntityAccount::updateRegister([ 'account_id' => $LoggedId], $UpdateRegistration);
             return self::getRegistration($request, 'Updated successfully.');
         }else{
             $insert = EntityAccount::insertRegister($InsertRegistration);

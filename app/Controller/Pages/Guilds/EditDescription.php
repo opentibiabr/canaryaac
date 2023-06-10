@@ -48,7 +48,7 @@ class EditDescription extends Base{
 			return self::viewEditDescription($request,$name,$status);
 		}
 
-		EntityGuilds::updateGuild('id = "'.$guild_id.'"', [
+		EntityGuilds::updateGuild([ 'id' => $guild_id], [
 			'description' => $filter_description,
 		]);
 		$status = 'Updated successfully.';

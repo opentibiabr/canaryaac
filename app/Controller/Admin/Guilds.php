@@ -66,7 +66,7 @@ class Guilds extends Base{
             'points' => $postVars['points'],
         ];
 
-        EntityGuild::updateGuild('id = "'.$guild_id.'"', $update);
+        EntityGuild::updateGuild([ 'id' => $guild_id] + $update);
 
         $status = Alert::getSuccess('Guild editada com sucesso!') ?? null;
         return self::viewGuilds($request, $status);
@@ -76,7 +76,7 @@ class Guilds extends Base{
     {
         $postVars = $request->getPostVars();
         $guild_id = $postVars['guildid'];
-        EntityGuild::deleteGuild('id = "'.$guild_id.'"');
+        EntityGuild::deleteGuild([ 'id' => $guild_id]);
 
         $status = Alert::getSuccess('Guild deletada com sucesso!') ?? null;
         return self::viewGuilds($request, $status);

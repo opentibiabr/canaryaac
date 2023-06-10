@@ -62,7 +62,7 @@ class Authentication extends Base
         $valid = $google2fa->verifyKey($secretKey, $filter_token);
 
         if($google2fa->verifyKey($secretKey, $filter_token)){
-            Account::updateAuthentication('account_id = "'.$LoggedId.'"', [
+            Account::updateAuthentication([ 'account_id' => $LoggedId], [
                 'status' => 1,
             ]);
             $content = View::render('pages/account/authentication_finish', [
@@ -153,7 +153,7 @@ class Authentication extends Base
 
         $google2fa = new Google2FA();
         if ($google2fa->verifyKey($authentication->secret, $filter_token)) {
-            Account::deleteAuthentication('account_id = "'.$LoggedId.'"');
+            Account::deleteAuthentication([ 'account_id' => $LoggedId]);
         }
 
         $content = View::render('pages/account/authentication_unlinkconfirm', []);
@@ -190,7 +190,7 @@ class Authentication extends Base
         $recoverykey = $filter_key1 . '-' . $filter_key2 . '-' . $filter_key3 . '-' . $filter_key4;
         $account_recoverykey = Account::getAccountRegistration([ 'account_id' => $LoggedId])->fetchObject();
         if($account_recoverykey->recovery == $recoverykey){
-            Account::deleteAuthentication('account_id = "'.$LoggedId.'"');
+            Account::deleteAuthentication([ 'account_id' => $LoggedId]);
         }
 
         $content = View::render('pages/account/authentication_unlinkconfirm', [

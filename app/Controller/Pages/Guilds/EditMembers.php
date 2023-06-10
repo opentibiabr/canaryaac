@@ -86,7 +86,7 @@ class EditMembers extends Base{
 				return self::viewEditMembers($request,$name,$status);
 			}
 
-			EntityGuilds::updateMember('guild_id = "'.$guild_id.'" AND player_id = "'.$dbPlayers->id.'"', [
+			EntityGuilds::updateMember([ 'guild_id' => $guild_id, 'player_id' => $dbPlayers->id], [
 				'nick' => $filter_title,
 			]);
 			$status = 'Updated successfully.';
@@ -112,7 +112,7 @@ class EditMembers extends Base{
 				return self::viewEditMembers($request,$name,$status);
 			}
 
-			EntityGuilds::deleteMember('guild_id = "'.$guild_id.'" AND player_id = "'.$dbPlayers->id.'"');
+			EntityGuilds::deleteMember([ 'guild_id' => $guild_id, 'player_id' => $dbPlayers->id]);
 			$status = 'Updated successfully.';
 			return self::viewEditMembers($request,$name,$status);
 		}

@@ -67,14 +67,14 @@ class Accounts extends Base{
         }
 
         if (empty($postVars['account_password'])) {
-            EntityAccount::updateAccount('id = "'.$filter_account_id.'"', [
+            EntityAccount::updateAccount([ 'id' => $filter_account_id], [
                 'email' => $filter_account_email,
                 'page_access' => $filter_account_access,
                 'premdays' => $filter_account_premdays,
                 'coins' => $filter_account_coins,
             ]);
         } else {
-            EntityAccount::updateAccount('id = "'.$filter_account_id.'"', [
+            EntityAccount::updateAccount([ 'id' => $filter_account_id], [
                 'email' => $filter_account_email,
                 'password' => $convert_password,
                 'page_access' => $filter_account_access,

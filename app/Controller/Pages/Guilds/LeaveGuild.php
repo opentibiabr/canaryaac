@@ -49,7 +49,7 @@ class LeaveGuild extends Base{
 			$status = 'Invalid character or belongs to another Guild.';
 			return self::viewLeaveGuild($request,$name,$status);
 		}
-		EntityGuilds::deleteMember('player_id = "'.$dbPlayer->id.'" AND guild_id = "'.$guild_id.'"');
+		EntityGuilds::deleteMember([ 'player_id' => $dbPlayer->id, 'guild_id' => $guild_id]);
 		$request->getRouter()->redirect('/community/guilds/'.$name.'/view');
 	}
 

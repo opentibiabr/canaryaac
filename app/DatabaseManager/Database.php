@@ -277,10 +277,10 @@ class Database
                 if (strlen($whereString)) {
                     $whereString = ' WHERE ' . $whereString;
                 }
+            } else {
+                // For backward compatibility, if $where is a string
+                $whereString = ' WHERE ' . $where;
             }
-            // else {
-            //     $whereString = ' WHERE ' . $where;
-            // }
 
             // MONTA A QUERY
             $query = 'UPDATE ' . $this->table . ' SET ' . implode('=?, ', $fields) . '=?' . $whereString;
@@ -308,12 +308,11 @@ class Database
             $whereString = implode(' AND ', array_map(function ($key, $placeholder) {
                 return $key . $placeholder;
             }, $keys, $placeholders));
+        } else {
+            // For backward compatibility, if $where is a string
+            $whereString = $where;
+            $values = [];
         }
-        // else {
-        //     // For backward compatibility, if $where is a string
-        //     $whereString = $where;
-        //     $values = [];
-        // }
 
         // MONTA A QUERY
         $query = 'DELETE FROM ' . $this->table . ' WHERE ' . $whereString;

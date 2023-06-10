@@ -135,6 +135,28 @@ class Database
     }
 
     /**
+     * Método responsável por inserir várias linhas de dados no banco
+     * @param  array $data [ array( array( field => value, ...), ... )]
+     */
+    public function insertMany($data)
+    {
+        // Criamos uma consulta com múltiplos placeholders para as inserções
+        $fields = array_keys($data[0]);
+        $placeholders = implode(',', array_fill(0, count($data), '(' . implode(',', array_fill(0, count($fields), '?')) . ')'));
+
+        // Criamos um array plano com todos os valores a serem inseridos
+        $values = array_reduce($data, function ($carry, $item) {
+            return array_merge($carry, array_values($item));
+        }, []);
+
+        // Montamos a consulta SQL
+        $sql = sprintf('INSERT INTO %s (%s) VALUES %s', $this->table, implode(',', $fields), $placeholders);
+
+        // Executamos a consulta
+        $this->execute($sql, $values);
+    }
+
+    /**
      * Método responsável por executar uma consulta no banco
      * @param  string $where
      * @param  string $order
@@ -299,6 +321,8 @@ class Database
      */
     public function delete($where)
     {
+        $allowedTables = ['canary_items'];
+
         // Check if $where is an array and prepare it accordingly
         if (is_array($where)) {
             $keys = array_keys($where);
@@ -314,8 +338,11 @@ class Database
             $values = [];
         }
 
+        // Verificar se é uma tabela específica para truncamento
+        $isTruncatableTable = in_array($this->table, $allowedTables, true);
+
         // MONTA A QUERY
-        $query = 'DELETE FROM ' . $this->table . ' WHERE ' . $whereString;
+        $query = $isTruncatableTable ? 'TRUNCATE TABLE ' . $this->table : 'DELETE FROM ' . $this->table . ' WHERE ' . $whereString;
 
         // EXECUTA A QUERY
         $this->execute($query, $values);
@@ -323,4 +350,5 @@ class Database
         // RETORNA SUCESSO
         return true;
     }
+
 }

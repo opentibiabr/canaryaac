@@ -1,17 +1,19 @@
 <style>
-	.page-info {
-		display: flex;
-		align-items: center;
-		margin: 0 10px;
+	.success-message {
 		font-size: 20px;
+		text-align: center;
 	}
 
-	.page-info .total-pages {
-		margin-left: 5px;
-		font-weight: bold;
+	.no-click {
+		cursor: not-allowed !important;
+		outline: none !important;
+		opacity: 0.35 !important;
+	}
+
+	.no-click:hover {
+		border-color: #dc3545 !important;
 	}
 </style>
-
 <div class="app-content content ">
 	<div class="content-overlay"></div>
 	<div class="header-navbar-shadow"></div>
@@ -54,18 +56,25 @@
 			</div>
 			<div class="col-lg-3 col-sm-6">
 				<div class="card">
-					<div class="card-body d-flex align-items-center justify-content-between">
-						<div>
-							<h3 class="fw-bolder mb-75">{{ total_items }}</h3>
-							<span data-i18n="Total Items">Total Items</span>
+					<form action="{{URL}}/admin/items/deleteItems" method="post">
+						<div class="card-body d-flex align-items-center justify-content-between">
+							<div>
+								<h3 class="fw-bolder mb-75">{{ total_items }}</h3>
+								<span data-i18n="Total Items">Total Items</span>
+							</div>
+							<div class="avatar bg-light-primary p-50">
+								<span class="avatar-content">
+									<i data-feather="shield" class="feather feather-shield font-medium-4"></i>
+								</span>
+							</div>
 						</div>
-						<div class="avatar bg-light-primary p-50">
-							<span class="avatar-content">
-								<i data-feather="shield" class="feather feather-shield font-medium-4"></i>
-							</span>
+						<div class="card-footer text-right">
+							<input type="submit" id="delete-all-button" name="items_delete" class="btn btn-danger w-100" data-i18n="Delete" value="Delete All Items" onclick="return confirm('Tem certeza que deseja truncar a tabela de itens? Isso não pode ser desfeito.');">
 						</div>
-					</div>
+					</form>
 				</div>
+			</div>
+			<div class="col-lg-3 col-sm-6">
 				<div class="card">
 					<div class="card-body d-flex align-items-center justify-content-between">
 						<div class="input-group">
@@ -76,7 +85,11 @@
 				</div>
 			</div>
 			<div class="col-12 col-md-12 col-lg-12 col-sm-12">
-				{{ status|raw }}
+				{% if success_message %}
+					<div class="alert alert-success success-message">
+						{{ success_message }}
+					</div>
+				{% endif %}
 			</div>
 		</div>
 		<div
@@ -107,7 +120,7 @@
 							</thead>
 							<tbody>
 								{% if itemGroup is not empty %}
-									{% set groupSize = 10 %}
+									{% set groupSize = 1000 %}
 									{% set itemGroups = itemGroup|batch(groupSize) %}
 									{% for itemGroup in itemGroups %}
 										{% for item in itemGroup %}
@@ -125,15 +138,7 @@
 							</tbody>
 						</table>
 					</div>
-					<div class="pagination" style="display: flex; justify-content: center;">
-						<button class="btn btn-primary btn-prev" disabled style="margin-right: 10px;">Prev</button>
-						<div class="page-info">
-							<span class="page-number"></span>
-							/
-							<span class="total-pages"></span>
-						</div>
-						<button class="btn btn-primary btn-next" style="margin-left: 10px;">Next</button>
-					</div>
+					{{ pagination|raw }}
 				</div>
 				<!-- list and filter end -->
 			</section>
@@ -146,7 +151,7 @@
 <script>
 	$(document).ready(function () {
 		var itemRows = $('.item-row');
-		var groupSize = 10;
+		var groupSize = 1000;
 		var totalGroups = Math.ceil(itemRows.length / groupSize);
 		var groupIndex = 0;
 
@@ -159,58 +164,35 @@
 			itemRows.hide();
 			itemRows.slice(index * groupSize, (index + 1) * groupSize).show();
 
-			if (index === 0) {
-				$('.btn-prev').prop('disabled', true);
-			} else {
-				$('.btn-prev').prop('disabled', false);
-			}
-
-			if (index === totalGroups - 1) {
-				$('.btn-next').prop('disabled', true);
-			} else {
-				$('.btn-next').prop('disabled', false);
-			} pageNumberElement.html(index + 1 + "&nbsp;");
-				totalPageElement.text(totalGroups);
-			}
-
-			if (itemRows.length === 0) {
-				showGroup(-1);
-				$('.btn-prev, .btn-next').prop('disabled', true);
-			} else {
-				showGroup(groupIndex);
-			}
-
-
-			$('.btn-prev').click(function () {
-				groupIndex--;
-				showGroup(groupIndex);
+		}
+		function performSearch() {
+				var searchTerm = searchInput.val().toLowerCase();
+				var filteredItems = itemRows.filter(function () {
+				var itemName = $(this).find('td:nth-child(3)').text().toLowerCase();
+				var itemId = $(this).find('td:nth-child(1)').text().toLowerCase();
+				return itemName.includes(searchTerm) || itemId.includes(searchTerm);
 			});
+			itemRows.hide();
+			filteredItems.show();
+		}
 
-			$('.btn-next').click(function () {
-				groupIndex++;
-				showGroup(groupIndex);
-			});
-
-			function performSearch() {
-					var searchTerm = searchInput.val().toLowerCase();
-					var filteredItems = itemRows.filter(function () {
-					var itemName = $(this).find('td:nth-child(3)').text().toLowerCase();
-					var itemId = $(this).find('td:nth-child(1)').text().toLowerCase();
-					return itemName.includes(searchTerm) || itemId.includes(searchTerm);
-				});
-				itemRows.hide();
-				filteredItems.show();
-			}
-
-			searchButton.click(function () {
-				performSearch();
-			});
-
-			searchInput.keypress(function (e) {
-				if (e.which === 13) {
-					performSearch();
-					return false;
-				}
+		searchButton.click(function () {
+			performSearch();
 		});
+
+		searchInput.keypress(function (e) {
+			if (e.which === 13) {
+				performSearch();
+				return false;
+			}
+		});
+
+		var itemCount = $('.item-row').length;
+        var deleteButton = $('[id="delete-all-button"]');
+        
+        if (itemCount === 0) {
+			deleteButton.prop('disabled', true);
+			deleteButton.addClass('no-click');
+		}
 	});
 </script>

@@ -33,10 +33,10 @@ class Items extends Base
         foreach ($items->getElementsByTagName('item') as $item) {
             if ($item->getAttribute('fromid')) {
                 for ($id = $item->getAttribute('fromid'); $id <= $item->getAttribute('toid'); $id++) {
-                    $insertData[] = self::importItemAttribute($request, $id, $item);
+                    $insertData[] = self::importItemAttribute($id, $item);
                 }
             } else {
-                $insertData[] = self::importItemAttribute($request, $item->getAttribute('id'), $item);
+                $insertData[] = self::importItemAttribute($item->getAttribute('id'), $item);
             }
 
             // If we have enough items for a batch, insert them and clear the insertData array
@@ -47,7 +47,7 @@ class Items extends Base
         }
 
         // Insert any remaining items
-        if (count($insertData) > 0) {
+        if (!empty($insertData)) {
             EntityItems::insertItems($insertData);
         }
 
@@ -63,7 +63,7 @@ class Items extends Base
     }
 
 
-    public static function importItemAttribute($request, $item_id, $item)
+    public static function importItemAttribute($item_id, $item)
     {
         $item_description = '';
         $item_weight = '';

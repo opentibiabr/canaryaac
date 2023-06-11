@@ -104,11 +104,11 @@ function LoadMenu() {
     }
     FillMenuArray();
     if (window.matchMedia('(max-width: 768px)').matches) {
-        var submenuItem = document.getElementById(activeSubmenuItem);
+        let submenuItem = document.getElementById(activeSubmenuItem);
         if (submenuItem) {
-            var parentBlock = submenuItem.closest('.Level1Block');
+            let parentBlock = submenuItem.closest('.Level1Block');
             if (parentBlock) {
-                var ParentID = parentBlock.id;
+                let ParentID = parentBlock.id;
                 for (menuItemName in menu[0]) {
                     if (menuItemName == ParentID) {
                         menu[0][menuItemName] = 1;

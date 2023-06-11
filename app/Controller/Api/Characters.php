@@ -11,6 +11,7 @@ namespace App\Controller\Api;
 
 use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Functions\Player;
+use App\Http\Request;
 use Exception;
 
 class Characters extends Api{

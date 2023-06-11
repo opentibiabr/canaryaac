@@ -9,6 +9,8 @@
 
 namespace App\Controller\Api;
 
+use App\Http\Request;
+
 class Api{
 
     /**

@@ -151,7 +151,7 @@ class Items extends Base
         $queryParams = $request->getQueryParams();
         $currentPage = $queryParams['page'] ?? 1;
         $totalAmount = EntityItems::getItems(null, null, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
-        $obPagination = new Pagination($totalAmount, $currentPage, 100);
+        $obPagination = new Pagination($totalAmount, $currentPage, 1000);
         $results = EntityItems::getItems(null, null, $obPagination->getLimit());
         while ($obAllItems = $results->fetchObject(EntityItems::class)) {
             $allItems[] = [

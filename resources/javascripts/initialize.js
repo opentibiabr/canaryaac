@@ -105,16 +105,21 @@ function LoadMenu() {
     FillMenuArray();
     if (window.matchMedia('(max-width: 768px)').matches) {
         var submenuItem = document.getElementById(activeSubmenuItem);
-        var ParentID = submenuItem.closest('[class="Level1Block"]').id;
-        for (menuItemName in menu[0]) {
-            if (menuItemName == ParentID) {
-                menu[0][menuItemName] = 1;
-                $('.MobileMenuItems #' + ParentID + ' .Level1Entry').addClass('Level1ItemOpen');
-            } else {
-                menu[0][menuItemName] = 0;
+        if (submenuItem) {
+            var parentBlock = submenuItem.closest('.Level1Block');
+            if (parentBlock) {
+                var ParentID = parentBlock.id;
+                for (menuItemName in menu[0]) {
+                    if (menuItemName == ParentID) {
+                        menu[0][menuItemName] = 1;
+                        $('.MobileMenuItems #' + ParentID + ' .Level1Entry').addClass('Level1ItemOpen');
+                    } else {
+                        menu[0][menuItemName] = 0;
+                    }
+                }
             }
         }
-    }
+    }    
     InitializeMenu();
     $('#MobileMenu .Level2Block').removeClass('MobileMenuActiveItem');
     $('#MobileMenu #' + activeSubmenuItem).addClass('MobileMenuActiveItem');

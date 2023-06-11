@@ -12,6 +12,7 @@ namespace App\Controller\Admin;
 use App\Model\Entity\Items as EntityItems;
 use App\Utils\View;
 use App\DatabaseManager\Pagination;
+use App\Controller\Api\Characters;
 use DOMDocument;
 
 class Items extends Base
@@ -68,83 +69,77 @@ class Items extends Base
         $item_description = '';
         $item_weight = '';
         $type = '';
-        $level = 0;
+        $attack = 0;
+        $extradef = 0;
+        $defense = 0;
+        $armor = 0;
+        $magicpoints = 0;
         $shootType = '';
-        $maxhitchance = '';
-        $range = '';
-        foreach ($item->getElementsByTagName('attribute') as $attribute) {
-            if ($attribute->getAttribute('key') == 'description') {
-                $item_description = $attribute->getAttribute('value');
-                continue;
-            }
-            if ($attribute->getAttribute('key') == 'weight') {
-                $item_weight = $attribute->getAttribute('value');
-                continue;
-            }
-            if ($attribute->getAttribute('key') == 'weaponType') {
-                $type = $attribute->getAttribute('value');
+        $slotType = '';
+        $containersize = 0;
+        $range = 0;
 
-                if ($type == 'axe' || $type == 'club' || $type == 'sword') {
-                    foreach ($item->getElementsByTagName('attribute') as $_attribute) {
-                        if ($_attribute->getAttribute('key') == 'attack') {
-                            $level = $_attribute->getAttribute('value');
-                            break;
-                        }
-                    }
-                }
-                if ($type == 'distance' || $type == 'wand' || $type == 'ammunition') {
-                    foreach ($item->getElementsByTagName('attribute') as $_attribute) {
-                        if ($_attribute->getAttribute('key') == 'shootType') {
-                            $shootType = $_attribute->getAttribute('value');
-                            break;
-                        }
-                        if ($_attribute->getAttribute('key') == 'range') {
-                            $range = $_attribute->getAttribute('value');
-                            break;
-                        }
-                        if ($_attribute->getAttribute('key') == 'maxhitchance') {
-                            $maxhitchance = $_attribute->getAttribute('value');
-                            break;
-                        }
-                    }
-                }
-                if ($type == 'shield') {
-                    foreach ($item->getElementsByTagName('attribute') as $_attribute) {
-                        if ($_attribute->getAttribute('key') == 'defense') {
-                            $level = $_attribute->getAttribute('value');
-                            break;
-                        }
-                    }
-                }
-                continue;
-            }
-            if ($attribute->getAttribute('key') == 'slotType' && empty($type)) {
-                $type = $attribute->getAttribute('value');
-                if ($type == 'head' || $type == 'body' || $type == 'legs' || $type == 'feet') {
-                    foreach ($item->getElementsByTagName('attribute') as $_attribute) {
-                        if ($_attribute->getAttribute('key') == 'armor') {
-                            $level = $_attribute->getAttribute('value');
-                            break;
-                        }
-                    }
-                } elseif ($type == 'backpack') {
-                    foreach ($item->getElementsByTagName('attribute') as $_attribute) {
-                        if ($_attribute->getAttribute('key') == 'containerSize') {
-                            $level = $_attribute->getAttribute('value');
-                            break;
-                        }
-                    }
-                }
-                continue;
+        foreach ($item->getElementsByTagName('attribute') as $attribute) {
+            $key = $attribute->getAttribute('key');
+            $value = $attribute->getAttribute('value');
+
+            switch ($key) {
+                // case 'description':
+                //     $item_description = $value;
+                //     break;
+                // case 'weight':
+                //     $item_weight = $value;
+                //     break;
+                case 'weaponType':
+                    $type = $value;
+                    break;
+                case 'attack':
+                    $attack = $value;
+                    break;
+                case 'extradef':
+                    $extradef = $value;
+                    break;
+                case 'defense':
+                    $defense = $value;
+                    break;
+                case 'magicpoints':
+                    $magicpoints = $value;
+                    break;
+                case 'shootType':
+                    $shootType = $value;
+                    break;
+                case 'slotType':
+                    $slotType = $value;
+                    break;
+                case 'range':
+                    $range = $value;
+                    break;
+                case 'containersize':
+                    $containersize = $value;
+                    break;
+                case 'armor':
+                    $armor = $value;
             }
         }
+
         return [
             'item_id' => $item_id,
             'name' => $item->getAttribute('name'),
+            // 'description' => $item_description,
+            // 'weight' => $item_weight,
+            'shootType' => $shootType,
             'type' => $type,
-            'level' => $level, #attack, defense, armor, containerSize, ..
+            'armor' => $armor,
+            'attack' => $attack,
+            'extradef' => $extradef,
+            'defense' => $defense,
+            'slotType' => $slotType,
+            'magicpoints' => $magicpoints,
+            'containersize' => $containersize,
+            '`range`' => $range,
         ];
     }
+
 
     public static function getItems($request, &$obPagination)
     {
@@ -157,8 +152,16 @@ class Items extends Base
             $allItems[] = [
                 'item_id' => (int) $obAllItems->item_id,
                 'name' => $obAllItems->name,
+                'shootType' => $obAllItems->shootType,
                 'type' => $obAllItems->type,
-                'level' => $obAllItems->level
+                'armor' => $obAllItems->armor,
+                'attack' => $obAllItems->attack,
+                'extradef' => $obAllItems->extradef,
+                'defense' => $obAllItems->defense,
+                'slotType' => $obAllItems->slotType,
+                'magicpoints' => $obAllItems->magicpoints,
+                'containersize' => $obAllItems->containersize,
+                'range' => $obAllItems->range
             ];
         }
         return $allItems ?? false;

@@ -13,6 +13,10 @@
 	.no-click:hover {
 		border-color: #dc3545 !important;
 	}
+
+	.centered-text {
+        text-align: center;
+    }
 </style>
 <div class="app-content content ">
 	<div class="content-overlay"></div>
@@ -111,11 +115,19 @@
 						<table class="players-list-table table">
 							<thead class="table-light">
 								<tr>
-									<th>ID</th>
-									<th>Image</th>
-									<th>Name</th>
-									<th>Type</th>
-									<th>Atk / Def / Armor / Size</th>
+									<th class="centered-text">ID</th>
+									<th class="centered-text">Image</th>
+									<th class="centered-text">Name</th>
+									<th class="centered-text">ShootType</th>
+									<th class="centered-text">SlotType</th>
+									<th class="centered-text">Type</th>
+									<th class="centered-text">Magicpoints</th>
+									<th class="centered-text">Atk</th>
+									<th class="centered-text">Def</th>
+									<th class="centered-text">ExtraDef</th>
+									<th class="centered-text">Armor</th>
+									<th class="centered-text">Size</th>
+									<th class="centered-text">Range</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -125,12 +137,19 @@
 									{% for itemGroup in itemGroups %}
 										{% for item in itemGroup %}
 											<tr class="item-row">
-												<td>{{ item.item_id }}</td>
-												<td><img src="{{ IMAGE_PATH }}/charactertrade/items/{{ item.item_id }}.gif">
-													{{ item.item_id }}</td>
-												<td>{{ item.name }}</td>
-												<td>{{ item.type }}</td>
-												<td>{{ item.level }}</td>
+												<td class="centered-text">{{ item.item_id }}</td>
+												<td class="centered-text"><img src="{{ IMAGE_PATH }}/charactertrade/items/{{ item.item_id }}.gif"></td>
+												<td class="centered-text">{{ item.name }}</td>
+												<td class="centered-text">{{ item.shootType }}</td>
+												<td class="centered-text">{{ item.slotType }}</td>
+												<td class="centered-text">{{ item.type }}</td>
+												<td class="centered-text">{{ item.magicpoints }}</td>
+												<td class="centered-text">{{ item.attack }}</td>
+												<td class="centered-text">{{ item.defense }}</td>
+												<td class="centered-text">{{ item.extradef }}</td>
+												<td class="centered-text">{{ item.armor }}</td>
+												<td class="centered-text">{{ item.containersize }}</td>
+												<td class="centered-text">{{ item.range }}</td>
 											</tr>
 										{% endfor %}
 									{% endfor %}
@@ -147,9 +166,12 @@
 	</div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script>
 	$(document).ready(function () {
+		const API_URL = '{{URL}}/api/v1/searchItem';
+		const IMAGE_PATH = '{{IMAGE_PATH}}';
+
 		var itemRows = $('.item-row');
 		var groupSize = 1000;
 		var totalGroups = Math.ceil(itemRows.length / groupSize);
@@ -159,38 +181,88 @@
 		var totalPageElement = $('.total-pages');
 		var searchInput = $('#search-input');
 		var searchButton = $('#search-button');
+		var tableBody = $('.players-list-table tbody');
+		var deleteButton = $('[id="delete-all-button"]');
 
 		function showGroup(index) {
 			itemRows.hide();
 			itemRows.slice(index * groupSize, (index + 1) * groupSize).show();
+		}
 
-		}
-		function performSearch() {
-				var searchTerm = searchInput.val().toLowerCase();
-				var filteredItems = itemRows.filter(function () {
-				var itemName = $(this).find('td:nth-child(3)').text().toLowerCase();
-				var itemId = $(this).find('td:nth-child(1)').text().toLowerCase();
-				return itemName.includes(searchTerm) || itemId.includes(searchTerm);
-			});
-			itemRows.hide();
-			filteredItems.show();
-		}
+		searchInput.on("input", function(){
+			searchItems();
+		});
 
 		searchButton.click(function () {
-			performSearch();
+			searchItems();
 		});
 
 		searchInput.keypress(function (e) {
 			if (e.which === 13) {
-				performSearch();
+				searchItems();
 				return false;
 			}
 		});
 
+		function searchItems() {
+			var query = searchInput.val().trim();
+			if (query === "") {
+				tableBody.empty();
+				return;
+			}
+
+			$.ajax({
+				url: API_URL,
+				type: 'post',
+				data: { query },
+				dataType: "json",
+				success: function(data) {
+					renderItems(data);
+				},
+				error: function(xhr, status, error) {
+					console.error('Status:', status);
+					console.error('Error:', error);
+					console.error('Response:', xhr.responseText);
+					showError('An error occurred while searching for items.');
+				}
+			});
+		}
+
+		function renderItems(data) {
+			tableBody.empty();
+			if (data.length > 0) {
+				$.each(data, function(key, item){
+					tableBody.append(
+						`<tr class="item-row">
+							<td class="centered-text">${item.item_id}</td>
+							<td class="centered-text"><img src="${IMAGE_PATH}/charactertrade/items/${item.item_id}.gif" alt="Image of item ${item.name}"></td>
+							<td class="centered-text">${item.name}</td>
+							<td class="centered-text">${item.shootType}</td>
+							<td class="centered-text">${item.slotType}</td>
+							<td class="centered-text">${item.type}</td>
+							<td class="centered-text">${item.magicpoints}</td>
+							<td class="centered-text">${item.attack}</td>
+							<td class="centered-text">${item.defense}</td>
+							<td class="centered-text">${item.extradef}</td>
+							<td class="centered-text">${item.armor}</td>
+							<td class="centered-text">${item.containersize}</td>
+							<td class="centered-text">${item.range}</td>
+						</tr>`
+					);
+				});
+			} else {
+				showError('No items found.');
+			}
+		}
+
+
+		function showError(message) {
+			tableBody.append(`<tr class="item-row"><td colspan="5">${message}</td></tr>`);
+		}
+
 		var itemCount = $('.item-row').length;
-        var deleteButton = $('[id="delete-all-button"]');
-        
-        if (itemCount === 0) {
+		
+		if (itemCount === 0) {
 			deleteButton.prop('disabled', true);
 			deleteButton.addClass('no-click');
 		}

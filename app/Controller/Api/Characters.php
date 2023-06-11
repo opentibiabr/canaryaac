@@ -13,14 +13,14 @@ use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Functions\Player;
 use Exception;
 
-class Characters extends Api{
-
+class Characters extends Api
+{
     public static function searchCharacterDiscordBOT($request)
     {
         $postVars = $request->getPostVars();
         $queryParams = $request->getQueryParams();
-        
-        if(empty($postVars['name'])){
+
+        if(empty($postVars['name'])) {
             throw new Exception('Nenhum character foi encontrado.', 404);
         }
         $filter_name = filter_var($postVars['name'], FILTER_SANITIZE_SPECIAL_CHARS);
@@ -33,7 +33,7 @@ class Characters extends Api{
             'vocation' => Player::convertVocation($player->vocation),
             'status' => Player::isOnline($player->id)
         ];
-        if(empty($characters)){
+        if(empty($characters)) {
             throw new Exception('Nenhum character foi encontrado.', 404);
         }
         return $characters;
@@ -42,12 +42,12 @@ class Characters extends Api{
     public static function searchCharacter($request)
     {
         $postVars = $request->getPostVars();
-        if(empty($postVars['name'])){
+        if(empty($postVars['name'])) {
             throw new Exception('Nenhum character foi encontrado.', 404);
         }
         $filter_name = filter_var($postVars['name'], FILTER_SANITIZE_SPECIAL_CHARS);
         $select_character = EntityPlayer::getPlayer(['name LIKE' => $filter_name], null, 10);
-        while($player = $select_character->fetchObject(EntityPlayer::class)){
+        while($player = $select_character->fetchObject(EntityPlayer::class)) {
             $characters[] = [
                 'outfit' => Player::getOutfit($player->id),
                 'name' => $player->name,
@@ -55,10 +55,51 @@ class Characters extends Api{
                 'vocation' => Player::convertVocation($player->vocation),
             ];
         }
-        if(empty($characters)){
+        if(empty($characters)) {
             throw new Exception('Nenhum character foi encontrado.', 404);
         }
         return $characters;
+    }
+
+    public static function searchItem($request)
+    {
+        $postVars = $request->getPostVars();
+        $query = isset($postVars['query']) ? $postVars['query'] : null;
+
+        if (empty($query)) {
+            $error = [
+                'message' => 'Nenhum item foi encontrado.',
+                'code' => 404
+            ];
+            return $error;
+        }
+
+        if (is_numeric($query)) {
+            $select_items = EntityPlayer::getAllItems(['item_id' => (int)$query], null, 1000);
+        } else {
+            $filter_name = filter_var($query, FILTER_SANITIZE_SPECIAL_CHARS);
+            $select_items = EntityPlayer::getAllItems(['name LIKE' => '%' . $filter_name . '%'], null, 1000);
+        }
+
+        $allItems = [];
+        while ($obAllItems = $select_items->fetchObject(EntityPlayer::class)) {
+            $allItems[] = [
+                'item_id' => (int) $obAllItems->item_id,
+                'name' => $obAllItems->name,
+                'shootType' => $obAllItems->shootType,
+                'type' => $obAllItems->type,
+                'armor' => $obAllItems->armor,
+                'attack' => $obAllItems->attack,
+                'extradef' => $obAllItems->extradef,
+                'defense' => $obAllItems->defense,
+                'slotType' => $obAllItems->slotType,
+                'magicpoints' => $obAllItems->magicpoints,
+                'containersize' => $obAllItems->containersize,
+                'range' => $obAllItems->range,
+            ];
+        }
+
+        return $allItems;
     }
 
     public static function getPlayer($request)
@@ -73,7 +114,7 @@ class Characters extends Api{
         // trás informações do player
         $obPlayer = $results->fetchObject(EntityPlayer::class);
 
-        if($obPlayer == false){
+        if($obPlayer == false) {
             throw new Exception('Nenhum character foi encontrado.', 404);
         }
 
@@ -191,5 +232,5 @@ class Characters extends Api{
     {
         return self::getPlayer($request);
     }
-    
+
 }

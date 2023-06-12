@@ -17,7 +17,7 @@ use DOMDocument;
 
 class Items extends Base
 {
-    public static function importItems($request)
+    public static function importItems()
     {
         $items_path = $_ENV['SERVER_PATH'] . 'data/items/items.xml';
         if (file_exists($items_path)) {

@@ -489,7 +489,7 @@ $obRouter->post('/admin/items/import', [
         'role-permission'
     ],
     function ($request) {
-        return new Response(200, Items::importItems($request));
+        return new Response(200, Items::importItems());
     }
 ]);
 

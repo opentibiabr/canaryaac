@@ -67,11 +67,10 @@ class Characters extends Api
         $query = isset($postVars['query']) ? $postVars['query'] : null;
 
         if (empty($query)) {
-            $error = [
+            return [
                 'message' => 'Nenhum item foi encontrado.',
                 'code' => 404
             ];
-            return $error;
         }
 
         if (is_numeric($query)) {

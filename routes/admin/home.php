@@ -488,7 +488,7 @@ $obRouter->post('/admin/items/import', [
         'required-admin-login',
         'role-permission'
     ],
-    function ($request) {
+    function () {
         return new Response(200, Items::importItems());
     }
 ]);

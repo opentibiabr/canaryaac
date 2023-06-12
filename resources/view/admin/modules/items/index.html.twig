@@ -1,17 +1,23 @@
 <style>
-	.page-info {
-		display: flex;
-		align-items: center;
-		margin: 0 10px;
+	.success-message {
 		font-size: 20px;
+		text-align: center;
 	}
 
-	.page-info .total-pages {
-		margin-left: 5px;
-		font-weight: bold;
+	.no-click {
+		cursor: not-allowed !important;
+		outline: none !important;
+		opacity: 0.35 !important;
 	}
+
+	.no-click:hover {
+		border-color: #dc3545 !important;
+	}
+
+	.centered-text {
+        text-align: center;
+    }
 </style>
-
 <div class="app-content content ">
 	<div class="content-overlay"></div>
 	<div class="header-navbar-shadow"></div>
@@ -54,18 +60,25 @@
 			</div>
 			<div class="col-lg-3 col-sm-6">
 				<div class="card">
-					<div class="card-body d-flex align-items-center justify-content-between">
-						<div>
-							<h3 class="fw-bolder mb-75">{{ total_items }}</h3>
-							<span data-i18n="Total Items">Total Items</span>
+					<form action="{{URL}}/admin/items/deleteItems" method="post">
+						<div class="card-body d-flex align-items-center justify-content-between">
+							<div>
+								<h3 class="fw-bolder mb-75">{{ total_items }}</h3>
+								<span data-i18n="Total Items">Total Items</span>
+							</div>
+							<div class="avatar bg-light-primary p-50">
+								<span class="avatar-content">
+									<i data-feather="shield" class="feather feather-shield font-medium-4"></i>
+								</span>
+							</div>
 						</div>
-						<div class="avatar bg-light-primary p-50">
-							<span class="avatar-content">
-								<i data-feather="shield" class="feather feather-shield font-medium-4"></i>
-							</span>
+						<div class="card-footer text-right">
+							<input type="submit" id="delete-all-button" name="items_delete" class="btn btn-danger w-100" data-i18n="Delete" value="Delete All Items" onclick="return confirm('Tem certeza que deseja truncar a tabela de itens? Isso não pode ser desfeito.');">
 						</div>
-					</div>
+					</form>
 				</div>
+			</div>
+			<div class="col-lg-3 col-sm-6">
 				<div class="card">
 					<div class="card-body d-flex align-items-center justify-content-between">
 						<div class="input-group">
@@ -76,7 +89,11 @@
 				</div>
 			</div>
 			<div class="col-12 col-md-12 col-lg-12 col-sm-12">
-				{{ status|raw }}
+				{% if success_message %}
+					<div class="alert alert-success success-message">
+						{{ success_message }}
+					</div>
+				{% endif %}
 			</div>
 		</div>
 		<div
@@ -98,26 +115,41 @@
 						<table class="players-list-table table">
 							<thead class="table-light">
 								<tr>
-									<th>ID</th>
-									<th>Image</th>
-									<th>Name</th>
-									<th>Type</th>
-									<th>Atk / Def / Armor / Size</th>
+									<th class="centered-text">ID</th>
+									<th class="centered-text">Image</th>
+									<th class="centered-text">Name</th>
+									<th class="centered-text">ShootType</th>
+									<th class="centered-text">SlotType</th>
+									<th class="centered-text">Type</th>
+									<th class="centered-text">Magicpoints</th>
+									<th class="centered-text">Atk</th>
+									<th class="centered-text">Def</th>
+									<th class="centered-text">ExtraDef</th>
+									<th class="centered-text">Armor</th>
+									<th class="centered-text">Size</th>
+									<th class="centered-text">Range</th>
 								</tr>
 							</thead>
 							<tbody>
 								{% if itemGroup is not empty %}
-									{% set groupSize = 10 %}
+									{% set groupSize = 1000 %}
 									{% set itemGroups = itemGroup|batch(groupSize) %}
 									{% for itemGroup in itemGroups %}
 										{% for item in itemGroup %}
 											<tr class="item-row">
-												<td>{{ item.item_id }}</td>
-												<td><img src="{{ IMAGE_PATH }}/charactertrade/items/{{ item.item_id }}.gif">
-													{{ item.item_id }}</td>
-												<td>{{ item.name }}</td>
-												<td>{{ item.type }}</td>
-												<td>{{ item.level }}</td>
+												<td class="centered-text">{{ item.item_id }}</td>
+												<td class="centered-text"><img src="{{ IMAGE_PATH }}/charactertrade/items/{{ item.item_id }}.gif"></td>
+												<td class="centered-text">{{ item.name }}</td>
+												<td class="centered-text">{{ item.shootType }}</td>
+												<td class="centered-text">{{ item.slotType }}</td>
+												<td class="centered-text">{{ item.type }}</td>
+												<td class="centered-text">{{ item.magicpoints }}</td>
+												<td class="centered-text">{{ item.attack }}</td>
+												<td class="centered-text">{{ item.defense }}</td>
+												<td class="centered-text">{{ item.extradef }}</td>
+												<td class="centered-text">{{ item.armor }}</td>
+												<td class="centered-text">{{ item.containersize }}</td>
+												<td class="centered-text">{{ item.range }}</td>
 											</tr>
 										{% endfor %}
 									{% endfor %}
@@ -125,15 +157,7 @@
 							</tbody>
 						</table>
 					</div>
-					<div class="pagination" style="display: flex; justify-content: center;">
-						<button class="btn btn-primary btn-prev" disabled style="margin-right: 10px;">Prev</button>
-						<div class="page-info">
-							<span class="page-number"></span>
-							/
-							<span class="total-pages"></span>
-						</div>
-						<button class="btn btn-primary btn-next" style="margin-left: 10px;">Next</button>
-					</div>
+					{{ pagination|raw }}
 				</div>
 				<!-- list and filter end -->
 			</section>
@@ -142,11 +166,14 @@
 	</div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="{{JS_PATH}}/jquery-3.7.0.min.js"></script>
 <script>
 	$(document).ready(function () {
+		const API_URL = '{{URL}}/api/v1/searchItem';
+		const IMAGE_PATH = '{{IMAGE_PATH}}';
+
 		var itemRows = $('.item-row');
-		var groupSize = 10;
+		var groupSize = 1000;
 		var totalGroups = Math.ceil(itemRows.length / groupSize);
 		var groupIndex = 0;
 
@@ -154,63 +181,90 @@
 		var totalPageElement = $('.total-pages');
 		var searchInput = $('#search-input');
 		var searchButton = $('#search-button');
+		var tableBody = $('.players-list-table tbody');
+		var deleteButton = $('[id="delete-all-button"]');
 
 		function showGroup(index) {
 			itemRows.hide();
 			itemRows.slice(index * groupSize, (index + 1) * groupSize).show();
+		}
 
-			if (index === 0) {
-				$('.btn-prev').prop('disabled', true);
-			} else {
-				$('.btn-prev').prop('disabled', false);
-			}
-
-			if (index === totalGroups - 1) {
-				$('.btn-next').prop('disabled', true);
-			} else {
-				$('.btn-next').prop('disabled', false);
-			} pageNumberElement.html(index + 1 + "&nbsp;");
-				totalPageElement.text(totalGroups);
-			}
-
-			if (itemRows.length === 0) {
-				showGroup(-1);
-				$('.btn-prev, .btn-next').prop('disabled', true);
-			} else {
-				showGroup(groupIndex);
-			}
-
-
-			$('.btn-prev').click(function () {
-				groupIndex--;
-				showGroup(groupIndex);
-			});
-
-			$('.btn-next').click(function () {
-				groupIndex++;
-				showGroup(groupIndex);
-			});
-
-			function performSearch() {
-					var searchTerm = searchInput.val().toLowerCase();
-					var filteredItems = itemRows.filter(function () {
-					var itemName = $(this).find('td:nth-child(3)').text().toLowerCase();
-					var itemId = $(this).find('td:nth-child(1)').text().toLowerCase();
-					return itemName.includes(searchTerm) || itemId.includes(searchTerm);
-				});
-				itemRows.hide();
-				filteredItems.show();
-			}
-
-			searchButton.click(function () {
-				performSearch();
-			});
-
-			searchInput.keypress(function (e) {
-				if (e.which === 13) {
-					performSearch();
-					return false;
-				}
+		searchInput.on("input", function(){
+			searchItems();
 		});
+
+		searchButton.click(function () {
+			searchItems();
+		});
+
+		searchInput.keypress(function (e) {
+			if (e.which === 13) {
+				searchItems();
+				return false;
+			}
+		});
+
+		function searchItems() {
+			var query = searchInput.val().trim();
+			if (query === "") {
+				tableBody.empty();
+				return;
+			}
+
+			$.ajax({
+				url: API_URL,
+				type: 'post',
+				data: { query },
+				dataType: "json",
+				success: function(data) {
+					renderItems(data);
+				},
+				error: function(xhr, status, error) {
+					console.error('Status:', status);
+					console.error('Error:', error);
+					console.error('Response:', xhr.responseText);
+					showError('An error occurred while searching for items.');
+				}
+			});
+		}
+
+		function renderItems(data) {
+			tableBody.empty();
+			if (data.length > 0) {
+				$.each(data, function(key, item){
+					tableBody.append(
+						`<tr class="item-row">
+							<td class="centered-text">${item.item_id}</td>
+							<td class="centered-text"><img src="${IMAGE_PATH}/charactertrade/items/${item.item_id}.gif" alt="Image of item ${item.name}"></td>
+							<td class="centered-text">${item.name}</td>
+							<td class="centered-text">${item.shootType}</td>
+							<td class="centered-text">${item.slotType}</td>
+							<td class="centered-text">${item.type}</td>
+							<td class="centered-text">${item.magicpoints}</td>
+							<td class="centered-text">${item.attack}</td>
+							<td class="centered-text">${item.defense}</td>
+							<td class="centered-text">${item.extradef}</td>
+							<td class="centered-text">${item.armor}</td>
+							<td class="centered-text">${item.containersize}</td>
+							<td class="centered-text">${item.range}</td>
+						</tr>`
+					);
+				});
+			} else {
+				showError('No items found.');
+			}
+		}
+
+
+		function showError(message) {
+			tableBody.append(`<tr class="item-row"><td colspan="5">${message}</td></tr>`);
+		}
+
+		var itemCount = $('.item-row').length;
+		
+		if (itemCount === 0) {
+			deleteButton.prop('disabled', true);
+			deleteButton.addClass('no-click');
+		}
 	});
 </script>

@@ -1,10 +1,80 @@
-<div class="card">
-    <div class="card-body p-1">
-        <nav aria-label="Page navigation">
-            <ul class="pagination mt-1">
-                {{ links|raw }}
-                <li class="page-item next-item"><strong>Total Pages:</strong>  {{ total }}</li>
-            </ul>
-        </nav>
+<style>
+    .page-info {
+        display: flex;
+        align-items: center;
+        margin: 0 10px;
+        font-size: 20px;
+    }
+
+    .page-info .total-pages {
+        margin-left: 5px;
+        font-weight: bold;
+    }
+</style>
+
+<div class="pagination" style="display: flex; justify-content: center;">
+    <button class="btn btn-primary btn-prev" disabled style="margin-right: 10px;">Prev</button>
+    <div class="page-info">
+        <span class="page-number"></span>
+        /
+        <span class="total-pages"></span>
     </div>
+    <button class="btn btn-primary btn-next" style="margin-left: 10px;">Next</button>
 </div>
+
+<script type="text/javascript" src="{{JS_PATH}}/jquery-3.7.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var groupSize = 10;
+        var totalGroups = {{ total }};
+        var groupIndex = 0;
+
+        var pageNumberElement = $('.page-number');
+        var totalPageElement = $('.total-pages');
+        var btnPrev = $('.btn-prev');
+        var btnNext = $('.btn-next');
+
+        function updateButtons() {
+
+            btnPrev.prop('disabled', groupIndex === 0);
+            btnNext.prop('disabled', groupIndex === totalGroups - 1);
+        }
+
+        function showGroup(index) {
+            groupIndex = index;
+
+            pageNumberElement.text(index + 1);
+            totalPageElement.text(totalGroups);
+
+            updateButtons();
+
+            var urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('page', groupIndex + 1);
+            var newUrl = window.location.pathname + '?' + urlParams.toString();
+            window.history.replaceState(null, null, newUrl);
+        }
+
+        var urlParams = new URLSearchParams(window.location.search);
+        var currentPage = parseInt(urlParams.get('page')) || 1;
+
+        if (!isNaN(currentPage) && currentPage >= 1 && currentPage <= totalGroups) {
+            groupIndex = currentPage - 1;
+        }
+
+        showGroup(groupIndex);
+
+        btnPrev.click(function () {
+            if (groupIndex > 0) {
+                showGroup(groupIndex - 1);
+                window.location.href = '?page=' + (groupIndex + 1);
+            }
+        });
+
+        btnNext.click(function () {
+            if (groupIndex < totalGroups - 1) {
+                showGroup(groupIndex + 1);
+                window.location.href = '?page=' + (groupIndex + 1);
+            }
+        });
+    });
+</script>

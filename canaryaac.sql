@@ -349,8 +349,16 @@ CREATE TABLE IF NOT EXISTS `canary_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `item_id` int(11) NOT NULL,
   `name` varchar(150) NOT NULL,
+  `shootType` varchar(150) NOT NULL,
+  `slotType` varchar(150) NOT NULL,
   `type` varchar(150) NOT NULL,
-  `level` int(11) NOT NULL,
+  `armor` int(11) NOT NULL,
+  `attack` int(11) NOT NULL,
+  `extradef` int(11) NOT NULL,
+  `defense` int(11) NOT NULL,
+  `magicpoints` int(11) NOT NULL,
+  `containersize` int(11) NOT NULL,
+  `range` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

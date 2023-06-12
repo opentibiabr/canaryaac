@@ -10,19 +10,19 @@
 namespace App\Controller\Api;
 
 use App\DatabaseManager\Pagination;
-use \App\Model\Entity\Highscores as EntityHighscores;
+use App\Model\Entity\Highscores as EntityHighscores;
 use App\Model\Functions\Player;
+use App\Http\Request;
 use Exception;
 
-class Highscores extends Api{
-
+class Highscores extends Api
+{
     public static function getHighscoresCharacters($request, &$obPagination)
     {
 
         $queryParams = $request->getQueryParams();
 
-        switch($queryParams['profession'])
-        {
+        switch($queryParams['profession']) {
             case 'sorcerer':
             case 1:
                 $profession = 'vocation = 1';
@@ -43,8 +43,7 @@ class Highscores extends Api{
                 $profession = null;
         }
 
-        switch($queryParams['category'])
-        {
+        switch($queryParams['category']) {
             case 1:
             case 'achievements':
                 $category = 'achievements DESC';
@@ -101,7 +100,7 @@ class Highscores extends Api{
                 $category = 'level DESC';
                 break;
         }
-        
+
         $player = [];
 
         $totalAmount = EntityHighscores::getHighscoresEntity($profession, $category, null, ['COUNT(*) as qtd'])->fetchObject()->qtd;
@@ -110,7 +109,7 @@ class Highscores extends Api{
 
         $results = EntityHighscores::getHighscoresEntity($profession, $category, $obPagination->getLimit());
 
-        while($obRank = $results->fetchObject(EntityHighscores::class)){
+        while($obRank = $results->fetchObject(EntityHighscores::class)) {
             $player[] = [
                 'name' => $obRank->name,
                 'vocation' => Player::convertVocation($obRank->vocation),
@@ -120,7 +119,7 @@ class Highscores extends Api{
             ];
         }
 
-        if($totalAmount == 0){
+        if($totalAmount == 0) {
             throw new Exception('Nenhuma house foi encontrada.', 404);
         }
 
@@ -140,5 +139,5 @@ class Highscores extends Api{
             'pagination' => parent::getPagination($request, $obPagination)
         ];
     }
-    
+
 }

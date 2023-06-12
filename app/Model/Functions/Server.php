@@ -285,9 +285,13 @@ class Server{
         return $status;
     }
 
-    public static function getMonsterImage($looktype = 0, $lookaddons = 0, $lookbody = 0, $lookfeet = 0, $lookhead = 0, $looklegs = 0, $mount = 0)
+    public static function getMonsterImage($looktypeEx = 0, $looktype = 0, $lookaddons = 0, $lookbody = 0, $lookfeet = 0, $lookhead = 0, $looklegs = 0, $mount = 0)
     {
-        $outfit = URL . OUTFITS_FOLDER. '/animoutfit.php?id='.$looktype.'&addons='.$lookaddons.'&head='.$lookhead.'&body='.$lookbody.'&legs='.$looklegs.'&feet='.$lookfeet.'&mount='.$mount.'';
+        if ($looktypeEx == 0) {
+            $outfit = URL . OUTFITS_FOLDER. '/animoutfit.php?id='.$looktype.'&addons='.$lookaddons.'&head='.$lookhead.'&body='.$lookbody.'&legs='.$looklegs.'&feet='.$lookfeet.'&mount='.$mount.'';
+        } else {
+            $outfit = URL . "/resources/images/charactertrade/items/" . $looktypeEx . ".gif";
+        }
         return $outfit;
     }
 
@@ -295,9 +299,12 @@ class Server{
     {
         $boostedBoss = [];
         $results = (new Database('boosted_boss'))->select();
-        while($obBoostedBoss = $results->fetchObject()){
+        while ($obBoostedBoss = $results->fetchObject()) {
+            
+
             $boostedBoss = [
-                'image_url' => self::getMonsterImage($obBoostedBoss->looktype, $obBoostedBoss->lookaddons, $obBoostedBoss->lookbody, $obBoostedBoss->lookfeet, $obBoostedBoss->lookhead, $obBoostedBoss->looklegs),
+                'image_url' => self::getMonsterImage($obBoostedBoss->looktypeEx, $obBoostedBoss->looktype, $obBoostedBoss->lookaddons, $obBoostedBoss->lookbody, $obBoostedBoss->lookfeet, $obBoostedBoss->lookhead, $obBoostedBoss->looklegs),
+                'looktypeEx' => $obBoostedBoss->looktypeEx,
                 'looktype' => $obBoostedBoss->looktype,
                 'lookfeet' => $obBoostedBoss->lookfeet,
                 'looklegs' => $obBoostedBoss->looklegs,
@@ -316,10 +323,11 @@ class Server{
     public static function getBoostedCreature()
     {
         $boostedCreature = [];
+        $looktypeEx = 0;
         $results = (new Database('boosted_creature'))->select();
         while($obBoostedCreature = $results->fetchObject()){
             $boostedCreature = [
-                'image_url' => self::getMonsterImage($obBoostedCreature->looktype, $obBoostedCreature->lookaddons, $obBoostedCreature->lookbody, $obBoostedCreature->lookfeet, $obBoostedCreature->lookhead, $obBoostedCreature->looklegs),
+                'image_url' => self::getMonsterImage($looktypeEx, $obBoostedCreature->looktype, $obBoostedCreature->lookaddons, $obBoostedCreature->lookbody, $obBoostedCreature->lookfeet, $obBoostedCreature->lookhead, $obBoostedCreature->looklegs),
                 'looktype' => $obBoostedCreature->looktype,
                 'lookfeet' => $obBoostedCreature->lookfeet,
                 'looklegs' => $obBoostedCreature->looklegs,

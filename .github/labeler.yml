@@ -1,0 +1,18 @@
+---
+"Area: App":
+  - any: ['app/**/*']
+
+"Area: Includes":
+  - any: ['includes/**/*']
+
+"Area: Resources":
+  - any: ['resources/**/*']
+
+"Area: Routes":
+  - any: ['routes/**/*']
+
+"Area: Vendor":
+  - any: ['vendor/**/*']
+
+"Area: Root":
+  - any: ['.env', '.gitignore', '.htaccess', 'canaryaac.sql', 'composer.json', 'index.php', 'README.md']

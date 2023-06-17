@@ -25,7 +25,7 @@ class Client extends Base
         $postVars = $request->getPostVars();
         $postFiles = $request->getPostFiles();
 
-        $generatedExePath = __DIR__ . './../../../resources/generated-exe/';
+        $generatedExePath = __DIR__ . '/../../../resources/generated-exe/';
 
         $exeEditor = new ClientEditor();
 
@@ -50,7 +50,8 @@ class Client extends Base
         }
 
         $exeFilePath = $postFiles['client_exe']['tmp_name'];
-        $file_name = 'client_' . microtime(true) . '.zip';
+        $date = date("Y-m-d_H-i-s");
+        $file_name = 'client_' . $date . '.zip';
         $client_url = URL . '/resources/generated-exe/' . $file_name;
         $newExeZipFilePath = $generatedExePath . $file_name;
         $exeEditor->progress($exeFilePath, $newExeZipFilePath);

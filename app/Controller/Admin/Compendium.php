@@ -14,43 +14,36 @@ use App\Utils\View;
 
 class Compendium extends Base
 {
-
     public static function convertNewsCategory($category_id)
     {
         switch ($category_id) {
-            case 3:
-                return 'USEFUL INFO';
-                exit;
             case 4:
+                return 'USEFUL INFO';
+            case 5:
                 return 'SUPPORT';
-                exit;
             case 13:
                 return 'CLIENT FEATURES';
-                exit;
-            case 15:
+            case 17:
                 return 'GAME CONTENTS';
-                exit;
-            case 20:
+            case 21:
                 return 'MAJOR UPDATES';
-                exit;
             default:
                 return null;
-                exit;
         }
     }
 
     public static function updateCompendium($request, $id)
     {
         $postVars = $request->getPostVars();
-        if(empty($postVars['compendium_headline'])){
+        if(empty($postVars['compendium_headline'])) {
             $status = Alert::getError('Insira um titulo.');
             return self::viewCompendium($request, $status);
         }
-        if(empty($postVars['compendium_category'])){
+        if(empty($postVars['compendium_category'])) {
             $status = Alert::getError('Selecione uma categoria.');
             return self::viewCompendium($request, $status);
         }
-        if(empty($postVars['compendium_message'])){
+        if(empty($postVars['compendium_message'])) {
             $status = Alert::getError('Insira uma mensagem.');
             return self::viewCompendium($request, $status);
         }
@@ -79,15 +72,15 @@ class Compendium extends Base
     public static function insertCompendium($request)
     {
         $postVars = $request->getPostVars();
-        if(empty($postVars['compendium_headline'])){
+        if(empty($postVars['compendium_headline'])) {
             $status = Alert::getError('Insira um titulo.');
             return self::viewCompendium($request, $status);
         }
-        if(empty($postVars['compendium_category'])){
+        if(empty($postVars['compendium_category'])) {
             $status = Alert::getError('Selecione uma categoria.');
             return self::viewCompendium($request, $status);
         }
-        if(empty($postVars['compendium_message'])){
+        if(empty($postVars['compendium_message'])) {
             $status = Alert::getError('Insira uma mensagem.');
             return self::viewCompendium($request, $status);
         }
@@ -126,7 +119,37 @@ class Compendium extends Base
                 'type' => 'REGULAR',
             ];
         }
-        return $arrayCompendium ?? '';
+
+        return $arrayCompendium;
+    }
+
+    public static function loadJsonCompendium()
+    {
+        $filePath = $_SERVER['DOCUMENT_ROOT'] . '/compendium_client.json';
+        if (file_exists($filePath)) {
+            $fileContents = file_get_contents($filePath);
+            $jsonData = json_decode($fileContents, true);
+
+            $categoryCounts = $jsonData['categorycounts'];
+            $gamenews = $jsonData['gamenews'];
+
+            $compendiumData = self::getAllCompendium();
+            if (!empty($compendiumData)) {
+                $gamenews = array_merge($gamenews, $compendiumData);
+            }
+
+            $response = [
+                'categorycounts' => $categoryCounts,
+                'gamenews' => $gamenews,
+                'idOfNewestReadEntry' => 86,
+                'isreturner' => false,
+                'lastupdatetimestamp' => 0,
+                'maxeditdate' => 0,
+                'showrewardnews' => true,
+            ];
+            return $response;
+        }
+        return [];
     }
 
     public static function getCompendiumById($compendium_id)

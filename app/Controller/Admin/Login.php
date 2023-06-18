@@ -10,6 +10,7 @@
 namespace App\Controller\Admin;
 
 use App\Model\Entity\Login as EntityLogin;
+use App\Utils\Argon;
 use App\Utils\View;
 use App\Http\Request;
 use App\Session\Admin\Login as SessionAdminLogin;
@@ -53,25 +54,18 @@ class Login extends Base{
 
         // Verify email
         if(!$obAccount instanceof EntityLogin){
-            return self::getLogin($request, 'Email ou password inválidos.');
+            return self::getLogin($request, 'Email inválidos.');
         }
 
         // Password verify by sha1
-        if($obAccount->password !== sha1($pass)){
-            return self::getLogin($request, 'Email ou password inválidos.');
+        if(!Argon::beats($pass, $obAccount->password)){
+            return self::getLogin($request, 'Password inválidos.');
         }
 
         // Verify account access
         if(!($obAccount->page_access > 0)){
             return self::getLogin($request, 'Você não tem acesso.');
         }
-
-        /*
-        // Password verify by hash
-        if(!password_verify($pass, $obAccount->password)){
-            return self::getLogin($request, 'Email ou password inválidos.');
-        }
-        */
         
         SessionAdminLogin::login($obAccount);
 

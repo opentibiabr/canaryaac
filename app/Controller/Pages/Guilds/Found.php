@@ -10,7 +10,8 @@
 namespace App\Controller\Pages\Guilds;
 
 use App\Controller\Pages\Base;
-use \App\Utils\View;
+use App\Utils\Argon;
+use App\Utils\View;
 use App\Model\Entity\Guilds as EntityGuilds;
 use App\Session\Admin\Login as SessionAdminLogin;
 use App\Model\Entity\Player as EntityPlayer;
@@ -32,9 +33,8 @@ class Found extends Base{
 			return self::viewFoundGuild($request, $status);
 		}
 		$filter_pass = filter_var($postVars['password'], FILTER_SANITIZE_SPECIAL_CHARS);
-		$convert_pass = sha1($filter_pass);
 		$dbAccountLogged = EntityPlayer::getAccount([ 'id' => $idLogged])->fetchObject();
-		if($dbAccountLogged->password != $convert_pass){
+		if(Argon::beats($filter_pass, $dbAccountLogged->password)){
 			$status = 'Something went wrong with the password.';
 			return self::viewFoundGuild($request, $status);
 		}

@@ -15,6 +15,7 @@ use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Functions\Player;
 use App\Model\Functions\Server;
 use App\Session\Admin\Login as SessionAdminLogin;
+use App\Utils\Argon;
 
 class CharacterDelete extends Base{
 
@@ -24,7 +25,6 @@ class CharacterDelete extends Base{
 
         $postVars = $request->getPostVars();
         $password = $postVars['password'];
-        $convert_password = sha1($password);
         $filt = urldecode($name);
 
         if(SessionAdminLogin::isLogged() == true){
@@ -34,7 +34,7 @@ class CharacterDelete extends Base{
             }
             if($selectPlayer->account_id == $AccountId){
                 $selectAccount = EntityPlayer::getAccount([ 'id' => $selectPlayer->account_id])->fetchObject();
-                if($selectAccount->password == $convert_password){
+                if(Argon::beats($password, $selectAccount->password)){
                     EntityPlayer::updatePlayer([ 'id' => $selectPlayer->id], [
                         'deletion' => 1
                     ]);

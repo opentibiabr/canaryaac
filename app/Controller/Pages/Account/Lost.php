@@ -10,8 +10,9 @@
 namespace App\Controller\Pages\Account;
 
 use App\Controller\Pages\Base;
-use \App\Utils\View;
+use App\Utils\View;
 use App\Model\Entity\Account as EntityAccount;
+use App\Utils\Argon;
 
 class Lost extends Base{
 
@@ -47,7 +48,7 @@ class Lost extends Base{
         if ($filter_password != $filter_passwordconfirm) {
             $request->getRouter()->redirect('/account/lostaccount');
         }
-        $new_password = sha1($filter_password);
+        $new_password = Argon::generateArgonPassword($filter_password);
 
         $account_recoverykey = EntityAccount::getAccountRegistration(['account_id' => $account->id])->fetchObject();
         if($account_recoverykey->recovery == $recoverykey){

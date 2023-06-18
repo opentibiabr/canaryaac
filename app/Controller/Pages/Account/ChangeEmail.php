@@ -14,6 +14,7 @@ use App\Controller\Pages\Base;
 use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Entity\Account as EntityAccount;
 use App\Session\Admin\Login as SessionAdminLogin;
+use App\Utils\Argon;
 
 class ChangeEmail extends Base{
 
@@ -25,7 +26,6 @@ class ChangeEmail extends Base{
         $filter_newemail = filter_var($newemail, FILTER_SANITIZE_EMAIL);
         $password = $postVars['password'];
         $filter_password = filter_var($password, FILTER_SANITIZE_SPECIAL_CHARS);
-        $convert_password = sha1($password);
 
         if(SessionAdminLogin::isLogged() == false){
             return self::viewChangeEmail($request);
@@ -43,7 +43,7 @@ class ChangeEmail extends Base{
         if($duplicateEmail == true){
             return self::viewChangeEmail($request);
         }
-        if($account->password == $convert_password){
+        if(Argon::beats($filter_password, $account->password)){
             EntityAccount::updateAccount([ 'id' => $account->id], [
                 'email' => $filter_newemail,
             ]);

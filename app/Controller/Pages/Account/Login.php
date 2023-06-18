@@ -9,6 +9,7 @@
 
 namespace App\Controller\Pages\Account;
 
+use App\Utils\Argon;
 use App\Utils\View;
 use App\Http\Request;
 use App\Controller\Pages\Base;
@@ -63,7 +64,7 @@ class Login extends Base{
         }
 
         // Password verify by sha1
-        if($obAccount->password !== sha1($pass)){
+        if(!Argon::beats($pass, $obAccount->password)){
             return self::getLogin($request, 'true');
         }
 

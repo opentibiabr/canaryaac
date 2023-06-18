@@ -148,4 +148,9 @@ class Player
         return (new Database('canary_items'))->select($where, $order, $limit, $fields);
     }
 
+    public static function insertSessions($value = null)
+    {
+        return (new Database('account_sessions'))->insert($value);
+    }
+
 }

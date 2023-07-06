@@ -1,6 +1,7 @@
 <?php
 require __DIR__.'/../vendor/autoload.php';
 
+use App\Utils\Argon;
 use App\Utils\View;
 use Dotenv\Dotenv;
 use App\DatabaseManager\Database;
@@ -21,6 +22,12 @@ Database::config(
     $_ENV['DB_USER'],
     $_ENV['DB_PASS'],
     $_ENV['DB_PORT']
+);
+
+Argon::configArgon(
+    $_ENV['M_COST'],
+    $_ENV['T_COST'],
+    $_ENV['PARALLELISM']
 );
 
 // Sets the default value of variables

@@ -13,6 +13,16 @@ use App\Model\Entity\Account as Argondb;
 
 class Argon
 {
+    private static $t_cost;
+    private static $m_cost;
+    private static $parallelism;
+
+    public static function configArgon($m_cost, $t_cost, $parallelism)
+    {
+        self::$m_cost = $m_cost;
+        self::$t_cost = $t_cost;
+        self::$parallelism = $parallelism;
+    }
     /**
      * Hashes a password using the Argon2Id algorithm.
      *
@@ -22,15 +32,21 @@ class Argon
      */
     public static function generateArgonPassword(string $password): string
     {
-        $t_cost = 2;
-        $m_cost = 1 << 16;
-        $parallelism = 2;
-
-        return password_hash($password, PASSWORD_ARGON2ID, [
+        eval('$m_cost = ' . self::$m_cost . ';');
+        // Gera a senha com as configurações personalizadas
+        $hashedPassword = password_hash($password, PASSWORD_ARGON2ID, [
             'memory_cost' => $m_cost,
-            'time_cost' => $t_cost,
-            'threads' => $parallelism,
+            'time_cost' => self::$t_cost,
+            'threads' => self::$parallelism,
         ]);
+
+        $components = explode("$", $hashedPassword);
+        $salt = $components[4];
+        $hash = $components[5];
+
+        $saltAndHash = '$' . $salt . '$' . $hash;
+
+        return $saltAndHash;
     }
 
     /**
@@ -57,7 +73,15 @@ class Argon
      */
     public static function compareArgonPassword(string $password, string $hashed_password): bool
     {
-        return password_verify($password, $hashed_password);
+
+        $hashtipo = 'argon2id';
+        $hashver = 'v=19';
+        eval('$m_cost = ' . self::$m_cost . ';');
+        $t_cost = self::$t_cost;
+        $parallelism = self::$parallelism;
+
+        $hash = '$' . $hashtipo . '$' . $hashver . '$m=' . $m_cost . ',t=' . $t_cost . ',p=' . $parallelism . $hashed_password;
+        return password_verify($password, $hash);
     }
 
 

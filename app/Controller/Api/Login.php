@@ -176,7 +176,7 @@ class Login extends Api
                         'characters' => $arrayPlayers,
                     ],
                     'session' => [
-                        'sessionkey' => ($authentication->status == 1) ? "$email\n$password\n$token\n" . SESSION_DURATION : "$email\n$password",
+                        'sessionkey' => ($authentication && $authentication->status == 1 ) ? "$email\n$password\n$token\n" . SESSION_DURATION : "$email\n$password",
                         'lastlogintime' => 0,
                         'ispremium' => $account ? true : false,
                         'premiumuntil' => $account ? 0 : (time() + ($account->premdays * 86400)),

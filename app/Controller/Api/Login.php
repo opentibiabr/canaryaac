@@ -24,7 +24,7 @@ define('SESSION_DURATION', 3600);
 
 class Login extends Api
 {
-    public static function sendError($message, $code = 3)
+    public static function sendError($message, $code = 3): array
     {
         $returnMsg = [];
         $returnMsg["errorCode"] = $code;
@@ -76,13 +76,13 @@ class Login extends Api
                 if(empty($account)) {
                     return self::sendError('Email or password is not correct.', 3);
                 }
-                if (!Argon::beats($password, $account->password, $account->id)) {
+                if (!Argon::checkPassword($password, $account->password, $account->id)) {
                     return self::sendError('Password is not correct.', 3);
                 }
 
                 $authentication = EntityAccount::getAuthentication([ 'account_id' => $account->id])->fetchObject();
                 if (!empty($authentication) and $authentication->status == 1) {
-                    if (Argon::beats($password, $account->password)) {
+                    if (Argon::checkPassword($password, $account->password)) {
                         if (empty($postVars['token'])) {
                             return self::sendError('Two-factor token required for authentication.', 6);
                         }
@@ -197,7 +197,7 @@ class Login extends Api
         }
     }
 
-    public static function getLogin($request)
+    public static function getLogin($request): array|string|null
     {
         return self::selectAccount($request);
     }

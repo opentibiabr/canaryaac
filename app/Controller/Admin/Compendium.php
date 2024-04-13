@@ -16,20 +16,14 @@ class Compendium extends Base
 {
     public static function convertNewsCategory($category_id)
     {
-        switch ($category_id) {
-            case 4:
-                return 'USEFUL INFO';
-            case 5:
-                return 'SUPPORT';
-            case 13:
-                return 'CLIENT FEATURES';
-            case 17:
-                return 'GAME CONTENTS';
-            case 21:
-                return 'MAJOR UPDATES';
-            default:
-                return null;
-        }
+        return match ($category_id) {
+            4 => 'USEFUL INFO',
+            5 => 'SUPPORT',
+            13 => 'CLIENT FEATURES',
+            17 => 'GAME CONTENTS',
+            21 => 'MAJOR UPDATES',
+            default => null,
+        };
     }
 
     public static function updateCompendium($request, $id)

@@ -398,9 +398,9 @@
             "type": "REGULAR"
         }
     ],
-    "idOfNewestReadEntry": 85,
-    "isreturner": false,
-    "lastupdatetimestamp": 1688441305,
-    "maxeditdate": 1681298136,
-    "showrewardnews": false
+    "idOfNewestReadEntry": 0,
+    "isreturner": true,
+    "lastupdatetimestamp": 1713037506,
+    "maxeditdate": 0,
+    "showrewardnews": true
 }

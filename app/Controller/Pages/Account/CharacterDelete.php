@@ -34,7 +34,7 @@ class CharacterDelete extends Base{
             }
             if($selectPlayer->account_id == $AccountId){
                 $selectAccount = EntityPlayer::getAccount([ 'id' => $selectPlayer->account_id])->fetchObject();
-                if(Argon::beats($password, $selectAccount->password)){
+                if(Argon::checkPassword($password, $selectAccount->password, $selectAccount->id)){
                     EntityPlayer::updatePlayer([ 'id' => $selectPlayer->id], [
                         'deletion' => 1
                     ]);

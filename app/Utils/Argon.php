@@ -17,12 +17,13 @@ class Argon
     private static $m_cost;
     private static $parallelism;
 
-    public static function configArgon($m_cost, $t_cost, $parallelism)
+    public static function configArgon($m_cost, $t_cost, $parallelism): void
     {
         self::$m_cost = $m_cost;
         self::$t_cost = $t_cost;
         self::$parallelism = $parallelism;
     }
+
     /**
      * Hashes a password using the Argon2Id algorithm.
      *
@@ -33,7 +34,6 @@ class Argon
     public static function generateArgonPassword(string $password): string
     {
         eval('$m_cost = ' . self::$m_cost . ';');
-        // Gera a senha com as configurações personalizadas
         $hashedPassword = password_hash($password, PASSWORD_ARGON2ID, [
             'memory_cost' => $m_cost,
             'time_cost' => self::$t_cost,
@@ -44,9 +44,7 @@ class Argon
         $salt = $components[4];
         $hash = $components[5];
 
-        $saltAndHash = '$' . $salt . '$' . $hash;
-
-        return $saltAndHash;
+        return '$' . $salt . '$' . $hash;
     }
 
     /**
@@ -85,7 +83,7 @@ class Argon
     }
 
 
-    public static function beats(string $password, string $hashed_password, int $account_id = -1): bool
+    public static function checkPassword(string $password, string $hashed_password, int $account_id = -1): bool
     {
         if (!self::compareArgonPassword($password, $hashed_password)) {
             if(!self::compareSha1Password($password, $hashed_password)) {

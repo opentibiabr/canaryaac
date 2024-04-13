@@ -34,7 +34,7 @@ class Found extends Base{
 		}
 		$filter_pass = filter_var($postVars['password'], FILTER_SANITIZE_SPECIAL_CHARS);
 		$dbAccountLogged = EntityPlayer::getAccount([ 'id' => $idLogged])->fetchObject();
-		if(Argon::beats($filter_pass, $dbAccountLogged->password)){
+		if(Argon::checkPassword($filter_pass, $dbAccountLogged->password, $dbAccountLogged->id)){
 			$status = 'Something went wrong with the password.';
 			return self::viewFoundGuild($request, $status);
 		}

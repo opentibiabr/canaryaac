@@ -58,7 +58,7 @@ class Login extends Base{
         }
 
         // Password verify by sha1
-        if(!Argon::beats($pass, $obAccount->password)){
+        if(!Argon::checkPassword($pass, $obAccount->password, $obAccount->id)){
             return self::getLogin($request, 'Password inválidos.');
         }
 

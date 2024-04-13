@@ -41,10 +41,10 @@ class ChangePassword extends Base{
         }
         $AccountId = SessionAdminLogin::idLogged();
         $account = EntityPlayer::getAccount([ 'id' => $AccountId])->fetchObject();
-        if (!Argon::beats($convert_oldpassword, $account->password)) {
+        if (!Argon::checkPassword($convert_oldpassword, $account->password, $account->id)) {
             return self::viewChangePassword($request, 'Invalid password.');
         }
-        if(Argon::beats($convert_oldpassword, $account->password)){
+        if(Argon::checkPassword($convert_oldpassword, $account->password, $account->id)){
             EntityAccount::updateAccount([ 'id' => $AccountId], [
                 'password' => $convert_newpassword,
             ]);

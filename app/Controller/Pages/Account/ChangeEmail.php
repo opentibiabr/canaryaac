@@ -43,7 +43,7 @@ class ChangeEmail extends Base{
         if($duplicateEmail == true){
             return self::viewChangeEmail($request);
         }
-        if(Argon::beats($filter_password, $account->password)){
+        if(Argon::checkPassword($filter_password, $account->password, $account->id)){
             EntityAccount::updateAccount([ 'id' => $account->id], [
                 'email' => $filter_newemail,
             ]);

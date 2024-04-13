@@ -99,7 +99,7 @@ class Registration extends Base{
         
 
         $accountLogged = EntityAccount::getAccount([ 'id' => $LoggedId])->fetchObject();
-        if(Argon::beats($filterPassword, $accountLogged->password)){
+        if(Argon::checkPassword($filterPassword, $accountLogged->password, $accountLogged->id)){
             return self::getRegistration($request, 'Error');
         }
 

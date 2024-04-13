@@ -1,14 +1,7 @@
 <style>
-	.page-info {
-		display: flex;
-		align-items: center;
-		margin: 0 10px;
+	.success-message {
 		font-size: 20px;
-	}
-
-	.page-info .total-pages {
-		margin-left: 5px;
-		font-weight: bold;
+		text-align: center;
 	}
 </style>
 
@@ -92,7 +85,11 @@
 				</div>
 			</div>
 			<div class="col-12 col-md-12 col-lg-12 col-sm-12">
-				{{ status|raw }}
+				{% if success_message %}
+					<div class="alert alert-success success-message">
+						{{ success_message }}
+					</div>
+				{% endif %}
 			</div>
 		</div>
 		<div
@@ -127,7 +124,7 @@
 							<tbody>
 								{% if houses is not empty %}
 									{% set groupIndex = 0 %}
-									{% set groupSize = 10 %}
+									{% set groupSize = 100 %}
 									{% set houseGroups = houses|batch(groupSize) %}
 									{% for houseGroup in houseGroups %}
 										{% for house in houseGroup %}
@@ -163,15 +160,7 @@
 							</tbody>
 						</table>
 					</div>
-					<div class="pagination" style="display: flex; justify-content: center;">
-						<button class="btn btn-primary btn-prev" disabled style="margin-right: 10px;">Prev</button>
-						<div class="page-info">
-							<span class="page-number"></span>
-							/
-							<span class="total-pages"></span>
-						</div>
-						<button class="btn btn-primary btn-next" style="margin-left: 10px;">Next</button>
-					</div>
+					{{ pagination|raw }}
 				</div>
 				<!-- list and filter end -->
 			</section>
@@ -184,7 +173,7 @@
 <script>
 	$(document).ready(function () {
 		var houseRows = $('.house-row');
-		var groupSize = 10;
+		var groupSize = 100;
 		var totalGroups = Math.ceil(houseRows.length / groupSize);
 		var groupIndex = 0;
 
@@ -195,37 +184,6 @@
 			houseRows.hide();
 			houseRows.slice(index * groupSize, (index + 1) * groupSize).show();
 
-			if (index === 0) {
-				$('.btn-prev').prop('disabled', true);
-			} else {
-				$('.btn-prev').prop('disabled', false);
-			}
-
-			if (index === totalGroups - 1) {
-				$('.btn-next').prop('disabled', true);
-			} else {
-				$('.btn-next').prop('disabled', false);
-			}
-			
-			pageNumberElement.html(index + 1 + "&nbsp;");
-			totalPageElement.text(totalGroups);
 		}
-
-		if (houseRows.length === 0) {
-			showGroup(-1); // Define o número da página atual como 0
-			$('.btn-prev, .btn-next').prop('disabled', true); // Desativa os botões "Prev" e "Next"
-		} else {
-			showGroup(groupIndex);
-		}
-
-		$('.btn-prev').click(function () {
-			groupIndex--;
-			showGroup(groupIndex);
-		});
-
-		$('.btn-next').click(function () {
-			groupIndex++;
-			showGroup(groupIndex);
-		});
 	});
 </script>

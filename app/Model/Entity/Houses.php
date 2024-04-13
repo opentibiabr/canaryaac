@@ -18,7 +18,7 @@ class Houses{
     }
 
     public static function insertHouses($values = null){
-        return (new Database('houses'))->insert($values);
+        return (new Database('houses'))->insertMany($values);
     }
 
     public static function deleteHouse($where = null){

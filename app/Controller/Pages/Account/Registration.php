@@ -9,10 +9,11 @@
 
 namespace App\Controller\Pages\Account;
 
-use \App\Utils\View;
+use App\Utils\View;
 use App\Controller\Pages\Base;
 use App\Model\Entity\Account as EntityAccount;
 use App\Session\Admin\Login as SessionAdminLogin;
+use App\Utils\Argon;
 
 class Registration extends Base{
 
@@ -61,7 +62,6 @@ class Registration extends Base{
         $password = $postVars['password'];
 
         $filterPassword = filter_var($password, FILTER_SANITIZE_SPECIAL_CHARS);
-        $convertPassword = sha1($filterPassword);
 
         $filter_street = filter_var($street, FILTER_SANITIZE_SPECIAL_CHARS);
         
@@ -99,7 +99,7 @@ class Registration extends Base{
         
 
         $accountLogged = EntityAccount::getAccount([ 'id' => $LoggedId])->fetchObject();
-        if($accountLogged->password != $convertPassword){
+        if(Argon::checkPassword($filterPassword, $accountLogged->password, $accountLogged->id)){
             return self::getRegistration($request, 'Error');
         }
 

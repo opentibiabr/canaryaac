@@ -14,6 +14,7 @@ use App\Controller\Admin\Alert;
 use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Entity\Account as EntityAccount;
 use App\Model\Functions\Player;
+use App\Utils\Argon;
 
 class Accounts extends Base{
 
@@ -63,7 +64,7 @@ class Accounts extends Base{
 
         if (isset($postVars['account_password'])) {
             $filter_account_password = filter_var($postVars['account_password'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $convert_password = sha1($filter_account_password);
+            $convert_password = Argon::generateArgonPassword($filter_account_password);
         }
 
         if (empty($postVars['account_password'])) {

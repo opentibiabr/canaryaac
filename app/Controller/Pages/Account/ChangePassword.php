@@ -14,6 +14,7 @@ use App\Controller\Pages\Base;
 use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Entity\Account as EntityAccount;
 use App\Session\Admin\Login as SessionAdminLogin;
+use App\Utils\Argon;
 
 class ChangePassword extends Base{
 
@@ -23,11 +24,11 @@ class ChangePassword extends Base{
         
         $newpassword = $postVars['newpassword'];
         $filter_newpassword = filter_var($newpassword, FILTER_SANITIZE_SPECIAL_CHARS);
-        $convert_newpassword = sha1($filter_newpassword);
+        $convert_newpassword = Argon::generateArgonPassword($filter_newpassword);
 
         $old_password = $postVars['oldpassword'];
         $filter_oldpassword = filter_var($old_password, FILTER_SANITIZE_SPECIAL_CHARS);
-        $convert_oldpassword = sha1($filter_oldpassword);
+        $convert_oldpassword = Argon::generateArgonPassword($filter_oldpassword);
 
         if(SessionAdminLogin::isLogged() == true){
             return self::viewChangePassword($request, 'You are not logged in.');
@@ -40,10 +41,10 @@ class ChangePassword extends Base{
         }
         $AccountId = SessionAdminLogin::idLogged();
         $account = EntityPlayer::getAccount([ 'id' => $AccountId])->fetchObject();
-        if ($account->password != $convert_oldpassword) {
+        if (!Argon::checkPassword($convert_oldpassword, $account->password, $account->id)) {
             return self::viewChangePassword($request, 'Invalid password.');
         }
-        if($account->password == $convert_oldpassword){
+        if(Argon::checkPassword($convert_oldpassword, $account->password, $account->id)){
             EntityAccount::updateAccount([ 'id' => $AccountId], [
                 'password' => $convert_newpassword,
             ]);

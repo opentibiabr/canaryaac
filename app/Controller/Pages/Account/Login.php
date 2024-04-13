@@ -9,6 +9,7 @@
 
 namespace App\Controller\Pages\Account;
 
+use App\Utils\Argon;
 use App\Utils\View;
 use App\Http\Request;
 use App\Controller\Pages\Base;
@@ -24,10 +25,10 @@ class Login extends Base{
      * Method responsible for returning the login page rendering
      *
      * @param Request $request
-     * @param string $errorMessage
+     * @param string|null $errorMessage
      * @return string
      */
-    public static function getLogin($request, $errorMessage = null)
+    public static function getLogin(Request $request, string $errorMessage = null): string
     {
         // Login status
         $status = !is_null($errorMessage) ? Alert::getError($errorMessage) : '';
@@ -45,14 +46,14 @@ class Login extends Base{
      *
      * @param Request $request
      */
-    public static function setLogin($request)
+    public static function setLogin(Request $request)
     {
         $postVars = $request->getPostVars();
         $email = $postVars['loginemail'] ?? '';
         $pass = $postVars['loginpassword'] ?? '';
 
         $filter_email = filter_var($email, FILTER_VALIDATE_EMAIL);
-        if($filter_email == false){
+        if(!$filter_email){
             return self::getLogin($request, 'true');
         }
 
@@ -63,7 +64,7 @@ class Login extends Base{
         }
 
         // Password verify by sha1
-        if($obAccount->password !== sha1($pass)){
+        if(!Argon::checkPassword($pass, $obAccount->password, $obAccount->id)){
             return self::getLogin($request, 'true');
         }
 
@@ -82,10 +83,10 @@ class Login extends Base{
         }
         
         SessionAdminLogin::login($obAccount);
-        $request->getRouter()->redirect('/account');
+        return $request->getRouter()->redirect('/account');
     }
 
-    public static function setLogout($request)
+    public static function setLogout($request): string
     {
         SessionAdminLogin::logout();
         $content = View::render('pages/account/logout', []);

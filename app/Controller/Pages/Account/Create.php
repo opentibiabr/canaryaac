@@ -15,7 +15,8 @@ use App\Model\Entity\CreateAccount as EntityCreateAccount;
 use App\Model\Entity\ServerConfig as EntityServerConfig;
 use App\Model\Entity\Player as EntityPlayer;
 use App\Model\Functions\Server as FunctionServer;
-use \App\Utils\View;
+use App\Utils\Argon;
+use App\Utils\View;
 use App\Model\Functions\Player as FunctionsPlayer;
 
 class Create extends Base{
@@ -73,7 +74,7 @@ class Create extends Base{
             return self::getCreateAccount($request, 'Please enter the password again!');
         }
         $filter_password = filter_var($account_password1, FILTER_SANITIZE_SPECIAL_CHARS);
-        $convertPassword = sha1($filter_password);
+        $convertPassword = Argon::generateArgonPassword($filter_password);
         
         $filter_name = filter_var($character_name, FILTER_SANITIZE_SPECIAL_CHARS);
         if(empty($filter_name)){

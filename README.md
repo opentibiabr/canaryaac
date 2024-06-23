@@ -4,7 +4,7 @@
 CanaryAAC is a free and open-source Automatic Account Creator (AAC) written in MVC-PHP. It supports only MySQL databases.
 
 
-## Infos
+## Information
 
 - Fully Object Oriented
 - Model/View/Controller (MVC)
@@ -23,9 +23,9 @@ CanaryAAC is a free and open-source Automatic Account Creator (AAC) written in M
     - Carbon
 - Using .env to configure
 
-## Instalação
+## Installation
 
-Install CanaryAAC on Debian / Ubuntu
+**Install CanaryAAC on Debian / Ubuntu**
 
 ```bash
   sudo apt install php-bcmath
@@ -37,13 +37,12 @@ Install CanaryAAC on Debian / Ubuntu
   sudo apt install php-pdo
   sudo apt install php-xml
   sudo apt install php-json
-```
-    
+```    
 ## Configure
 
-- Import canaryaac.sql
--  Configure .env
-## Documentação da API
+- Import canaryaac.sql to your existing OpenTibia database
+-  Configure .env to suit your server
+## API Documentation
 
 #### Search Characters
 
@@ -51,9 +50,9 @@ Install CanaryAAC on Debian / Ubuntu
   POST /api/v1/searchcharacter
 ```
 
-| Parâmetro   | Tipo       | Descrição                           |
+| Parameter   | Type       | Description                         |
 | :---------- | :--------- | :---------------------------------- |
-| `name` | `string` | Pesquisa de personagens. |
+| `name` | `string` | Character Search |
 
 #### Client Login
 
@@ -61,9 +60,9 @@ Install CanaryAAC on Debian / Ubuntu
   POST /api/v1/login
 ```
 
-| Parâmetro   | Tipo       | Descrição                                   |
+| Parameter   | Type       | Description                                 |
 | :---------- | :--------- | :------------------------------------------ |
-| `request`      | `string` | Conexão ao client. |
+| `request`      | `string` | Connection to the client. |
 
 ## Autor
 

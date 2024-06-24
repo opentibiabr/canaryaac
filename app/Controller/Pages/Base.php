@@ -271,6 +271,7 @@ class Base{
             'server_status' => FunctionsServer::getServerStatus(),
             'active_donates' => $websiteInfo->donates,
             'highscores' => FunctionsThemeBox::getHighscoresTop5(),
+            'rashidlocation' => FunctionsThemeBox::getRashidLocation(),
             'current_poll' => FunctionsThemeBox::getCurrentPoll(),
             'countdown' => FunctionsThemeBox::getCurrentCountdown()
         ]);

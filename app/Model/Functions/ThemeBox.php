@@ -17,6 +17,54 @@ use App\Model\Entity\Player;
 
 class ThemeBox
 {
+    public static function getRashidLocation()
+    {
+        $daysOfWeek = array(
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+            'Sunday',
+        );
+
+        $curDate = date('Y-m-d');
+
+        $dayNumber = date('w', strtotime($curDate));
+
+        $rashidLocation = '';
+
+        switch($daysOfWeek[$dayNumber]){
+            case 'Monday':
+                $rashidLocation = 'Carlin';
+                break;
+            case 'Tuesday':
+                $rashidLocation = 'Svargrond';
+                break;
+            case 'Wednesday':
+                $rashidLocation = 'Liberty Bay';
+                break;
+            case 'Thursday':
+                $rashidLocation = 'Port Hope';
+                break;
+            case 'Friday':
+                $rashidLocation = 'Ankrahmun';
+                break;
+            case 'Saturday':
+                $rashidLocation = 'Darashia';
+                break;
+            case 'Sunday':
+                $rashidLocation = 'Edron';
+                break;
+            default:
+                $rashidLocation = 'Unknown';
+                break;                
+        }
+
+        return $rashidLocation;
+    }
+    
     public static function getHighscoresTop5()
     {
         $ribbon = 0;

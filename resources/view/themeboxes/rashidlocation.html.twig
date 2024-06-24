@@ -1,0 +1,65 @@
+<style>
+    .rashid{
+        width: 180px;
+        height: 145px;
+        margin-left: 10px;
+    }
+    .rashid_header{
+        height: 33px;
+        width: 180px;
+        background-image: url({{ IMAGE_PATH }}/global/menu/button-background.gif);
+        background-size: cover;
+        font-family: Verdana;
+        font-weight: bold;
+        color: #d5c3af;
+        line-height: 30px;
+        text-align: center;
+    }
+    .rashid_bottom{
+        height: 30px;
+        width: 177px;
+        margin-top: -20px;
+        background-image: url({{ IMAGE_PATH }}/global/content/ornament.gif);
+    }
+    .rashid_content{
+        
+        width: 177px;
+        height: 80px;
+        background-image: url({{ IMAGE_PATH }}/global/content/scroll.gif);
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-top:0;
+        border-left: 1px solid rgb(155, 155, 155);
+        border-right: 1px solid rgb(155, 155, 155);
+        border-bottom: 1px solid rgb(155, 155, 155);
+        color: rgb(55, 55, 55);
+    }
+    .rashid_outfit{
+        position: absolute;
+        width: 64px;
+        height: 64px;
+        background-position: bottom right;
+        left: 10px;
+        margin-top: -15px;
+    }
+    .rashid_text{
+        margin-left: 45px;
+        margin-top: -30px;
+        font-family: Verdana;
+        color: #5A2800;
+        text-align: left;
+    }
+</style>
+<div class="rashid">
+    <div class="rashid_header">Rashid Location</div>
+    <div class="rashid_content">
+        <div class="rashid_outfit" style="background-image: url({{ IMAGE_PATH }}/rashid/Rashid.gif)"></div>
+        <div class="rashid_text">
+            <b>City:</b><br>
+            <small>{{rashidlocation}}</small>
+        </div>
+    </div>
+    <div class="rashid_bottom"></div>
+</div>
